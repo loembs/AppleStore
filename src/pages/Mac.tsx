@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { AppleProductGrid } from '@/components/AppleProductGrid';
 import { ProductSkeleton } from '@/components/ProductSkeleton';
 import { useProducts } from '@/hooks/useSupabase';
+import { testSupabaseConnection, testProducts } from '@/utils/testSupabase';
 
 const Mac = () => {
   const navigate = useNavigate();
@@ -209,6 +210,38 @@ const Mac = () => {
                     <p className="text-sm text-blue-600">
                       3. Redémarrez l'application
                     </p>
+                    <div className="flex gap-2 mt-4">
+                      <Button 
+                        onClick={async () => {
+                          console.log('🧪 Test de connexion...')
+                          const result = await testSupabaseConnection()
+                          if (result.success) {
+                            alert('✅ Connexion Supabase réussie! Vérifiez la console.')
+                          } else {
+                            alert(`❌ Erreur: ${result.error}`)
+                          }
+                        }}
+                        size="sm"
+                        variant="outline"
+                      >
+                        Test Connexion
+                      </Button>
+                      <Button 
+                        onClick={async () => {
+                          console.log('🧪 Test des produits...')
+                          const result = await testProducts()
+                          if (result.success) {
+                            alert(`✅ ${result.data?.length || 0} produits trouvés! Vérifiez la console.`)
+                          } else {
+                            alert(`❌ Erreur: ${result.error}`)
+                          }
+                        }}
+                        size="sm"
+                        variant="outline"
+                      >
+                        Test Produits
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
