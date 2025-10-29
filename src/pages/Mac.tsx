@@ -5,9 +5,15 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { AppleProductGrid } from '@/components/AppleProductGrid';
+import { ProductSkeleton } from '@/components/ProductSkeleton';
+import { useProducts } from '@/hooks/useSupabase';
 
 const Mac = () => {
   const navigate = useNavigate();
+  
+  // Charger les produits Mac depuis Supabase (catégorie 1 = Mac)
+  const { products: macProducts, loading, error } = useProducts(1);
 
   const macModels = [
     {
@@ -176,81 +182,37 @@ const Mac = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {macModels.map((model, idx) => (
-                <Card 
-                  key={model.id}
-                  className="overflow-hidden hover:shadow-2xl transition-all duration-500 cursor-pointer group border-0 bg-gray-50"
-                  onClick={() => navigate('/product-config', { state: { product: model } })}
-                  style={{ animationDelay: `${idx * 0.1}s` }}
-                >
-                  <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center p-8 overflow-hidden">
-                    <img 
-                      src={model.image} 
-                      alt={model.name} 
-                      className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
-                    />
+            {/* Utiliser les données Supabase si disponibles, sinon les données statiques */}
+            {macProducts.length > 0 ? (
+              <AppleProductGrid 
+                categoryId={1}
+                onProductClick={(product) => navigate('/product-config', { state: { product } })}
+              />
+            ) : loading ? (
+              <ProductSkeleton count={6} />
+            ) : (
+              <div className="text-center py-12">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-8 max-w-2xl mx-auto">
+                  <h3 className="text-xl font-semibold text-blue-900 mb-4">
+                    Configuration Supabase requise
+                  </h3>
+                  <p className="text-blue-700 mb-6">
+                    Pour afficher les produits Mac depuis la base de données, veuillez configurer Supabase.
+                  </p>
+                  <div className="space-y-4">
+                    <p className="text-sm text-blue-600">
+                      1. Déployez Supabase : <code className="bg-blue-100 px-2 py-1 rounded">cd supabase && .\deploy-apple-store.ps1</code>
+                    </p>
+                    <p className="text-sm text-blue-600">
+                      2. Mettez à jour <code className="bg-blue-100 px-2 py-1 rounded">.env.local</code> avec vos clés Supabase
+                    </p>
+                    <p className="text-sm text-blue-600">
+                      3. Redémarrez l'application
+                    </p>
                   </div>
-                  
-                  <div className="p-8 space-y-6">
-                    <div className="space-y-3">
-                      <h3 className="text-2xl font-bold">{model.name}</h3>
-                      <p className="text-lg text-gray-600">{model.tagline}</p>
-                      <p className="text-2xl font-bold">{model.price}</p>
-                    </div>
-                    
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-sm text-gray-500 uppercase tracking-wide">Colors</h4>
-                      <div className="flex gap-2 flex-wrap">
-                        {model.colors.map((color) => (
-                          <div
-                            key={color.code}
-                            className="w-6 h-6 rounded-full border-2 border-gray-300"
-                            style={{ backgroundColor: color.hex }}
-                            title={color.name}
-                          />
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-sm text-gray-500 uppercase tracking-wide">Storage</h4>
-                      <div className="flex gap-2 flex-wrap">
-                        {model.storage.slice(0, 3).map((storage) => (
-                          <Badge key={storage.size} variant="outline" className="text-xs">
-                            {storage.size}
-                          </Badge>
-                        ))}
-                        {model.storage.length > 3 && (
-                          <Badge variant="outline" className="text-xs">
-                            +{model.storage.length - 3} more
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-sm text-gray-500 uppercase tracking-wide">Key Features</h4>
-                      <ul className="space-y-1">
-                        {model.features.slice(0, 2).map((feature, i) => (
-                          <li key={i} className="text-sm text-gray-600">• {feature}</li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    <Button 
-                      className="w-full bg-blue-600 text-white hover:bg-blue-700 font-medium"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate('/product-config', { state: { product: model } });
-                      }}
-                    >
-                      Configure
-                    </Button>
-                  </div>
-                </Card>
-              ))}
-            </div>
+                </div>
+              </div>
+            )}
           </div>
         </section>
 

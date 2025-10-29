@@ -1,13 +1,20 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-key'
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables')
-}
-
+// Créer le client Supabase même avec des valeurs par défaut
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+// Fonction pour vérifier si Supabase est configuré
+export const isSupabaseConfigured = () => {
+  console.log('🔍 Debug Supabase:', {
+    supabaseUrl,
+    supabaseAnonKey: supabaseAnonKey.substring(0, 20) + '...',
+    isConfigured: supabaseUrl !== 'https://placeholder.supabase.co' && supabaseAnonKey !== 'placeholder-key'
+  })
+  return supabaseUrl !== 'https://placeholder.supabase.co' && supabaseAnonKey !== 'placeholder-key'
+}
 
 // Types pour les données Apple Store
 export interface Category {

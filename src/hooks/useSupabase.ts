@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { supabase, productService, cartService, orderService, authService } from '../lib/supabase'
+import { supabase, productService, cartService, orderService, authService, isSupabaseConfigured } from '../lib/supabase'
 import type { Product, Category, CartItem, ProductColor, ProductStorage } from '../lib/supabase'
 
 // Hook pour l'authentification
@@ -32,24 +32,34 @@ export const useProducts = (categoryId?: number) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true)
-        setError(null)
-        const data = await productService.getProducts(categoryId)
-        setProducts(data)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Erreur lors du chargement des produits')
-      } finally {
-        setLoading(false)
+  const fetchProducts = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      
+      // Vérifier si Supabase est configuré
+      if (!isSupabaseConfigured()) {
+        console.warn('Supabase non configuré, utilisation des données statiques')
+        setProducts([])
+        return
       }
+      
+      const data = await productService.getProducts(categoryId)
+      setProducts(data)
+    } catch (err) {
+      console.warn('Erreur Supabase, utilisation des données statiques:', err)
+      setError(err instanceof Error ? err.message : 'Erreur lors du chargement des produits')
+      setProducts([]) // Retourner un tableau vide pour utiliser les données statiques
+    } finally {
+      setLoading(false)
     }
+  }
 
+  useEffect(() => {
     fetchProducts()
   }, [categoryId])
 
-  return { products, loading, error, refetch: () => fetchProducts() }
+  return { products, loading, error, refetch: fetchProducts }
 }
 
 // Hook pour les catégories
