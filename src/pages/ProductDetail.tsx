@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { useProduct } from '@/hooks/useSupabase';
 import { useCartWithAuth } from '@/hooks/useCartWithAuth';
 import { ProductSkeleton } from '@/components/ProductSkeleton';
+import { SimpleCart } from '@/components/SimpleCart';
 import { ArrowLeft, ShoppingCart, Heart, Share2, Star } from 'lucide-react';
 
 const ProductDetail = () => {
@@ -145,7 +146,7 @@ const ProductDetail = () => {
         </div>
 
         <div className="max-w-7xl mx-auto px-6 py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Images */}
             <div className="space-y-4">
               <div className="aspect-square bg-gray-100 rounded-2xl overflow-hidden">
@@ -320,6 +321,11 @@ const ProductDetail = () => {
                   </ul>
                 </div>
               )}
+            </div>
+
+            {/* Panier simple */}
+            <div className="lg:col-span-1">
+              <SimpleCart />
             </div>
           </div>
 

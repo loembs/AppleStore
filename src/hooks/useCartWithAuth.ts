@@ -126,6 +126,7 @@ export const useCartWithAuth = () => {
     storageData?: any
   ) => {
     try {
+      console.log('🛒 addToCart appelé:', { productId, quantity, colorId, storageId, user: !!user })
       setIsAddingToCart(true)
       setError(null)
 
@@ -135,6 +136,7 @@ export const useCartWithAuth = () => {
         await loadCart() // Recharger le panier
       } else {
         // Utilisateur non connecté : ajouter au panier local
+        console.log('🛒 Ajout au panier local (utilisateur non connecté)')
         const unitPrice = productData?.price || 0
         const totalPrice = unitPrice * quantity
 
@@ -151,6 +153,8 @@ export const useCartWithAuth = () => {
           storage: storageData
         }
 
+        console.log('🛒 Nouvel article créé:', newItem)
+
         // Vérifier si l'article existe déjà
         const existingIndex = localItems.findIndex(
           item => 
@@ -159,19 +163,25 @@ export const useCartWithAuth = () => {
             item.storage_id === storageId
         )
 
+        console.log('🛒 Index existant:', existingIndex, 'Articles actuels:', localItems.length)
+
         let updatedItems: LocalCartItem[]
         if (existingIndex >= 0) {
           // Mettre à jour la quantité
+          console.log('🛒 Mise à jour de la quantité existante')
           updatedItems = [...localItems]
           updatedItems[existingIndex].quantity += quantity
           updatedItems[existingIndex].total_price = updatedItems[existingIndex].unit_price * updatedItems[existingIndex].quantity
         } else {
           // Ajouter un nouvel article
+          console.log('🛒 Ajout d\'un nouvel article')
           updatedItems = [...localItems, newItem]
         }
 
+        console.log('🛒 Articles mis à jour:', updatedItems.length)
         setLocalItems(updatedItems)
         saveLocalCart(updatedItems)
+        console.log('🛒 Panier sauvegardé dans localStorage')
       }
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Erreur lors de l\'ajout au panier')

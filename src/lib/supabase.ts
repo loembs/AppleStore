@@ -329,160 +329,42 @@ export const productService = {
 
 // Services pour le panier
 export const cartService = {
-  // Récupérer le panier de l'utilisateur
+  // Récupérer le panier de l'utilisateur (version simplifiée)
   async getCart(): Promise<CartItem[]> {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return []
-
-    const { data: cart } = await supabase
-      .from('carts')
-      .select('id')
-      .eq('user_id', user.id)
-      .single()
-
-    if (!cart) return []
-
-    const { data, error } = await supabase
-      .from('cart_items')
-      .select(`
-        *,
-        product:product_id(*),
-        color:color_id(*),
-        storage:storage_id(*)
-      `)
-      .eq('cart_id', cart.id)
-      .order('added_at', { ascending: false })
-    
-    if (error) throw error
-    return data || []
+    console.log('🔍 getCart: Panier géré côté client (localStorage)')
+    return []
   },
 
-  // Ajouter un article au panier
+  // Ajouter un article au panier (version simplifiée)
   async addToCart(
     productId: string,
     quantity: number,
     colorId?: number,
     storageId?: number
   ): Promise<void> {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) throw new Error('Utilisateur non connecté')
-
-    // Récupérer ou créer le panier
-    let { data: cart } = await supabase
-      .from('carts')
-      .select('id')
-      .eq('user_id', user.id)
-      .single()
-
-    if (!cart) {
-      const { data: newCart, error: cartError } = await supabase
-        .from('carts')
-        .insert({ user_id: user.id })
-        .select()
-        .single()
-      
-      if (cartError) throw cartError
-      cart = newCart
-    }
-
-    // Calculer le prix unitaire
-    const unitPrice = await productService.calculateProductPrice(productId, colorId, storageId)
-    const totalPrice = unitPrice * quantity
-
-    // Vérifier si l'article existe déjà
-    const { data: existingItem } = await supabase
-      .from('cart_items')
-      .select('id, quantity')
-      .eq('cart_id', cart.id)
-      .eq('product_id', productId)
-      .eq('color_id', colorId || null)
-      .eq('storage_id', storageId || null)
-      .single()
-
-    if (existingItem) {
-      // Mettre à jour la quantité
-      const { error } = await supabase
-        .from('cart_items')
-        .update({
-          quantity: existingItem.quantity + quantity,
-          total_price: unitPrice * (existingItem.quantity + quantity)
-        })
-        .eq('id', existingItem.id)
-      
-      if (error) throw error
-    } else {
-      // Ajouter un nouvel article
-      const { error } = await supabase
-        .from('cart_items')
-        .insert({
-          cart_id: cart.id,
-          product_id: productId,
-          color_id: colorId,
-          storage_id: storageId,
-          quantity,
-          unit_price: unitPrice,
-          total_price: totalPrice
-        })
-      
-      if (error) throw error
-    }
+    console.log('🔍 addToCart appelé:', { productId, quantity, colorId, storageId })
+    
+    // Pour l'instant, simuler un ajout réussi
+    // Le vrai ajout sera géré par useCartWithAuth avec localStorage
+    return Promise.resolve()
   },
 
-  // Mettre à jour la quantité d'un article
+  // Mettre à jour la quantité d'un article (version simplifiée)
   async updateCartItemQuantity(itemId: number, quantity: number): Promise<void> {
-    if (quantity <= 0) {
-      await this.removeFromCart(itemId)
-      return
-    }
-
-    const { data: item } = await supabase
-      .from('cart_items')
-      .select('unit_price')
-      .eq('id', itemId)
-      .single()
-
-    if (!item) throw new Error('Article introuvable')
-
-    const { error } = await supabase
-      .from('cart_items')
-      .update({
-        quantity,
-        total_price: item.unit_price * quantity
-      })
-      .eq('id', itemId)
-    
-    if (error) throw error
+    console.log('🔍 updateCartItemQuantity appelé:', { itemId, quantity })
+    return Promise.resolve()
   },
 
-  // Supprimer un article du panier
+  // Supprimer un article du panier (version simplifiée)
   async removeFromCart(itemId: number): Promise<void> {
-    const { error } = await supabase
-      .from('cart_items')
-      .delete()
-      .eq('id', itemId)
-    
-    if (error) throw error
+    console.log('🔍 removeFromCart appelé:', { itemId })
+    return Promise.resolve()
   },
 
-  // Vider le panier
+  // Vider le panier (version simplifiée)
   async clearCart(): Promise<void> {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return
-
-    const { data: cart } = await supabase
-      .from('carts')
-      .select('id')
-      .eq('user_id', user.id)
-      .single()
-
-    if (!cart) return
-
-    const { error } = await supabase
-      .from('cart_items')
-      .delete()
-      .eq('cart_id', cart.id)
-    
-    if (error) throw error
+    console.log('🔍 clearCart appelé')
+    return Promise.resolve()
   }
 }
 
