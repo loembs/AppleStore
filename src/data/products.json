@@ -1,0 +1,663 @@
+{
+  "iphones": [
+    {
+      "id": "iphone-16-pro-max",
+      "name": "iPhone 16 Pro Max",
+      "tagline": "Le plus grand. Le plus puissant.",
+      "startingPrice": 1479,
+      "chip": "A18 Pro",
+      "image": "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800&q=80",
+      "colors": [
+        { "name": "Titane Naturel", "hex": "#8B8D93", "code": "natural" },
+        { "name": "Titane Bleu", "hex": "#2D4356", "code": "blue" },
+        { "name": "Titane Blanc", "hex": "#E8E9ED", "code": "white" },
+        { "name": "Titane Noir", "hex": "#3B3B3D", "code": "black" }
+      ],
+      "storage": [
+        { "size": "256 Go", "price": 1479 },
+        { "size": "512 Go", "price": 1729 },
+        { "size": "1 To", "price": 1979 }
+      ],
+      "features": [
+        "Écran Super Retina XDR 6,9 pouces",
+        "Puce A18 Pro avec Neural Engine",
+        "Système photo Pro 48 Mpx",
+        "Zoom optique 5x",
+        "Dynamic Island",
+        "Autonomie exceptionnelle jusqu'à 29h"
+      ],
+      "specs": {
+        "display": "6,9 pouces OLED",
+        "camera": "48MP principale, 12MP ultra grand-angle, 12MP téléobjectif",
+        "video": "4K Dolby Vision jusqu'à 60 i/s",
+        "battery": "Jusqu'à 29 heures de lecture vidéo",
+        "chip": "A18 Pro",
+        "water": "IP68"
+      }
+    },
+    {
+      "id": "iphone-16-pro",
+      "name": "iPhone 16 Pro",
+      "tagline": "Titanesque. Tellement Pro.",
+      "startingPrice": 1229,
+      "chip": "A18 Pro",
+      "image": "https://images.unsplash.com/photo-1696446702514-09e0012d4638?w=800&q=80",
+      "colors": [
+        { "name": "Titane Naturel", "hex": "#8B8D93", "code": "natural" },
+        { "name": "Titane Bleu", "hex": "#2D4356", "code": "blue" },
+        { "name": "Titane Blanc", "hex": "#E8E9ED", "code": "white" },
+        { "name": "Titane Noir", "hex": "#3B3B3D", "code": "black" }
+      ],
+      "storage": [
+        { "size": "128 Go", "price": 1229 },
+        { "size": "256 Go", "price": 1359 },
+        { "size": "512 Go", "price": 1609 },
+        { "size": "1 To", "price": 1859 }
+      ],
+      "features": [
+        "Écran Super Retina XDR 6,3 pouces",
+        "Puce A18 Pro avec Neural Engine",
+        "Système photo Pro 48 Mpx",
+        "Zoom optique 3x",
+        "Dynamic Island",
+        "Autonomie toute la journée"
+      ],
+      "specs": {
+        "display": "6,3 pouces OLED",
+        "camera": "48MP principale, 12MP ultra grand-angle, 12MP téléobjectif",
+        "video": "4K Dolby Vision jusqu'à 60 i/s",
+        "battery": "Jusqu'à 27 heures de lecture vidéo",
+        "chip": "A18 Pro",
+        "water": "IP68"
+      }
+    },
+    {
+      "id": "iphone-16",
+      "name": "iPhone 16",
+      "tagline": "Nouveau. Maintenant.",
+      "startingPrice": 969,
+      "chip": "A18",
+      "image": "https://images.unsplash.com/photo-1663421892461-28f63f6926c5?w=800&q=80",
+      "colors": [
+        { "name": "Noir", "hex": "#1F2028", "code": "black" },
+        { "name": "Blanc", "hex": "#F4F4F5", "code": "white" },
+        { "name": "Rose", "hex": "#FAD7E6", "code": "pink" },
+        { "name": "Bleu Sarcelle", "hex": "#3F9A9C", "code": "teal" },
+        { "name": "Outremer", "hex": "#3A5BA0", "code": "ultramarine" }
+      ],
+      "storage": [
+        { "size": "128 Go", "price": 969 },
+        { "size": "256 Go", "price": 1099 },
+        { "size": "512 Go", "price": 1349 }
+      ],
+      "features": [
+        "Écran Super Retina XDR 6,1 pouces",
+        "Puce A18 ultra rapide",
+        "Système photo avancé 48 Mpx",
+        "Bouton d'action",
+        "Dynamic Island",
+        "Autonomie exceptionnelle"
+      ],
+      "specs": {
+        "display": "6,1 pouces OLED",
+        "camera": "48MP principale, 12MP ultra grand-angle",
+        "video": "4K Dolby Vision jusqu'à 60 i/s",
+        "battery": "Jusqu'à 22 heures de lecture vidéo",
+        "chip": "A18",
+        "water": "IP68"
+      }
+    },
+    {
+      "id": "iphone-16-plus",
+      "name": "iPhone 16 Plus",
+      "tagline": "Grand format. Grandes possibilités.",
+      "startingPrice": 1119,
+      "chip": "A18",
+      "image": "https://images.unsplash.com/photo-1678652197831-2d180705cd2c?w=800&q=80",
+      "colors": [
+        { "name": "Noir", "hex": "#1F2028", "code": "black" },
+        { "name": "Blanc", "hex": "#F4F4F5", "code": "white" },
+        { "name": "Rose", "hex": "#FAD7E6", "code": "pink" },
+        { "name": "Bleu Sarcelle", "hex": "#3F9A9C", "code": "teal" },
+        { "name": "Outremer", "hex": "#3A5BA0", "code": "ultramarine" }
+      ],
+      "storage": [
+        { "size": "128 Go", "price": 1119 },
+        { "size": "256 Go", "price": 1249 },
+        { "size": "512 Go", "price": 1499 }
+      ],
+      "features": [
+        "Écran Super Retina XDR 6,7 pouces",
+        "Puce A18 ultra rapide",
+        "Système photo avancé 48 Mpx",
+        "Bouton d'action",
+        "Dynamic Island",
+        "Autonomie toute la journée et plus"
+      ],
+      "specs": {
+        "display": "6,7 pouces OLED",
+        "camera": "48MP principale, 12MP ultra grand-angle",
+        "video": "4K Dolby Vision jusqu'à 60 i/s",
+        "battery": "Jusqu'à 27 heures de lecture vidéo",
+        "chip": "A18",
+        "water": "IP68"
+      }
+    }
+  ],
+  "macs": [
+    {
+      "id": "macbook-pro-16",
+      "name": "MacBook Pro 16\"",
+      "tagline": "Performance extrême.",
+      "startingPrice": 2999,
+      "chip": "M3 Max",
+      "image": "https://res.cloudinary.com/dlna2kuo1/image/upload/v1761665729/Mackbook_pro_14_yz8kbb.jpg",
+      "colors": [
+        { "name": "Gris Sidéral", "hex": "#7D7F81", "code": "space-gray" },
+        { "name": "Argent", "hex": "#E3E4E5", "code": "silver" }
+      ],
+      "storage": [
+        { "size": "512 Go", "price": 2999 },
+        { "size": "1 To", "price": 3249 },
+        { "size": "2 To", "price": 3749 },
+        { "size": "4 To", "price": 4749 },
+        { "size": "8 To", "price": 6749 }
+      ],
+      "memory": [
+        { "size": "18 Go", "price": 0 },
+        { "size": "36 Go", "price": 500 },
+        { "size": "48 Go", "price": 700 },
+        { "size": "64 Go", "price": 1100 },
+        { "size": "128 Go", "price": 2300 }
+      ],
+      "features": [
+        "Écran Liquid Retina XDR 16,2 pouces",
+        "Puce M3 Max jusqu'à 16 cœurs CPU et 40 cœurs GPU",
+        "Jusqu'à 128 Go de mémoire unifiée",
+        "Jusqu'à 22h d'autonomie",
+        "Trois ports Thunderbolt 4",
+        "Lecteur de carte SDXC"
+      ],
+      "specs": {
+        "display": "16,2 pouces Liquid Retina XDR",
+        "chip": "M3 Max",
+        "ports": "3x Thunderbolt 4, HDMI, carte SD, MagSafe 3",
+        "battery": "Jusqu'à 22 heures",
+        "weight": "2,16 kg"
+      }
+    },
+    {
+      "id": "macbook-pro-14",
+      "name": "MacBook Pro 14\"",
+      "tagline": "Performance portable.",
+      "startingPrice": 1999,
+      "chip": "M3",
+      "image": "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=800&q=80",
+      "colors": [
+        { "name": "Gris Sidéral", "hex": "#7D7F81", "code": "space-gray" },
+        { "name": "Argent", "hex": "#E3E4E5", "code": "silver" }
+      ],
+      "storage": [
+        { "size": "512 Go", "price": 1999 },
+        { "size": "1 To", "price": 2249 },
+        { "size": "2 To", "price": 2749 },
+        { "size": "4 To", "price": 3749 },
+        { "size": "8 To", "price": 5749 }
+      ],
+      "memory": [
+        { "size": "8 Go", "price": 0 },
+        { "size": "16 Go", "price": 250 },
+        { "size": "24 Go", "price": 500 }
+      ],
+      "features": [
+        "Écran Liquid Retina XDR 14,2 pouces",
+        "Puce M3 jusqu'à 8 cœurs CPU et 10 cœurs GPU",
+        "Jusqu'à 24 Go de mémoire unifiée",
+        "Jusqu'à 22h d'autonomie",
+        "Deux ports Thunderbolt 4",
+        "Lecteur de carte SDXC"
+      ],
+      "specs": {
+        "display": "14,2 pouces Liquid Retina XDR",
+        "chip": "M3",
+        "ports": "2x Thunderbolt 4, HDMI, carte SD, MagSafe 3",
+        "battery": "Jusqu'à 22 heures",
+        "weight": "1,55 kg"
+      }
+    },
+    {
+      "id": "macbook-air-15",
+      "name": "MacBook Air 15\"",
+      "tagline": "Incroyablement fin. Incroyablement puissant.",
+      "startingPrice": 1599,
+      "chip": "M3",
+      "image": "https://images.unsplash.com/photo-1484788984921-03950022c9ef?w=800&q=80",
+      "colors": [
+        { "name": "Minuit", "hex": "#2E3642", "code": "midnight" },
+        { "name": "Lumière Stellaire", "hex": "#F0E4D3", "code": "starlight" },
+        { "name": "Gris Sidéral", "hex": "#7D7F81", "code": "space-gray" },
+        { "name": "Argent", "hex": "#E3E4E5", "code": "silver" }
+      ],
+      "storage": [
+        { "size": "256 Go", "price": 1599 },
+        { "size": "512 Go", "price": 1849 },
+        { "size": "1 To", "price": 2349 },
+        { "size": "2 To", "price": 3349 }
+      ],
+      "memory": [
+        { "size": "8 Go", "price": 0 },
+        { "size": "16 Go", "price": 250 },
+        { "size": "24 Go", "price": 500 }
+      ],
+      "features": [
+        "Écran Liquid Retina 15,3 pouces",
+        "Puce M3 avec CPU 8 cœurs",
+        "Jusqu'à 18h d'autonomie",
+        "Design ultrafin 11,5 mm",
+        "Seulement 1,51 kg",
+        "MagSafe, deux ports Thunderbolt"
+      ],
+      "specs": {
+        "display": "15,3 pouces Liquid Retina",
+        "chip": "M3",
+        "ports": "2x Thunderbolt 4, MagSafe 3, prise casque",
+        "battery": "Jusqu'à 18 heures",
+        "weight": "1,51 kg"
+      }
+    },
+    {
+      "id": "macbook-air-13",
+      "name": "MacBook Air 13\"",
+      "tagline": "Léger. Rapide. Remarquable.",
+      "startingPrice": 1299,
+      "chip": "M3",
+      "image": "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=800&q=80",
+      "colors": [
+        { "name": "Minuit", "hex": "#2E3642", "code": "midnight" },
+        { "name": "Lumière Stellaire", "hex": "#F0E4D3", "code": "starlight" },
+        { "name": "Gris Sidéral", "hex": "#7D7F81", "code": "space-gray" },
+        { "name": "Argent", "hex": "#E3E4E5", "code": "silver" }
+      ],
+      "storage": [
+        { "size": "256 Go", "price": 1299 },
+        { "size": "512 Go", "price": 1549 },
+        { "size": "1 To", "price": 2049 },
+        { "size": "2 To", "price": 3049 }
+      ],
+      "memory": [
+        { "size": "8 Go", "price": 0 },
+        { "size": "16 Go", "price": 250 },
+        { "size": "24 Go", "price": 500 }
+      ],
+      "features": [
+        "Écran Liquid Retina 13,6 pouces",
+        "Puce M3 avec CPU 8 cœurs",
+        "Jusqu'à 18h d'autonomie",
+        "Design ultrafin",
+        "Seulement 1,24 kg",
+        "MagSafe, deux ports Thunderbolt"
+      ],
+      "specs": {
+        "display": "13,6 pouces Liquid Retina",
+        "chip": "M3",
+        "ports": "2x Thunderbolt 4, MagSafe 3, prise casque",
+        "battery": "Jusqu'à 18 heures",
+        "weight": "1,24 kg"
+      }
+    }
+  ],
+  "ipads": [
+    {
+      "id": "ipad-pro-13",
+      "name": "iPad Pro 13\"",
+      "tagline": "Le plus fin. Le plus puissant.",
+      "startingPrice": 1549,
+      "chip": "M4",
+      "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=800&q=80",
+      "colors": [
+        { "name": "Argent", "hex": "#E3E4E5", "code": "silver" },
+        { "name": "Gris Sidéral", "hex": "#535456", "code": "space-gray" }
+      ],
+      "storage": [
+        { "size": "256 Go", "price": 1549 },
+        { "size": "512 Go", "price": 1799 },
+        { "size": "1 To", "price": 2299 },
+        { "size": "2 To", "price": 3299 }
+      ],
+      "connectivity": [
+        { "type": "Wi-Fi", "price": 0 },
+        { "type": "Wi-Fi + Cellular", "price": 200 }
+      ],
+      "features": [
+        "Écran Ultra Retina XDR 13 pouces",
+        "Puce M4 révolutionnaire",
+        "Écran Nano-texture en option",
+        "Apple Pencil Pro compatible",
+        "Face ID",
+        "Design ultrafin 5,1 mm"
+      ],
+      "specs": {
+        "display": "13 pouces Ultra Retina XDR",
+        "chip": "M4",
+        "camera": "12MP grand-angle, 10MP ultra grand-angle",
+        "battery": "Jusqu'à 10 heures",
+        "weight": "579 g (Wi-Fi)"
+      }
+    },
+    {
+      "id": "ipad-air-11",
+      "name": "iPad Air 11\"",
+      "tagline": "Léger. Polyvalent. Puissant.",
+      "startingPrice": 699,
+      "chip": "M2",
+      "image": "https://images.unsplash.com/photo-1561154464-82e9adf32764?w=800&q=80",
+      "colors": [
+        { "name": "Bleu", "hex": "#A7C7E7", "code": "blue" },
+        { "name": "Mauve", "hex": "#C8B5D9", "code": "purple" },
+        { "name": "Lumière Stellaire", "hex": "#F0E4D3", "code": "starlight" },
+        { "name": "Gris Sidéral", "hex": "#535456", "code": "space-gray" }
+      ],
+      "storage": [
+        { "size": "128 Go", "price": 699 },
+        { "size": "256 Go", "price": 849 },
+        { "size": "512 Go", "price": 1099 },
+        { "size": "1 To", "price": 1599 }
+      ],
+      "connectivity": [
+        { "type": "Wi-Fi", "price": 0 },
+        { "type": "Wi-Fi + Cellular", "price": 200 }
+      ],
+      "features": [
+        "Écran Liquid Retina 11 pouces",
+        "Puce M2",
+        "Apple Pencil Pro compatible",
+        "Magic Keyboard compatible",
+        "Touch ID",
+        "Port USB-C"
+      ],
+      "specs": {
+        "display": "11 pouces Liquid Retina",
+        "chip": "M2",
+        "camera": "12MP grand-angle, 12MP ultra grand-angle avant",
+        "battery": "Jusqu'à 10 heures",
+        "weight": "462 g (Wi-Fi)"
+      }
+    },
+    {
+      "id": "ipad-10",
+      "name": "iPad",
+      "tagline": "Coloré. Polyvalent. Accessible.",
+      "startingPrice": 449,
+      "chip": "A14 Bionic",
+      "image": "https://images.unsplash.com/photo-1587033411391-5d9e51cce126?w=800&q=80",
+      "colors": [
+        { "name": "Bleu", "hex": "#A7C7E7", "code": "blue" },
+        { "name": "Rose", "hex": "#FAD7E6", "code": "pink" },
+        { "name": "Jaune", "hex": "#F9E076", "code": "yellow" },
+        { "name": "Argent", "hex": "#E3E4E5", "code": "silver" }
+      ],
+      "storage": [
+        { "size": "64 Go", "price": 449 },
+        { "size": "256 Go", "price": 599 }
+      ],
+      "connectivity": [
+        { "type": "Wi-Fi", "price": 0 },
+        { "type": "Wi-Fi + Cellular", "price": 200 }
+      ],
+      "features": [
+        "Écran Liquid Retina 10,9 pouces",
+        "Puce A14 Bionic",
+        "Apple Pencil (1re génération) compatible",
+        "Magic Keyboard Folio compatible",
+        "Touch ID",
+        "Port USB-C"
+      ],
+      "specs": {
+        "display": "10,9 pouces Liquid Retina",
+        "chip": "A14 Bionic",
+        "camera": "12MP grand-angle, 12MP ultra grand-angle avant",
+        "battery": "Jusqu'à 10 heures",
+        "weight": "477 g (Wi-Fi)"
+      }
+    }
+  ],
+  "watches": [
+    {
+      "id": "apple-watch-ultra-2",
+      "name": "Apple Watch Ultra 2",
+      "tagline": "Aventure extrême.",
+      "startingPrice": 899,
+      "chip": "S9",
+      "image": "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=800&q=80",
+      "colors": [
+        { "name": "Titane Naturel", "hex": "#8B8D93", "code": "natural" }
+      ],
+      "cases": [
+        { "size": "49 mm", "price": 0 }
+      ],
+      "bands": [
+        { "name": "Bracelet Ocean Bleu", "price": 0, "type": "ocean" },
+        { "name": "Bracelet Trail Noir/Gris", "price": 0, "type": "trail" },
+        { "name": "Bracelet Alpine Vert", "price": 0, "type": "alpine" }
+      ],
+      "features": [
+        "Boîtier en titane 49 mm",
+        "Écran le plus grand et brillant",
+        "Bouton d'action personnalisable",
+        "Autonomie jusqu'à 36h",
+        "Étanchéité 100m",
+        "Double GPS haute précision"
+      ],
+      "specs": {
+        "display": "49mm Retina Always-On",
+        "chip": "S9 SiP",
+        "battery": "Jusqu'à 36 heures",
+        "water": "100m",
+        "sensors": "GPS double fréquence, Température, Profondeur"
+      }
+    },
+    {
+      "id": "apple-watch-series-10",
+      "name": "Apple Watch Series 10",
+      "tagline": "Notre montre la plus fine.",
+      "startingPrice": 449,
+      "chip": "S10",
+      "image": "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=800&q=80",
+      "colors": [
+        { "name": "Aluminium Minuit", "hex": "#2E3642", "code": "midnight", "material": "aluminium" },
+        { "name": "Aluminium Lumière Stellaire", "hex": "#F0E4D3", "code": "starlight", "material": "aluminium" },
+        { "name": "Aluminium Argent", "hex": "#E3E4E5", "code": "silver", "material": "aluminium" },
+        { "name": "Titane Naturel", "hex": "#8B8D93", "code": "natural", "material": "titanium", "priceAdd": 300 },
+        { "name": "Titane Or", "hex": "#D4AF70", "code": "gold", "material": "titanium", "priceAdd": 300 },
+        { "name": "Titane Ardoise", "hex": "#4A5568", "code": "slate", "material": "titanium", "priceAdd": 300 }
+      ],
+      "cases": [
+        { "size": "42 mm", "price": 0 },
+        { "size": "46 mm", "price": 50 }
+      ],
+      "bands": [
+        { "name": "Bracelet Sport", "price": 0 },
+        { "name": "Bracelet Sport Boucle", "price": 49 },
+        { "name": "Bracelet Milanais", "price": 99 },
+        { "name": "Bracelet Cuir", "price": 99 }
+      ],
+      "features": [
+        "Design le plus fin à ce jour",
+        "Écran large et lumineux",
+        "Détection de chute et d'accident",
+        "Suivi santé complet",
+        "Étanchéité 50m",
+        "Recharge rapide"
+      ],
+      "specs": {
+        "display": "42mm ou 46mm Retina Always-On",
+        "chip": "S10 SiP",
+        "battery": "Jusqu'à 18 heures",
+        "water": "50m",
+        "sensors": "Fréquence cardiaque, ECG, Oxygène sanguin, Température"
+      }
+    },
+    {
+      "id": "apple-watch-se",
+      "name": "Apple Watch SE",
+      "tagline": "Beaucoup à aimer. À prix doux.",
+      "startingPrice": 299,
+      "chip": "S8",
+      "image": "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=800&q=80",
+      "colors": [
+        { "name": "Aluminium Minuit", "hex": "#2E3642", "code": "midnight" },
+        { "name": "Lumière Stellaire", "hex": "#F0E4D3", "code": "starlight" },
+        { "name": "Argent", "hex": "#E3E4E5", "code": "silver" }
+      ],
+      "cases": [
+        { "size": "40 mm", "price": 0 },
+        { "size": "44 mm", "price": 50 }
+      ],
+      "bands": [
+        { "name": "Bracelet Sport", "price": 0 },
+        { "name": "Bracelet Sport Boucle", "price": 49 }
+      ],
+      "features": [
+        "Fonctionnalités essentielles",
+        "Détection de chute et d'accident",
+        "Suivi activité et santé",
+        "Étanchéité 50m",
+        "Appels d'urgence",
+        "Recharge rapide"
+      ],
+      "specs": {
+        "display": "40mm ou 44mm Retina",
+        "chip": "S8 SiP",
+        "battery": "Jusqu'à 18 heures",
+        "water": "50m",
+        "sensors": "Fréquence cardiaque, Accéléromètre, Gyroscope"
+      }
+    }
+  ],
+  "airpods": [
+    {
+      "id": "airpods-pro-2",
+      "name": "AirPods Pro 2",
+      "tagline": "Son adaptatif. Tout simplement magique.",
+      "startingPrice": 279,
+      "chip": "H2",
+      "image": "https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=800&q=80",
+      "colors": [
+        { "name": "Blanc", "hex": "#FFFFFF", "code": "white" }
+      ],
+      "variants": [
+        { "name": "Boîtier de charge USB-C", "price": 279 },
+        { "name": "Boîtier de charge MagSafe", "price": 279 }
+      ],
+      "features": [
+        "Réduction active du bruit jusqu'à 2x",
+        "Son adaptatif",
+        "Mode Transparence",
+        "Audio spatial personnalisé",
+        "Résistance à l'eau et à la sueur (IPX4)",
+        "Jusqu'à 6h d'écoute avec ANC"
+      ],
+      "specs": {
+        "chip": "Puce H2",
+        "battery": "6h d'écoute, 30h avec boîtier",
+        "charging": "USB-C, MagSafe, Qi",
+        "water": "IPX4"
+      }
+    },
+    {
+      "id": "airpods-3",
+      "name": "AirPods 3",
+      "tagline": "Un son tout en relief.",
+      "startingPrice": 199,
+      "chip": "H1",
+      "image": "https://images.unsplash.com/photo-1625738000548-67f162045296?w=800&q=80",
+      "colors": [
+        { "name": "Blanc", "hex": "#FFFFFF", "code": "white" }
+      ],
+      "variants": [
+        { "name": "Boîtier de charge MagSafe", "price": 199 }
+      ],
+      "features": [
+        "Audio spatial personnalisé",
+        "Égalisation adaptative",
+        "Résistance à l'eau et à la sueur",
+        "Jusqu'à 6h d'écoute",
+        "Recharge rapide",
+        "Commandes tactiles"
+      ],
+      "specs": {
+        "chip": "Puce H1",
+        "battery": "6h d'écoute, 30h avec boîtier",
+        "charging": "MagSafe, Qi",
+        "water": "IPX4"
+      }
+    },
+    {
+      "id": "airpods-max",
+      "name": "AirPods Max",
+      "tagline": "Le son dans toute sa splendeur.",
+      "startingPrice": 579,
+      "chip": "H1",
+      "image": "https://images.unsplash.com/photo-1625082993363-c78e9c36fc37?w=800&q=80",
+      "colors": [
+        { "name": "Gris Sidéral", "hex": "#535456", "code": "space-gray" },
+        { "name": "Argent", "hex": "#E3E4E5", "code": "silver" },
+        { "name": "Bleu Ciel", "hex": "#A7C7E7", "code": "sky-blue" },
+        { "name": "Rose", "hex": "#FAD7E6", "code": "pink" },
+        { "name": "Vert", "hex": "#9ACD91", "code": "green" }
+      ],
+      "variants": [
+        { "name": "Standard", "price": 579 }
+      ],
+      "features": [
+        "Réduction active du bruit",
+        "Audio spatial dynamique",
+        "Mode Transparence",
+        "Son Haute-fidélité",
+        "Jusqu'à 20h d'écoute",
+        "Arceau en acier inoxydable"
+      ],
+      "specs": {
+        "chip": "Puce H1",
+        "battery": "20h d'écoute avec ANC",
+        "charging": "Lightning",
+        "weight": "384,8 g"
+      }
+    }
+  ],
+  "accessories": [
+    {
+      "id": "magic-keyboard-ipad-pro",
+      "name": "Magic Keyboard pour iPad Pro",
+      "price": 349,
+      "category": "Clavier",
+      "image": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=800&q=80",
+      "compatibility": ["iPad Pro 13\"", "iPad Pro 11\""],
+      "colors": [
+        { "name": "Blanc", "hex": "#FFFFFF", "code": "white" },
+        { "name": "Noir", "hex": "#1F2028", "code": "black" }
+      ]
+    },
+    {
+      "id": "apple-pencil-pro",
+      "name": "Apple Pencil Pro",
+      "price": 149,
+      "category": "Stylet",
+      "image": "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80",
+      "compatibility": ["iPad Pro", "iPad Air"],
+      "features": [
+        "Geste de pression",
+        "Retour haptique",
+        "Détection de l'orientation"
+      ]
+    },
+    {
+      "id": "magsafe-charger",
+      "name": "Chargeur MagSafe",
+      "price": 39,
+      "category": "Chargeur",
+      "image": "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800&q=80",
+      "compatibility": ["iPhone 12 et modèles ultérieurs"]
+    }
+  ]
+}
