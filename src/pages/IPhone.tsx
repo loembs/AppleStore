@@ -165,12 +165,12 @@ const IPhone = () => {
             </div>
 
             {/* Utiliser les données Supabase si disponibles, sinon les données statiques */}
-                 {iphoneProducts.length > 0 ? (
-                   <AppleProductGrid 
-                     categoryId={2}
-                     onProductClick={(product) => navigate(`/iphone/${product.id}`)}
-                   />
-                 ) : loading ? (
+            {iphoneProducts.length > 0 ? (
+              <AppleProductGrid 
+                categoryId={2}
+                onProductClick={(product) => navigate('/product-config', { state: { product } })}
+              />
+            ) : loading ? (
               <ProductSkeleton count={6} />
             ) : (
               <div className="text-center py-12">

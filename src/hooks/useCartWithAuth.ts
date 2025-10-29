@@ -270,6 +270,7 @@ export const useCartWithAuth = () => {
 
   return {
     items: currentItems,
+    localItems,
     total,
     itemCount,
     loading: loading || authLoading,

@@ -112,12 +112,16 @@ export const useProduct = (productId: string) => {
           productData,
           colorsData,
           storageData,
-          featuresData
+          featuresData,
+          specsData,
+          imagesData
         ] = await Promise.all([
           productService.getProduct(productId),
           productService.getProductColors(productId),
           productService.getProductStorage(productId),
-          productService.getProductFeatures(productId)
+          productService.getProductFeatures(productId),
+          productService.getProductSpecs(productId),
+          productService.getProductImages(productId)
         ])
 
         setProduct(productData)
@@ -125,9 +129,14 @@ export const useProduct = (productId: string) => {
         setStorage(storageData)
         setFeatures(featuresData.map(f => f.feature))
         
-        // Initialiser les specs et images vides pour l'instant
-        setSpecs({})
-        setImages([])
+        // Convertir les specs en objet
+        const specsObj: Record<string, string> = {}
+        specsData.forEach(spec => {
+          specsObj[spec.spec_name] = spec.spec_value
+        })
+        setSpecs(specsObj)
+        
+        setImages(imagesData.map(img => img.image_url))
 
         // Marquer le produit comme vu
         await productService.trackProductView(productId)
