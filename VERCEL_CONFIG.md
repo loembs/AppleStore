@@ -60,3 +60,4 @@ Si ça ne marche toujours pas :
 - **Vercel Dashboard** : https://vercel.com/dashboard
 - **Supabase Dashboard** : https://supabase.com/dashboard
 - **Votre site** : [Votre URL Vercel]
+

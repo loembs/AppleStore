@@ -7,7 +7,9 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { AppleProductGrid } from '@/components/AppleProductGrid';
 import { ProductSkeleton } from '@/components/ProductSkeleton';
+import { SimpleCart } from '@/components/SimpleCart';
 import { useProducts } from '@/hooks/useSupabase';
+import { useCartWithAuth } from '@/hooks/useCartWithAuth';
 import { testSupabaseConnection, testProducts } from '@/utils/testSupabase';
 import { debugProduction, testProductionConfig, showProductionError } from '@/utils/productionDebug';
 
@@ -16,6 +18,7 @@ const Mac = () => {
   
   // Charger les produits Mac depuis Supabase (catégorie 1 = Mac)
   const { products: macProducts, loading, error } = useProducts(1);
+  const { addToCart, isAddingToCart } = useCartWithAuth();
 
   const macModels = [
     {
@@ -259,6 +262,45 @@ const Mac = () => {
                 </div>
               </div>
             )}
+          </div>
+        </section>
+
+        {/* Test du panier */}
+        <section className="py-12 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-6">
+            <h2 className="text-3xl font-bold text-center mb-8">Test du Panier</h2>
+            <div className="flex justify-center gap-8">
+              <div className="text-center">
+                <Button 
+                  onClick={async () => {
+                    try {
+                      console.log('🧪 Test d\'ajout au panier');
+                      await addToCart(
+                        'macbook-pro-14',
+                        1,
+                        undefined,
+                        undefined,
+                        {
+                          id: 'macbook-pro-14',
+                          name: 'MacBook Pro 14"',
+                          price: 1999,
+                          image: 'https://res.cloudinary.com/dlna2kuo1/image/upload/macbook_pro_14.jpg'
+                        }
+                      );
+                      alert('Produit ajouté au panier !');
+                    } catch (error) {
+                      console.error('Erreur test panier:', error);
+                      alert('Erreur lors du test');
+                    }
+                  }}
+                  disabled={isAddingToCart}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  {isAddingToCart ? 'Ajout...' : 'Test Ajouter au Panier'}
+                </Button>
+              </div>
+              <SimpleCart />
+            </div>
           </div>
         </section>
 

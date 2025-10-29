@@ -37,3 +37,4 @@ export const showProductionError = (error: any) => {
   console.table(errorInfo)
   return errorInfo
 }
+

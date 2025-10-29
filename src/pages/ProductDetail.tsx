@@ -53,11 +53,24 @@ const ProductDetail = () => {
     if (!product) return;
 
     try {
+      console.log('🛒 handleAddToCart appelé:', {
+        productId: product.id,
+        quantity,
+        selectedColor,
+        selectedStorage,
+        product,
+        colorData: selectedColor ? colors.find(c => c.id === selectedColor) : null,
+        storageData: selectedStorage ? storage.find(s => s.id === selectedStorage) : null
+      });
+
       await addToCart(
         product.id,
         quantity,
         selectedColor || undefined,
-        selectedStorage || undefined
+        selectedStorage || undefined,
+        product,
+        selectedColor ? colors.find(c => c.id === selectedColor) : undefined,
+        selectedStorage ? storage.find(s => s.id === selectedStorage) : undefined
       );
       
       // Optionnel : afficher une notification de succès

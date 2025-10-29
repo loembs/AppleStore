@@ -197,3 +197,4 @@ Après ces étapes, vous devriez voir :
 - ✅ La connexion Supabase fonctionnelle
 - ✅ Les produits s'affichent sur la page Mac
 - ✅ Les produits s'affichent sur la page iPhone
+

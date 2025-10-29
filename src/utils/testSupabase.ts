@@ -52,3 +52,4 @@ export const testProducts = async () => {
     return { success: false, error: err instanceof Error ? err.message : 'Erreur inconnue' }
   }
 }
+

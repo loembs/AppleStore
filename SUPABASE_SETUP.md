@@ -50,3 +50,4 @@ Une fois configuré, vos pages Mac et iPhone afficheront :
 ---
 
 **🎉 Une fois configuré, votre Apple Store sera entièrement fonctionnel avec Supabase !**
+
