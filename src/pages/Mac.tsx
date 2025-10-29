@@ -283,8 +283,21 @@ const Mac = () => {
                         {
                           id: 'macbook-pro-14',
                           name: 'MacBook Pro 14"',
+                          tagline: 'Supercharged by M5',
                           price: 1999,
-                          image: 'https://res.cloudinary.com/dlna2kuo1/image/upload/macbook_pro_14.jpg'
+                          image: 'https://res.cloudinary.com/dlna2kuo1/image/upload/macbook_pro_14.jpg',
+                          categoryid: 1,
+                          stock: 10,
+                          available: true,
+                          is_featured: false,
+                          is_new: false,
+                          is_bestseller: false,
+                          total_sales: 0,
+                          rating: 4.8,
+                          review_count: 150,
+                          view_count: 0,
+                          created_at: new Date().toISOString(),
+                          updated_at: new Date().toISOString()
                         }
                       );
                       alert('Produit ajouté au panier !');

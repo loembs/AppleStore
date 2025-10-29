@@ -5,9 +5,23 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { ShoppingCart, Trash2 } from 'lucide-react'
 
 export const SimpleCart: React.FC = () => {
-  const { items, total, itemCount, clearCart, removeFromCart } = useCartWithAuth()
+  const { items, localItems, total, itemCount, clearCart, removeFromCart } = useCartWithAuth()
+  
+  // Utiliser les articles locaux si l'utilisateur n'est pas connecté
+  const displayItems = localItems.length > 0 ? localItems : items
+  const displayItemCount = localItems.length > 0 ? localItems.reduce((sum, item) => sum + item.quantity, 0) : itemCount
+  const displayTotal = localItems.length > 0 ? localItems.reduce((sum, item) => sum + item.total_price, 0) : total
 
-  if (itemCount === 0) {
+  // Debug logs
+  console.log('🛒 SimpleCart render:', {
+    items: items.length,
+    localItems: localItems.length,
+    displayItems: displayItems.length,
+    displayItemCount,
+    displayTotal
+  })
+
+  if (displayItemCount === 0) {
     return (
       <Card className="w-80">
         <CardHeader>
@@ -31,7 +45,7 @@ export const SimpleCart: React.FC = () => {
         <CardTitle className="flex items-center justify-between">
           <span className="flex items-center gap-2">
             <ShoppingCart className="w-5 h-5" />
-            Panier ({itemCount})
+            Panier ({displayItemCount})
           </span>
           <Button
             variant="ghost"
@@ -44,7 +58,7 @@ export const SimpleCart: React.FC = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        {items.map((item, index) => (
+        {displayItems.map((item, index) => (
           <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
             <div className="flex-1">
               <p className="font-medium text-sm">
@@ -87,7 +101,7 @@ export const SimpleCart: React.FC = () => {
           <div className="flex justify-between items-center font-bold text-lg">
             <span>Total:</span>
             <span>
-              {total.toLocaleString('fr-FR', {
+              {displayTotal.toLocaleString('fr-FR', {
                 style: 'currency',
                 currency: 'EUR'
               })}
