@@ -9,6 +9,7 @@ import { AppleProductGrid } from '@/components/AppleProductGrid';
 import { ProductSkeleton } from '@/components/ProductSkeleton';
 import { useProducts } from '@/hooks/useSupabase';
 import { testSupabaseConnection, testProducts } from '@/utils/testSupabase';
+import { debugProduction, testProductionConfig, showProductionError } from '@/utils/productionDebug';
 
 const Mac = () => {
   const navigate = useNavigate();
@@ -210,7 +211,17 @@ const Mac = () => {
                     <p className="text-sm text-blue-600">
                       3. Redémarrez l'application
                     </p>
-                    <div className="flex gap-2 mt-4">
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      <Button 
+                        onClick={() => {
+                          debugProduction()
+                          alert('Debug affiché dans la console (F12)')
+                        }}
+                        size="sm"
+                        variant="outline"
+                      >
+                        Debug Config
+                      </Button>
                       <Button 
                         onClick={async () => {
                           console.log('🧪 Test de connexion...')
@@ -218,6 +229,7 @@ const Mac = () => {
                           if (result.success) {
                             alert('✅ Connexion Supabase réussie! Vérifiez la console.')
                           } else {
+                            const errorInfo = showProductionError(result.error)
                             alert(`❌ Erreur: ${result.error}`)
                           }
                         }}
@@ -233,6 +245,7 @@ const Mac = () => {
                           if (result.success) {
                             alert(`✅ ${result.data?.length || 0} produits trouvés! Vérifiez la console.`)
                           } else {
+                            const errorInfo = showProductionError(result.error)
                             alert(`❌ Erreur: ${result.error}`)
                           }
                         }}
