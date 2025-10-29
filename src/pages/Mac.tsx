@@ -185,12 +185,12 @@ const Mac = () => {
             </div>
 
             {/* Utiliser les données Supabase si disponibles, sinon les données statiques */}
-            {macProducts.length > 0 ? (
-              <AppleProductGrid 
-                categoryId={1}
-                onProductClick={(product) => navigate('/product-config', { state: { product } })}
-              />
-            ) : loading ? (
+                 {macProducts.length > 0 ? (
+                   <AppleProductGrid 
+                     categoryId={1}
+                     onProductClick={(product) => navigate(`/mac/${product.id}`)}
+                   />
+                 ) : loading ? (
               <ProductSkeleton count={6} />
             ) : (
               <div className="text-center py-12">

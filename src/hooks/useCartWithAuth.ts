@@ -10,6 +10,7 @@ export const useCartWithAuth = () => {
   const [localItems, setLocalItems] = useState<LocalCartItem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isAddingToCart, setIsAddingToCart] = useState(false)
 
   // Clé pour le localStorage
   const LOCAL_CART_KEY = 'apple_store_cart'
@@ -125,6 +126,7 @@ export const useCartWithAuth = () => {
     storageData?: any
   ) => {
     try {
+      setIsAddingToCart(true)
       setError(null)
 
       if (user) {
@@ -174,6 +176,8 @@ export const useCartWithAuth = () => {
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Erreur lors de l\'ajout au panier')
       throw error
+    } finally {
+      setIsAddingToCart(false)
     }
   }, [user, localItems, loadCart, saveLocalCart])
 
@@ -261,6 +265,7 @@ export const useCartWithAuth = () => {
     loading: loading || authLoading,
     error,
     isAuthenticated: !!user,
+    isAddingToCart,
     addToCart,
     updateQuantity,
     removeFromCart,
