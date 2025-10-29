@@ -10,8 +10,6 @@ import { ProductSkeleton } from '@/components/ProductSkeleton';
 import { SimpleCart } from '@/components/SimpleCart';
 import { useProducts } from '@/hooks/useSupabase';
 import { useCartWithAuth } from '@/hooks/useCartWithAuth';
-import { testSupabaseConnection, testProducts } from '@/utils/testSupabase';
-import { debugProduction, testProductionConfig, showProductionError } from '@/utils/productionDebug';
 
 const Mac = () => {
   const navigate = useNavigate();
@@ -217,45 +215,16 @@ const Mac = () => {
                     <div className="flex flex-wrap gap-2 mt-4">
                       <Button 
                         onClick={() => {
-                          debugProduction()
-                          alert('Debug affiché dans la console (F12)')
+                          console.log('🔍 Configuration actuelle:', {
+                            supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
+                            supabaseKey: import.meta.env.VITE_SUPABASE_ANON_KEY ? 'Configuré' : 'Manquant'
+                          })
+                          alert('Configuration affichée dans la console (F12)')
                         }}
                         size="sm"
                         variant="outline"
                       >
                         Debug Config
-                      </Button>
-                      <Button 
-                        onClick={async () => {
-                          console.log('🧪 Test de connexion...')
-                          const result = await testSupabaseConnection()
-                          if (result.success) {
-                            alert('✅ Connexion Supabase réussie! Vérifiez la console.')
-                          } else {
-                            const errorInfo = showProductionError(result.error)
-                            alert(`❌ Erreur: ${result.error}`)
-                          }
-                        }}
-                        size="sm"
-                        variant="outline"
-                      >
-                        Test Connexion
-                      </Button>
-                      <Button 
-                        onClick={async () => {
-                          console.log('🧪 Test des produits...')
-                          const result = await testProducts()
-                          if (result.success) {
-                            alert(`✅ ${result.data?.length || 0} produits trouvés! Vérifiez la console.`)
-                          } else {
-                            const errorInfo = showProductionError(result.error)
-                            alert(`❌ Erreur: ${result.error}`)
-                          }
-                        }}
-                        size="sm"
-                        variant="outline"
-                      >
-                        Test Produits
                       </Button>
                     </div>
                   </div>
