@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from './useSupabase'
 import { cartService } from '../lib/supabase'
 import type { CartItem, Product, LocalCartItem } from '../lib/supabase'
+import { toast } from 'sonner'
 
 // Hook pour le panier avec gestion de l'authentification
 export const useCartWithAuth = () => {
@@ -14,10 +15,15 @@ export const useCartWithAuth = () => {
 
   // Clé pour le localStorage
   const LOCAL_CART_KEY = 'apple_store_cart'
+  const LEGACY_CART_KEY = 'istar-cart'
 
   // Charger le panier local depuis localStorage
   const loadLocalCart = useCallback((): LocalCartItem[] => {
     try {
+      // Nettoyer panier legacy s'il existe (schéma incompatible)
+      if (localStorage.getItem(LEGACY_CART_KEY)) {
+        localStorage.removeItem(LEGACY_CART_KEY)
+      }
       const stored = localStorage.getItem(LOCAL_CART_KEY)
       return stored ? JSON.parse(stored) : []
     } catch {
@@ -29,6 +35,8 @@ export const useCartWithAuth = () => {
   const saveLocalCart = useCallback((items: LocalCartItem[]) => {
     try {
       localStorage.setItem(LOCAL_CART_KEY, JSON.stringify(items))
+      // Notifier l'application qu'une mise à jour du panier a eu lieu
+      window.dispatchEvent(new Event('cart-updated'))
     } catch (error) {
       console.error('Erreur lors de la sauvegarde du panier local:', error)
     }
@@ -108,6 +116,22 @@ export const useCartWithAuth = () => {
     loadCart()
   }, [loadCart])
 
+  // Réagir aux mises à jour du panier (même onglet) et aux changements de stockage (autres onglets)
+  useEffect(() => {
+    const handleCartUpdated = () => loadCart()
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === LOCAL_CART_KEY) {
+        loadCart()
+      }
+    }
+    window.addEventListener('cart-updated', handleCartUpdated)
+    window.addEventListener('storage', handleStorage)
+    return () => {
+      window.removeEventListener('cart-updated', handleCartUpdated)
+      window.removeEventListener('storage', handleStorage)
+    }
+  }, [loadCart])
+
   // Effet pour synchroniser le panier local vers Supabase lors de la connexion
   useEffect(() => {
     if (user && localItems.length > 0) {
@@ -137,7 +161,9 @@ export const useCartWithAuth = () => {
       } else {
         // Utilisateur non connecté : ajouter au panier local
         console.log('🛒 Ajout au panier local (utilisateur non connecté)')
-        const unitPrice = productData?.price || 0
+        let unitPrice = productData?.price || 0
+        if (storageData?.price) unitPrice += storageData.price
+        if (colorData?.priceAdd) unitPrice += colorData.priceAdd
         const totalPrice = unitPrice * quantity
 
         const newItem: LocalCartItem = {
@@ -182,43 +208,15 @@ export const useCartWithAuth = () => {
         setLocalItems(updatedItems)
         saveLocalCart(updatedItems)
         console.log('🛒 Panier sauvegardé dans localStorage')
+        toast.success('Ajouté au panier', {
+          description: productData?.name || `Produit ${productId}`
+        })
       }
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Erreur lors de l\'ajout au panier')
       throw error
     } finally {
       setIsAddingToCart(false)
-    }
-  }, [user, localItems, loadCart, saveLocalCart])
-
-  // Mettre à jour la quantité d'un article
-  const updateQuantity = useCallback(async (itemId: number, quantity: number) => {
-    try {
-      setError(null)
-
-      if (user) {
-        // Utilisateur connecté : mettre à jour dans Supabase
-        await cartService.updateCartItemQuantity(itemId, quantity)
-        await loadCart()
-      } else {
-        // Utilisateur non connecté : mettre à jour localement
-        if (quantity <= 0) {
-          removeFromCart(itemId)
-          return
-        }
-
-        const updatedItems = localItems.map(item => 
-          item === localItems[itemId] 
-            ? { ...item, quantity, total_price: item.unit_price * quantity }
-            : item
-        )
-
-        setLocalItems(updatedItems)
-        saveLocalCart(updatedItems)
-      }
-    } catch (error) {
-      setError(error instanceof Error ? error.message : 'Erreur lors de la mise à jour')
-      throw error
     }
   }, [user, localItems, loadCart, saveLocalCart])
 
@@ -236,12 +234,44 @@ export const useCartWithAuth = () => {
         const updatedItems = localItems.filter((_, index) => index !== itemId)
         setLocalItems(updatedItems)
         saveLocalCart(updatedItems)
+        toast('Article supprimé du panier')
       }
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Erreur lors de la suppression')
       throw error
     }
   }, [user, localItems, loadCart, saveLocalCart])
+
+  // Mettre à jour la quantité d'un article
+  const updateQuantity = useCallback(async (itemId: number, quantity: number) => {
+    try {
+      setError(null)
+
+      if (user) {
+        // Utilisateur connecté : mettre à jour dans Supabase
+        await cartService.updateCartItemQuantity(itemId, quantity)
+        await loadCart()
+      } else {
+        // Utilisateur non connecté : mettre à jour localement (itemId = index)
+        if (quantity <= 0) {
+          removeFromCart(itemId)
+          return
+        }
+
+        const updatedItems = localItems.map((item, idx) => (
+          idx === itemId
+            ? { ...item, quantity, total_price: item.unit_price * quantity }
+            : item
+        ))
+
+        setLocalItems(updatedItems)
+        saveLocalCart(updatedItems)
+      }
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Erreur lors de la mise à jour')
+      throw error
+    }
+  }, [user, localItems, loadCart, saveLocalCart, removeFromCart])
 
   // Vider le panier
   const clearCart = useCallback(async () => {
@@ -256,6 +286,7 @@ export const useCartWithAuth = () => {
         // Utilisateur non connecté : vider le panier local
         setLocalItems([])
         saveLocalCart([])
+        toast('Panier vidé')
       }
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Erreur lors du vidage du panier')

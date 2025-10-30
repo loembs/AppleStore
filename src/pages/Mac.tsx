@@ -159,14 +159,14 @@ const Mac = () => {
            
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
-                className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
+                className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
                 onClick={() => navigate('/mac')}
               >
                 Learn more
               </Button>
               <Button 
                 variant="outline"
-                className="border-white text-black hover:bg-white hover:text-black px-6 py-3 text-lg"
+                className="border-white text-black hover:bg-white hover:text-black px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
                 onClick={() => navigate('/mac')}
               >
                 Buy
@@ -195,96 +195,14 @@ const Mac = () => {
               <ProductSkeleton count={6} />
             ) : (
               <div className="text-center py-12">
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-8 max-w-2xl mx-auto">
-                  <h3 className="text-xl font-semibold text-blue-900 mb-4">
-                    Configuration Supabase requise
-                  </h3>
-                  <p className="text-blue-700 mb-6">
-                    Pour afficher les produits Mac depuis la base de données, veuillez configurer Supabase.
-                  </p>
-                  <div className="space-y-4">
-                    <p className="text-sm text-blue-600">
-                      1. Déployez Supabase : <code className="bg-blue-100 px-2 py-1 rounded">cd supabase && .\deploy-apple-store.ps1</code>
-                    </p>
-                    <p className="text-sm text-blue-600">
-                      2. Mettez à jour <code className="bg-blue-100 px-2 py-1 rounded">.env.local</code> avec vos clés Supabase
-                    </p>
-                    <p className="text-sm text-blue-600">
-                      3. Redémarrez l'application
-                    </p>
-                    <div className="flex flex-wrap gap-2 mt-4">
-                      <Button 
-                        onClick={() => {
-                          console.log('🔍 Configuration actuelle:', {
-                            supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
-                            supabaseKey: import.meta.env.VITE_SUPABASE_ANON_KEY ? 'Configuré' : 'Manquant'
-                          })
-                          alert('Configuration affichée dans la console (F12)')
-                        }}
-                        size="sm"
-                        variant="outline"
-                      >
-                        Debug Config
-                      </Button>
-                    </div>
-                  </div>
-                </div>
+                <h3>Aucun produit trouvé</h3>
               </div>
             )}
           </div>
         </section>
 
         {/* Test du panier */}
-        <section className="py-12 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-3xl font-bold text-center mb-8">Test du Panier</h2>
-            <div className="flex justify-center gap-8">
-              <div className="text-center">
-                <Button 
-                  onClick={async () => {
-                    try {
-                      console.log('🧪 Test d\'ajout au panier');
-                      await addToCart(
-                        'macbook-pro-14',
-                        1,
-                        undefined,
-                        undefined,
-                        {
-                          id: 'macbook-pro-14',
-                          name: 'MacBook Pro 14"',
-                          tagline: 'Supercharged by M5',
-                          price: 1999,
-                          image: 'https://res.cloudinary.com/dlna2kuo1/image/upload/macbook_pro_14.jpg',
-                          categoryid: 1,
-                          stock: 10,
-                          available: true,
-                          is_featured: false,
-                          is_new: false,
-                          is_bestseller: false,
-                          total_sales: 0,
-                          rating: 4.8,
-                          review_count: 150,
-                          view_count: 0,
-                          created_at: new Date().toISOString(),
-                          updated_at: new Date().toISOString()
-                        }
-                      );
-                      alert('Produit ajouté au panier !');
-                    } catch (error) {
-                      console.error('Erreur test panier:', error);
-                      alert('Erreur lors du test');
-                    }
-                  }}
-                  disabled={isAddingToCart}
-                  className="bg-blue-600 hover:bg-blue-700"
-                >
-                  {isAddingToCart ? 'Ajout...' : 'Test Ajouter au Panier'}
-                </Button>
-              </div>
-              <SimpleCart />
-            </div>
-          </div>
-        </section>
+        
 
 
         {/* Performance Section */}

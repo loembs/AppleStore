@@ -22,7 +22,8 @@ export const useAuth = () => {
     loading,
     signIn: authService.signIn,
     signUp: authService.signUp,
-    signOut: authService.signOut
+    signOut: authService.signOut,
+    signInWithGoogle: authService.signInWithGoogle
   }
 }
 

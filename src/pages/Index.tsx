@@ -11,20 +11,21 @@ const Index = () => {
       <Header />
       <main>
         {/* iPhone Hero */}
-        <section className="relative h-screen flex items-center justify-center bg-black text-white">
+        <section className="relative h-screen flex items-center justify-center bg-black text-white overflow-hidden">
           <div className="absolute inset-0 w-full h-full flex items-center justify-center">
             <img 
               src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1761221311/iphone17_sfkbuk.jpg" 
-              className="w-auto h-full object-contain"
+              className="object-contain md:object-contain h-[115%] md:h-full w-auto md:w-auto translate-y-6 md:translate-y-0"
+              alt="iPhone 17"
             />
-            <div className="absolute inset-0 bg-black/50"></div>
+            <div className="absolute inset-0 bg-black/40"></div>
           </div>
           <div className="relative z-10 text-center">
             <h1 className="text-6xl md:text-8xl font-bold mb-4">iPhone</h1>
             <p className="text-2xl md:text-3xl mb-8">Découvrez tous les iPhone 17.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
-                className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
+                className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
                 onClick={() => navigate('/iphone')}
               >
                 En savoir plus
@@ -41,7 +42,7 @@ const Index = () => {
             <p className="text-2xl md:text-3xl mb-8">Performances de haut vol avec la M4.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
-                className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
+                className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
                 onClick={() => navigate('/mac')}
               >
                 En savoir plus
@@ -57,7 +58,7 @@ const Index = () => {
             <p className="text-2xl md:text-3xl mb-8">Maintenant boosté par la puce M3.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
-                className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
+                className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
                 onClick={() => navigate('/ipad')}
               >
                 En savoir plus
@@ -96,7 +97,7 @@ const Index = () => {
             <p className="text-2xl md:text-3xl mb-8">Prodigieux en tout.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
-                className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
+                className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
                 onClick={() => navigate('/mac')}
               >
                 En savoir plus
@@ -113,7 +114,7 @@ const Index = () => {
             <p className="text-2xl md:text-3xl mb-8">Incroyablement puissant.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
-                className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
+                className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
                 onClick={() => navigate('/ipad')}
               >
                 En savoir plus
@@ -138,7 +139,7 @@ const Index = () => {
             <p className="text-2xl md:text-3xl mb-8">Choisissez votre superpouvoir.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
-                className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
+                className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
                 onClick={() => navigate('/mac')}
               >
                 En savoir plus

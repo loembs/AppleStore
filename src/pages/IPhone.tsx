@@ -168,7 +168,7 @@ const IPhone = () => {
             {iphoneProducts.length > 0 ? (
               <AppleProductGrid 
                 categoryId={2}
-                onProductClick={(product) => navigate('/product-config', { state: { product } })}
+                onProductClick={(product) => navigate(`/iphone/${product.id}`)}
               />
             ) : loading ? (
               <ProductSkeleton count={6} />

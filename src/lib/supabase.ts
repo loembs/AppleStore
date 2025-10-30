@@ -471,7 +471,8 @@ export const authService = {
       email,
       password,
       options: {
-        data: userData
+        data: userData,
+        emailRedirectTo: `${window.location.origin}/login`
       }
     })
     
@@ -497,5 +498,17 @@ export const authService = {
     return supabase.auth.onAuthStateChange((event, session) => {
       callback(session?.user || null)
     })
+  },
+
+  // Connexion avec Google
+  async signInWithGoogle() {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/checkout`
+      }
+    })
+    if (error) throw error
+    return data
   }
 }

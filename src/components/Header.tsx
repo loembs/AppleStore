@@ -1,35 +1,23 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, Menu, X } from 'lucide-react';
+import { Search, ShoppingBag, Menu, X, User, LogOut } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useCartWithAuth } from '@/hooks/useCartWithAuth';
+import { useAuth } from '@/hooks/useSupabase';
+import { useProductSearch } from '@/hooks/useSupabase';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [dropdownTimeout, setDropdownTimeout] = useState<NodeJS.Timeout | null>(null);
   const navigate = useNavigate();
-
-  // Charger le nombre d'articles dans le panier
-  useEffect(() => {
-    const updateCartCount = () => {
-      const cart = JSON.parse(localStorage.getItem('istar-cart') || '[]');
-      setCartCount(cart.length);
-    };
-    
-    updateCartCount();
-    
-    // Écouter les changements du panier
-    window.addEventListener('storage', updateCartCount);
-    window.addEventListener('cart-updated', updateCartCount);
-    
-    return () => {
-      window.removeEventListener('storage', updateCartCount);
-      window.removeEventListener('cart-updated', updateCartCount);
-    };
-  }, []);
+  
+  // Utiliser le hook de panier pour obtenir le compteur
+  const { itemCount } = useCartWithAuth();
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -127,6 +115,11 @@ const Header = () => {
     return currentPath === '/watch' || currentPath === '/' || currentPath === '/tv-home';
   };
 
+  // Recherche
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const { products: searchResults } = useProductSearch(searchQuery)
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -192,36 +185,75 @@ const Header = () => {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center space-x-4">
+            {/* Barre de recherche */}
+            <div className="relative">
+              <div className={`flex items-center rounded-md bg-black/5 px-2`}> 
+                <Search className={`h-4 w-4 mr-1 text-black`} />
+                <input
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Rechercher"
+                  className={`outline-none bg-transparent text-sm py-1 text-black placeholder:text-gray-500`}
+                />
+              </div>
+              {searchOpen || searchQuery ? (
+                <div className={`absolute mt-2 w-72 max-h-72 overflow-auto rounded-md shadow-lg ${isBlackHeaderPage() ? 'bg-black text-white' : 'bg-white text-black'} border ${isBlackHeaderPage() ? 'border-gray-700' : 'border-gray-200'}`}>
+                  {searchResults.slice(0, 8).map(p => (
+                    <button key={p.id} onClick={() => navigate(`/${p.categoryid === 1 ? 'mac' : p.categoryid === 2 ? 'iphone' : 'store'}/${p.id}`)} className={`w-full text-left px-3 py-2 hover:${isBlackHeaderPage() ? 'bg-white/10' : 'bg-black/5'}`}>
+                      {p.name}
+                    </button>
+                  ))}
+                  {searchResults.length === 0 && (
+                    <div className="px-3 py-2 text-sm opacity-70">Aucun résultat</div>
+                  )}
+                </div>
+              ) : null}
+            </div>
+            {/* User menu */}
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    className={`h-8 w-8 text-black hover:text-gray-600 hover:bg-black/10`}
+                    aria-label="User menu"
+                  >
+                    <User className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => navigate('/profile')}>Profil</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => signOut()} className="text-red-600">
+                    <LogOut className="h-4 w-4 mr-2" /> Se déconnecter
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button 
+                variant="ghost" 
+                size="icon"
+                className={`h-8 w-8 text-black hover:text-gray-600 hover:bg-black/10`}
+                aria-label="Login"
+                onClick={() => navigate('/login', { state: { returnUrl: '/checkout' } })}
+              >
+                <User className="h-4 w-4" />
+              </Button>
+            )}
             <Button 
               variant="ghost" 
               size="icon" 
-              className={`h-8 w-8 hover:bg-opacity-10 ${
-                isBlackHeaderPage() 
-                  ? 'text-white hover:text-gray-300 hover:bg-white' 
-                  : 'text-black hover:text-gray-600 hover:bg-black'
-              }`}
-              aria-label="Search"
-            >
-              <Search className="h-4 w-4" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className={`h-8 w-8 hover:bg-opacity-10 relative ${
-                isBlackHeaderPage() 
-                  ? 'text-white hover:text-gray-300 hover:bg-white' 
-                  : 'text-black hover:text-gray-600 hover:bg-black'
-              }`}
+              className={`h-8 w-8 text-black hover:text-gray-600 hover:bg-black/10 relative`}
               aria-label="Shopping bag"
               onClick={() => navigate('/cart')}
             >
               <ShoppingBag className="h-4 w-4" />
-              {cartCount > 0 && (
+              {itemCount > 0 && (
                 <Badge 
                   variant="destructive" 
                   className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-xs"
                 >
-                  {cartCount}
+                  {itemCount}
                 </Badge>
               )}
             </Button>
@@ -305,16 +337,30 @@ const Header = () => {
           </div>
         )}
 
-        {/* Mobile Menu Button */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="lg:hidden h-8 w-8 text-white hover:text-gray-300 hover:bg-white/10"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </Button>
+        {/* Mobile Right Icons */}
+        <div className="lg:hidden absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+          {/* Profil */}
+          {user ? (
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-black hover:text-gray-600 hover:bg-black/10" onClick={() => navigate('/profile')} aria-label="Profil">
+              <User className="h-4 w-4" />
+            </Button>
+          ) : (
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-black hover:text-gray-600 hover:bg-black/10" onClick={() => navigate('/login', { state: { returnUrl: '/checkout' } })} aria-label="Login">
+              <User className="h-4 w-4" />
+            </Button>
+          )}
+          {/* Panier */}
+          <Button variant="ghost" size="icon" className="h-8 w-8 text-black hover:text-gray-600 hover:bg-black/10 relative" onClick={() => navigate('/cart')} aria-label="Panier">
+            <ShoppingBag className="h-4 w-4" />
+            {itemCount > 0 && (
+              <Badge variant="destructive" className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-xs">{itemCount}</Badge>
+            )}
+          </Button>
+          {/* Menu */}
+          <Button variant="ghost" size="icon" className="h-8 w-8 text-black hover:text-gray-600 hover:bg-black/10" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Menu">
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
+        </div>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
@@ -336,6 +382,25 @@ const Header = () => {
                 <Search className="h-4 w-4 mr-2" />
                 Rechercher
               </Button>
+              {user ? (
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="flex-1 text-white hover:text-gray-300 hover:bg-white/10"
+                  onClick={() => navigate('/profile')}
+                >
+                  <User className="h-4 w-4 mr-2" /> Profil
+                </Button>
+              ) : (
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="flex-1 text-white hover:text-gray-300 hover:bg-white/10"
+                  onClick={() => navigate('/login', { state: { returnUrl: '/checkout' } })}
+                >
+                  <User className="h-4 w-4 mr-2" /> Se connecter
+                </Button>
+              )}
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -347,12 +412,12 @@ const Header = () => {
               >
                 <ShoppingBag className="h-4 w-4 mr-2" />
                 Panier
-                {cartCount > 0 && (
+                {itemCount > 0 && (
                   <Badge 
                     variant="destructive" 
                     className="ml-2 h-4 w-4 p-0 flex items-center justify-center text-xs"
                   >
-                    {cartCount}
+                    {itemCount}
                   </Badge>
                 )}
               </Button>

@@ -3,13 +3,13 @@ import { Card, CardContent, CardFooter, CardHeader } from './ui/card'
 import { Badge } from './ui/badge'
 import { Button } from './ui/button'
 import { Star, ShoppingCart, Heart } from 'lucide-react'
-import { useCart } from '../hooks/useSupabase'
+import { useCartWithAuth } from '../hooks/useCartWithAuth'
 import type { Product } from '../lib/supabase'
 
 interface AppleProductCardProps {
   product: Product
   onViewDetails?: (product: Product) => void
-  onAddToWishlist?: (product: Product) => void
+  onAddToWishlist?: (product: Product) => void 
 }
 
 export const AppleProductCard: React.FC<AppleProductCardProps> = ({
@@ -17,11 +17,11 @@ export const AppleProductCard: React.FC<AppleProductCardProps> = ({
   onViewDetails,
   onAddToWishlist
 }) => {
-  const { addToCart } = useCart()
+  const { addToCart } = useCartWithAuth()
 
   const handleAddToCart = async () => {
     try {
-      await addToCart(product.id, 1)
+      await addToCart(product.id, 1, undefined, undefined, product)
       // Optionnel: afficher une notification de succès
     } catch (error) {
       console.error('Erreur lors de l\'ajout au panier:', error)
