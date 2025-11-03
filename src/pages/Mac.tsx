@@ -154,22 +154,24 @@ const Mac = () => {
             />
             <div className="absolute inset-0 bg-black/20"></div>
           </div>
-          <div className=" relative z-10 text-center">
-            <h1 className="text-6xl md:text-8xl font-bold mb-4">MacBook Air M4</h1>
-           
+          <div className="relative z-10 text-center px-6">
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">MacBook Air M4</h1>
+            <p className="text-2xl md:text-3xl mb-12 font-light bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              Boosté par la puce M4
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
                 onClick={() => navigate('/mac')}
               >
-                Learn more
+                En savoir plus
               </Button>
               <Button 
                 variant="outline"
                 className="border-white text-black hover:bg-white hover:text-black px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
                 onClick={() => navigate('/mac')}
               >
-                Buy
+                Acheter
               </Button>
             </div>
           </div>
@@ -179,8 +181,8 @@ const Mac = () => {
         <section className="py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-bold mb-4">Which Mac is right for you?</h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Which Mac is right for you?</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                 Compare features, performance, and prices to find the perfect Mac for your needs.
               </p>
             </div>
@@ -209,8 +211,8 @@ const Mac = () => {
         <section className="py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-bold mb-8">M5 Performance</h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">M5 Performance</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                 The most advanced chip ever built for a personal computer.
               </p>
             </div>
@@ -246,8 +248,8 @@ const Mac = () => {
         {/* Compare Section */}
         <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-6 text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-8">Compare Mac models</h2>
-            <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Compare Mac models</h2>
+            <p className="text-lg text-gray-600 mb-12 max-w-3xl mx-auto">
               See the differences between Mac models and find the one that's right for you.
             </p>
             <Button 

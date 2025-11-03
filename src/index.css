@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 /* Apple Design System */
-@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@100;200;300;400;500;600;700;800;900&family=SF+Pro+Text:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    /* Apple Color Palette */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
+    /* Apple Color Palette 2019 Guidelines */
+    --background: 0 0% 100%; /* #FFFFFF */
+    --foreground: 0 0% 0%; /* Black */
     
     --card: 0 0% 100%;
     --card-foreground: 0 0% 0%;
@@ -17,27 +17,35 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 0%;
     
-    /* Apple Blue */
-    --primary: 214 100% 50%;
+    /* Apple Blue Official #0071E3 */
+    --primary: 214 100% 44%;
     --primary-foreground: 0 0% 100%;
     
-    --secondary: 0 0% 96%;
+    --secondary: 0 0% 96%; /* #F5F5F7 */
     --secondary-foreground: 0 0% 0%;
     
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 0 0% 98%; /* #FBFBFD */
+    --muted-foreground: 0 0% 56%; /* #8E8E93 Apple Gray */
     
-    --accent: 214 100% 50%;
+    --accent: 214 100% 44%;
     --accent-foreground: 0 0% 100%;
     
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     
-    --border: 0 0% 90%;
+    --border: 0 0% 90%; /* #E5E5E7 */
     --input: 0 0% 90%;
-    --ring: 214 100% 50%;
+    --ring: 214 100% 44%; /* Apple Blue */
     
     --radius: 0.5rem;
+    
+    /* Apple spacing scale (8px base) */
+    --spacing-xs: 0.5rem; /* 8px */
+    --spacing-sm: 1rem; /* 16px */
+    --spacing-md: 1.5rem; /* 24px */
+    --spacing-lg: 2rem; /* 32px */
+    --spacing-xl: 3rem; /* 48px */
+    --spacing-2xl: 4rem; /* 64px */
   }
 }
 
@@ -48,6 +56,8 @@
   
   body {
     @apply bg-background text-foreground font-sf-pro;
+    font-size: 17px; /* Apple standard body size */
+    line-height: 1.47059; /* Apple standard line-height */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: 'kern' 1;
@@ -58,6 +68,30 @@
     font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1.1;
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  
+  /* Typography scale Apple HIG */
+  h1 {
+    font-size: 64px; /* Hero titles */
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+  
+  h2 {
+    font-size: 48px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+  
+  h3 {
+    font-size: 32px;
+    font-weight: 600;
+  }
+  
+  p {
+    font-size: 17px;
+    line-height: 1.47059;
   }
   
   /* Apple-style smooth scrolling */
@@ -65,11 +99,20 @@
     scroll-behavior: smooth;
   }
   
-  /* Apple-style transitions */
+  /* Apple-style transitions HIG 2019 */
   * {
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1); /* Apple ease-out */
     transition-duration: 300ms;
+  }
+  
+  /* Apple button hover states */
+  button:hover {
+    transform: scale(1.02);
+  }
+  
+  button:active {
+    transform: scale(0.98);
   }
   
   /* Apple-style animations */

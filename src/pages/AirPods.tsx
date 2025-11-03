@@ -74,22 +74,22 @@ const AirPods = () => {
       <main>
         {/* Hero Section */}
         <section className="relative h-screen flex items-center justify-center bg-black text-white">
-          <div className="text-center">
-            <h1 className="text-6xl md:text-8xl font-bold mb-4">AirPods</h1>
-            <p className="text-2xl md:text-3xl mb-8">All-new design. All-day comfort.</p>
+          <div className="text-center px-6">
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">AirPods</h1>
+            <p className="text-2xl md:text-3xl mb-12 font-light">All-new design. All-day comfort.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
-                className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
+                className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
                 onClick={() => navigate('/airpods')}
               >
-                Learn more
+                En savoir plus
               </Button>
               <Button 
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-black px-6 py-3 text-lg font-medium"
+                className="border-white text-black hover:bg-white hover:text-black px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg font-medium"
                 onClick={() => navigate('/airpods')}
               >
-                Buy
+                Acheter
               </Button>
             </div>
           </div>
@@ -99,8 +99,8 @@ const AirPods = () => {
         <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-bold mb-4">Which AirPods are right for you?</h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Which AirPods are right for you?</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                 Compare features, comfort, and prices to find the perfect AirPods for your lifestyle.
               </p>
             </div>
@@ -178,31 +178,7 @@ const AirPods = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
-                  <span className="text-2xl">🎵</span>
-                </div>
-                <h3 className="text-2xl font-semibold">Spatial Audio</h3>
-                <p className="text-gray-600">Immersive sound that surrounds you with dynamic head tracking.</p>
-              </div>
-
-              <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                  <span className="text-2xl">🔇</span>
-                </div>
-                <h3 className="text-2xl font-semibold">Noise Cancellation</h3>
-                <p className="text-gray-600">Block out the world with industry-leading active noise cancellation.</p>
-              </div>
-
-              <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
-                  <span className="text-2xl">🔋</span>
-                </div>
-                <h3 className="text-2xl font-semibold">All-Day Battery</h3>
-                <p className="text-gray-600">Up to 6 hours of listening time with the charging case.</p>
-              </div>
-            </div>
+            
           </div>
         </section>
 

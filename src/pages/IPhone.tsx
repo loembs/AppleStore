@@ -133,22 +133,22 @@ const IPhone = () => {
             />
             <div className="absolute inset-0 bg-black/20"></div>
           </div>
-          <div className="relative z-10 text-center">
-            <h1 className="text-6xl md:text-8xl font-bold mb-4">iPhone</h1>
-            <p className="text-2xl md:text-3xl mb-8">The most advanced iPhone lineup ever.</p>
+          <div className="relative z-10 text-center px-6">
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">iPhone</h1>
+            <p className="text-2xl md:text-3xl mb-12 font-light">The most advanced iPhone lineup ever.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
-                className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
+                className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
                 onClick={() => navigate('/iphone')}
               >
-                Learn more
+                En savoir plus
               </Button>
               <Button 
                 variant="outline"
-                className="border-white text-black hover:bg-white hover:text-black px-6 py-3 text-lg"
+                className="border-white text-black hover:bg-white hover:text-black px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
                 onClick={() => navigate('/iphone')}
               >
-                Buy
+                Acheter
               </Button>
             </div>
           </div>
@@ -158,8 +158,8 @@ const IPhone = () => {
         <section className="py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-bold mb-4">Which iPhone is right for you?</h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Which iPhone is right for you?</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                 Compare features, technical specifications, and prices to find the perfect iPhone.
               </p>
             </div>

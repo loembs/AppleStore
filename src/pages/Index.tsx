@@ -20,9 +20,9 @@ const Index = () => {
             />
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
-          <div className="relative z-10 text-center">
-            <h1 className="text-6xl md:text-8xl font-bold mb-4">iPhone</h1>
-            <p className="text-2xl md:text-3xl mb-8">Découvrez tous les iPhone 17.</p>
+          <div className="relative z-10 text-center px-6">
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">iPhone</h1>
+            <p className="text-2xl md:text-3xl mb-12 font-light">Découvrez tous les iPhone 17.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
@@ -36,10 +36,10 @@ const Index = () => {
 
         {/* MacBook Air */}
         <section className="relative h-screen flex items-center justify-center bg-white text-black">
-          <div className="text-center">
-            <h1 className="text-6xl md:text-8xl font-bold mb-4">MacBook Air</h1>
-            <p className="text-2xl md:text-3xl mb-4">Finition bleu ciel.</p>
-            <p className="text-2xl md:text-3xl mb-8">Performances de haut vol avec la M4.</p>
+          <div className="text-center px-6">
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">MacBook Air</h1>
+            <p className="text-2xl md:text-3xl mb-3 font-light">Finition bleu ciel.</p>
+            <p className="text-2xl md:text-3xl mb-12 font-light">Performances de haut vol avec la M4.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
@@ -53,9 +53,9 @@ const Index = () => {
 
         {/* iPad Air */}
         <section className="relative h-screen flex items-center justify-center bg-black text-white">
-          <div className="text-center">
-            <h1 className="text-6xl md:text-8xl font-bold mb-4">iPad Air</h1>
-            <p className="text-2xl md:text-3xl mb-8">Maintenant boosté par la puce M3.</p>
+          <div className="text-center px-6">
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">iPad Air</h1>
+            <p className="text-2xl md:text-3xl mb-12 font-light">Maintenant boosté par la puce M3.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
@@ -69,9 +69,9 @@ const Index = () => {
 
         {/* iPad */}
         <section className="relative h-screen flex items-center justify-center bg-white text-black">
-          <div className="text-center">
-            <h1 className="text-6xl md:text-8xl font-bold mb-4">iPad</h1>
-            <p className="text-2xl md:text-3xl mb-8">Maintenant avec la vitesse de la puce A16 et un stockage de base doublé.</p>
+          <div className="text-center px-6">
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">iPad</h1>
+            <p className="text-2xl md:text-3xl mb-12 font-light">Maintenant avec la vitesse de la puce A16 et un stockage de base doublé.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
@@ -92,9 +92,9 @@ const Index = () => {
               alt="MacBook Pro 14"
             />
           </div>
-          <div className="relative z-10 text-center">
-            <h1 className="text-6xl md:text-8xl font-bold mb-4">MacBook Pro</h1>
-            <p className="text-2xl md:text-3xl mb-8">Prodigieux en tout.</p>
+          <div className="relative z-10 text-center px-6">
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">MacBook Pro</h1>
+            <p className="text-2xl md:text-3xl mb-12 font-light">Prodigieux en tout.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
@@ -108,10 +108,10 @@ const Index = () => {
 
         {/* iPad Pro */}
         <section className="relative h-screen flex items-center justify-center bg-white text-black">
-          <div className="text-center">
-            <h1 className="text-6xl md:text-8xl font-bold mb-4">iPad Pro</h1>
-            <p className="text-2xl md:text-3xl mb-4">Impossiblement fin.</p>
-            <p className="text-2xl md:text-3xl mb-8">Incroyablement puissant.</p>
+          <div className="text-center px-6">
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">iPad Pro</h1>
+            <p className="text-2xl md:text-3xl mb-3 font-light">Impossiblement fin.</p>
+            <p className="text-2xl md:text-3xl mb-12 font-light">Incroyablement puissant.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
@@ -133,10 +133,10 @@ const Index = () => {
             />
             <div className="absolute inset-0 bg-black/20"></div>
           </div>
-          <div className="relative z-10 text-center">
-            <h1 className="text-6xl md:text-8xl font-bold mb-4">Mac Studio</h1>
-            <p className="text-2xl md:text-3xl mb-4">M4 Max et M3 Ultra.</p>
-            <p className="text-2xl md:text-3xl mb-8">Choisissez votre superpouvoir.</p>
+          <div className="relative z-10 text-center px-6">
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">Mac Studio</h1>
+            <p className="text-2xl md:text-3xl mb-3 font-light">M4 Max et M3 Ultra.</p>
+            <p className="text-2xl md:text-3xl mb-12 font-light">Choisissez votre superpouvoir.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
