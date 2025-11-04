@@ -501,11 +501,20 @@ export const authService = {
   },
 
   // Connexion avec Google
-  async signInWithGoogle() {
+  async signInWithGoogle(returnUrl?: string) {
+    // Déterminer l'URL de redirection
+    const redirectTo = returnUrl 
+      ? `${window.location.origin}${returnUrl}` 
+      : `${window.location.origin}/checkout`
+    
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/checkout`
+        redirectTo,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        }
       }
     })
     if (error) throw error

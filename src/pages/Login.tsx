@@ -3,9 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card' 
 import { useAuth } from '@/hooks/useSupabase'
-import { Chrome } from 'lucide-react'
 import { appAuthService } from '@/services/auth'
 
 const Login = () => {
@@ -40,9 +39,13 @@ const Login = () => {
 
   const handleGoogle = async () => {
     try {
-      await signInWithGoogle()
+      setLoading(true)
+      setError(null)
+      await signInWithGoogle(returnUrl)
+      // Note: La redirection OAuth se fera automatiquement, on ne met pas setLoading(false) ici
     } catch (err: any) {
-      setError(err?.message || 'Erreur Google Sign-In')
+      setError(err?.message || 'Erreur lors de la connexion Google')
+      setLoading(false)
     }
   }
 
@@ -68,9 +71,9 @@ const Login = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <Button type="button" variant="outline" className="w-full h-11" onClick={handleGoogle}>
-                  <Chrome className="w-4 h-4 mr-2" /> Continuer avec Google
+                            <div className="space-y-4">
+                <Button type="button" variant="outline" className="w-full h-11" onClick={handleGoogle} disabled={loading}>                                                         
+                  <img src="/icon_google.png" alt="Google" className="w-5 h-5 mr-2" /> Continuer avec Google     
                 </Button>
                 <div className="text-center text-xs text-gray-500">ou</div>
                 <form onSubmit={handleSubmit} className="space-y-4">
