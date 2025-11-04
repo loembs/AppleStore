@@ -217,31 +217,6 @@ const Mac = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
-                  <span className="text-2xl">⚡</span>
-                </div>
-                <h3 className="text-2xl font-semibold">CPU Performance</h3>
-                <p className="text-gray-600">Up to 3.5x faster than the fastest Intel-based MacBook Pro.</p>
-              </div>
-
-              <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                  <span className="text-2xl">🎮</span>
-                </div>
-                <h3 className="text-2xl font-semibold">GPU Performance</h3>
-                <p className="text-gray-600">Up to 5x faster graphics performance for professional workflows.</p>
-              </div>
-
-              <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
-                  <span className="text-2xl">🔋</span>
-                </div>
-                <h3 className="text-2xl font-semibold">Battery Life</h3>
-                <p className="text-gray-600">Up to 22 hours of battery life for all-day productivity.</p>
-              </div>
-            </div>
           </div>
         </section>
 

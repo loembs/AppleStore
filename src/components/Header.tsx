@@ -140,7 +140,7 @@ const Header = () => {
               <svg className={`w-5 h-5 ${isBlackHeaderPage() ? 'text-white' : 'text-gray-600'}`} viewBox="0 0 24 24" fill="currentColor">
                 <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
               </svg>
-              <span className={`text-xs font-medium hidden md:inline ${isBlackHeaderPage() ? 'text-white/80' : 'text-gray-600'}`}>Revendeur agréé</span>
+              <span className={`text-[10px] md:text-xs font-medium ${isBlackHeaderPage() ? 'text-white/80' : 'text-gray-600'}`}>Revendeur agréé</span>
             </div>
           </div>
 
@@ -183,13 +183,13 @@ const Header = () => {
           <div className="hidden lg:flex items-center space-x-4">
             {/* Barre de recherche */}
             <div className="relative">
-              <div className={`flex items-center rounded-md bg-black/5 px-2`}> 
-                <Search className={`h-4 w-4 mr-1 text-black`} />
+              <div className={`flex items-center rounded-md ${isBlackHeaderPage() ? 'bg-white/10' : 'bg-black/5'} px-2`}> 
+                <Search className={`h-4 w-4 mr-1 ${isBlackHeaderPage() ? 'text-white' : 'text-black'}`} />
                 <input
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Rechercher"
-                  className={`outline-none bg-transparent text-sm py-1 text-black placeholder:text-gray-500`}
+                  className={`outline-none bg-transparent text-sm py-1 ${isBlackHeaderPage() ? 'text-white placeholder:text-white/60' : 'text-black placeholder:text-gray-500'}`}
                 />
               </div>
               {searchOpen || searchQuery ? (
@@ -212,7 +212,7 @@ const Header = () => {
                   <Button 
                     variant="ghost" 
                     size="icon"
-                    className={`h-8 w-8 text-black hover:text-gray-600 hover:bg-black/10`}
+                    className={`h-8 w-8 ${isBlackHeaderPage() ? 'text-white hover:text-gray-300 hover:bg-white/10' : 'text-black hover:text-gray-600 hover:bg-black/10'}`}
                     aria-label="User menu"
                   >
                     <User className="h-4 w-4" />
@@ -229,7 +229,7 @@ const Header = () => {
               <Button 
                 variant="ghost" 
                 size="icon"
-                className={`h-8 w-8 text-black hover:text-gray-600 hover:bg-black/10`}
+                className={`h-8 w-8 ${isBlackHeaderPage() ? 'text-white hover:text-gray-300 hover:bg-white/10' : 'text-black hover:text-gray-600 hover:bg-black/10'}`}
                 aria-label="Login"
                 onClick={() => navigate('/login', { state: { returnUrl: '/checkout' } })}
               >
@@ -239,7 +239,7 @@ const Header = () => {
             <Button 
               variant="ghost" 
               size="icon" 
-              className={`h-8 w-8 text-black hover:text-gray-600 hover:bg-black/10 relative`}
+              className={`h-8 w-8 ${isBlackHeaderPage() ? 'text-white hover:text-gray-300 hover:bg-white/10' : 'text-black hover:text-gray-600 hover:bg-black/10'} relative`}
               aria-label="Shopping bag"
               onClick={() => navigate('/cart')}
             >
@@ -337,44 +337,48 @@ const Header = () => {
         <div className="lg:hidden absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
           {/* Profil */}
           {user ? (
-            <Button variant="ghost" size="icon" className="h-8 w-8 text-black hover:text-gray-600 hover:bg-black/10" onClick={() => navigate('/profile')} aria-label="Profil">
+            <Button variant="ghost" size="icon" className={`h-8 w-8 ${isBlackHeaderPage() ? 'text-white hover:text-gray-300 hover:bg-white/10' : 'text-black hover:text-gray-600 hover:bg-black/10'}`} onClick={() => navigate('/profile')} aria-label="Profil">
               <User className="h-4 w-4" />
             </Button>
           ) : (
-            <Button variant="ghost" size="icon" className="h-8 w-8 text-black hover:text-gray-600 hover:bg-black/10" onClick={() => navigate('/login', { state: { returnUrl: '/checkout' } })} aria-label="Login">
+            <Button variant="ghost" size="icon" className={`h-8 w-8 ${isBlackHeaderPage() ? 'text-white hover:text-gray-300 hover:bg-white/10' : 'text-black hover:text-gray-600 hover:bg-black/10'}`} onClick={() => navigate('/login', { state: { returnUrl: '/checkout' } })} aria-label="Login">
               <User className="h-4 w-4" />
             </Button>
           )}
           {/* Panier */}
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-black hover:text-gray-600 hover:bg-black/10 relative" onClick={() => navigate('/cart')} aria-label="Panier">
+          <Button variant="ghost" size="icon" className={`h-8 w-8 ${isBlackHeaderPage() ? 'text-white hover:text-gray-300 hover:bg-white/10' : 'text-black hover:text-gray-600 hover:bg-black/10'} relative`} onClick={() => navigate('/cart')} aria-label="Panier">
             <ShoppingBag className="h-4 w-4" />
             {itemCount > 0 && (
               <Badge variant="destructive" className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-xs">{itemCount}</Badge>
             )}
           </Button>
           {/* Menu */}
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-black hover:text-gray-600 hover:bg-black/10" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Menu">
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          <Button variant="ghost" size="icon" className={`h-8 w-8 ${isBlackHeaderPage() ? 'text-white hover:text-gray-300 hover:bg-white/10' : 'text-black hover:text-gray-600 hover:bg-black/10'}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Menu">
+            {mobileMenuOpen ? <X className={`h-5 w-5 ${isBlackHeaderPage() ? 'text-white' : 'text-black'}`} /> : <Menu className={`h-5 w-5 ${isBlackHeaderPage() ? 'text-white' : 'text-black'}`} />}
           </Button>
         </div>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden pb-4 bg-black/95 backdrop-blur-xl">
+          <div className={`lg:hidden pb-4 backdrop-blur-xl ${isBlackHeaderPage() ? 'bg-black/95' : 'bg-white/95'}`}>
             <div className="space-y-1 pt-4">
               {menuItems.map((item, idx) => (
                 <Link
                   key={item.name}
                   to={item.path}
-                  className="block py-3 text-sm text-white hover:text-gray-300 transition-colors duration-200"
+                  className={`block py-3 text-sm transition-colors duration-200 ${
+                    isBlackHeaderPage() 
+                      ? 'text-white hover:text-gray-300' 
+                      : 'text-black hover:text-gray-600'
+                  }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.name}
                 </Link>
               ))}
             </div>
-            <div className="pt-4 border-t border-white/20 flex gap-2 mt-4">
-              <Button variant="ghost" size="sm" className="flex-1 text-white hover:text-gray-300 hover:bg-white/10">
+            <div className={`pt-4 border-t flex gap-2 mt-4 ${isBlackHeaderPage() ? 'border-white/20' : 'border-gray-200'}`}>
+              <Button variant="ghost" size="sm" className={`flex-1 ${isBlackHeaderPage() ? 'text-white hover:text-gray-300 hover:bg-white/10' : 'text-black hover:text-gray-600 hover:bg-black/10'}`}>
                 <Search className="h-4 w-4 mr-2" />
                 Rechercher
               </Button>
@@ -382,7 +386,7 @@ const Header = () => {
                 <Button 
                   variant="ghost" 
                   size="sm"
-                  className="flex-1 text-white hover:text-gray-300 hover:bg-white/10"
+                  className={`flex-1 ${isBlackHeaderPage() ? 'text-white hover:text-gray-300 hover:bg-white/10' : 'text-black hover:text-gray-600 hover:bg-black/10'}`}
                   onClick={() => navigate('/profile')}
                 >
                   <User className="h-4 w-4 mr-2" /> Profil
@@ -391,7 +395,7 @@ const Header = () => {
                 <Button 
                   variant="ghost" 
                   size="sm"
-                  className="flex-1 text-white hover:text-gray-300 hover:bg-white/10"
+                  className={`flex-1 ${isBlackHeaderPage() ? 'text-white hover:text-gray-300 hover:bg-white/10' : 'text-black hover:text-gray-600 hover:bg-black/10'}`}
                   onClick={() => navigate('/login', { state: { returnUrl: '/checkout' } })}
                 >
                   <User className="h-4 w-4 mr-2" /> Se connecter
@@ -400,7 +404,7 @@ const Header = () => {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className="flex-1 text-white hover:text-gray-300 hover:bg-white/10 relative"
+                className={`flex-1 relative ${isBlackHeaderPage() ? 'text-white hover:text-gray-300 hover:bg-white/10' : 'text-black hover:text-gray-600 hover:bg-black/10'}`}
                 onClick={() => {
                   navigate('/cart');
                   setMobileMenuOpen(false);

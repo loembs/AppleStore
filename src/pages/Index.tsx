@@ -15,7 +15,7 @@ const Index = () => {
           <div className="absolute inset-0 w-full h-full flex items-center justify-center">
             <img 
               src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1761221311/iphone17_sfkbuk.jpg" 
-              className="object-contain md:object-contain h-[115%] md:h-full w-auto md:w-auto translate-y-6 md:translate-y-0"
+              className="object-contain md:object-contain h-[230%] md:h-full w-auto md:w-auto translate-y-12 md:translate-y-0"
               alt="iPhone 17"
             />
             <div className="absolute inset-0 bg-black/40"></div>

@@ -250,31 +250,6 @@ const IPad = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
-                  <span className="text-2xl">✏️</span>
-                </div>
-                <h3 className="text-2xl font-semibold">Precision</h3>
-                <p className="text-gray-600">Pixel-perfect precision with tilt and pressure sensitivity.</p>
-              </div>
-
-              <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                  <span className="text-2xl">🎨</span>
-                </div>
-                <h3 className="text-2xl font-semibold">Creativity</h3>
-                <p className="text-gray-600">Bring your ideas to life with professional-grade tools.</p>
-              </div>
-
-              <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
-                  <span className="text-2xl">🔍</span>
-                </div>
-                <h3 className="text-2xl font-semibold">Find My</h3>
-                <p className="text-gray-600">Never lose your Apple Pencil with Find My support.</p>
-              </div>
-            </div>
           </div>
         </section>
 
