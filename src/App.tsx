@@ -20,6 +20,7 @@ import OrderConfirmation from "./pages/OrderConfirmation";
 import Login from "./pages/Login";
 import Payment from "./pages/Payment";
 import Profile from "./pages/Profile";
+import OAuth2Callback from "./pages/OAuth2Callback";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/auth/oauth2/callback" element={<OAuth2Callback />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/order-confirmation" element={<OrderConfirmation />} />

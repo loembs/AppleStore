@@ -154,11 +154,6 @@ const Store = () => {
                         {featuredProduct.tagline && (
                           <p className="text-xl font-semibold text-gray-800">{featuredProduct.tagline}</p>
                         )}
-                        {featuredProduct.price && (
-                          <p className="text-2xl font-bold text-gray-900">
-                            À partir de {featuredProduct.price.toLocaleString('fr-FR')} FCFA
-                          </p>
-                        )}
                         <button
                           className="w-fit bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg rounded-lg transition-colors duration-200"
                           onClick={(e) => {
