@@ -13,7 +13,7 @@ export const DATA_PROVIDER: DataProvider =
 // Configuration de l'URL du backend Java
 // L'URL doit inclure /api à la fin car tous les endpoints backend commencent par /api
 export const JAVA_BACKEND_URL = 
-  import.meta.env.VITE_JAVA_BACKEND_URL || 'https://istar-back.onrender.com/api'
+  import.meta.env.VITE_JAVA_BACKEND_URL || 'https://istar-back.onrender.com'
 
 // URL de base sans /api pour OAuth2 (Spring Security gère OAuth2 sans /api)
 export const JAVA_BACKEND_BASE_URL = JAVA_BACKEND_URL.replace('/api', '')

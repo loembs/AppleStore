@@ -5,7 +5,7 @@
 import { JAVA_BACKEND_URL } from './provider.config'
 
 export const API_CONFIG = {
-  BASE_URL: JAVA_BACKEND_URL || 'https://istar-back.onrender.com/api'
+  BASE_URL: JAVA_BACKEND_URL || 'https://istar-back.onrender.com'
 }
 
 export const buildApiUrl = (endpoint: string): string => {
