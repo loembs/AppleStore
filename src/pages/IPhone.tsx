@@ -12,8 +12,8 @@ import { useProducts } from '@/hooks/useSupabase';
 const IPhone = () => {
   const navigate = useNavigate();
   
-  // Charger les produits iPhone depuis Supabase (catégorie 2 = iPhone)
-  const { products: iphoneProducts, loading, error } = useProducts(2);
+  // Charger les produits iPhone depuis Supabase (catégorie 1 = iPhone)
+  const { products: iphoneProducts, loading, error } = useProducts(1);
 
   const iphoneModels = [
     {
@@ -167,7 +167,7 @@ const IPhone = () => {
             {/* Utiliser les données Supabase si disponibles, sinon les données statiques */}
             {iphoneProducts.length > 0 ? (
               <AppleProductGrid 
-                categoryId={2}
+                categoryId={1}
                 onProductClick={(product) => navigate(`/iphone/${product.id}`)}
               />
             ) : loading ? (

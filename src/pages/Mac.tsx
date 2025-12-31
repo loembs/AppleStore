@@ -14,8 +14,8 @@ import { useCartWithAuth } from '@/hooks/useCartWithAuth';
 const Mac = () => {
   const navigate = useNavigate();
   
-  // Charger les produits Mac depuis Supabase (catégorie 1 = Mac)
-  const { products: macProducts, loading, error } = useProducts(1);
+  // Charger les produits Mac depuis Supabase (catégorie 3 = Mac)
+  const { products: macProducts, loading, error } = useProducts(3);
   const { addToCart, isAddingToCart } = useCartWithAuth();
 
   const macModels = [
@@ -190,7 +190,7 @@ const Mac = () => {
             {/* Utiliser les données Supabase si disponibles, sinon les données statiques */}
                  {macProducts.length > 0 ? (
                    <AppleProductGrid 
-                     categoryId={1}
+                     categoryId={3}
                      onProductClick={(product) => navigate(`/mac/${product.id}`)}
                    />
                  ) : loading ? (
