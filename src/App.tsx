@@ -12,7 +12,6 @@ import Watch from "./pages/Watch";
 import AirPods from "./pages/AirPods";
 import TVHome from "./pages/TVHome";
 import Accessories from "./pages/Accessories";
-import Support from "./pages/Support";
 import ProductDetail from "./pages/ProductDetail";
 import ProductConfig from "./pages/ProductConfig";
 import Cart from "./pages/Cart";
@@ -41,7 +40,6 @@ const App = () => (
           <Route path="/airpods" element={<AirPods />} />
           <Route path="/tv-home" element={<TVHome />} />
           <Route path="/accessories" element={<Accessories />} />
-          <Route path="/support" element={<Support />} />
           <Route path="/product-config" element={<ProductConfig />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />

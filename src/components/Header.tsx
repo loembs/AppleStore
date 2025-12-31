@@ -49,7 +49,7 @@ const Header = () => {
         right: {
           title: 'Autour du Mac',
           items: [
-            { name: 'Assistance Mac', path: '/support' }
+            { name: 'Accessoires Mac', path: '/accessories' }
           ]
         }
       }
@@ -73,7 +73,7 @@ const Header = () => {
         right: {
           title: 'Autour de l\'iPad',
           items: [
-            { name: 'Assistance iPad', path: '/support' }
+            { name: 'Accessoires iPad', path: '/accessories' }
           ]
         }
       }
@@ -91,13 +91,13 @@ const Header = () => {
             { name: 'iPhone 16', path: '/iphone' },
             { name: 'iPhone 15', path: '/iphone' },
             { name: 'iPhone SE', path: '/iphone' },
-            { name: 'Accessoires iPhone', path: '/accessoires' }
+            { name: 'Accessoires iPhone', path: '/accessories' }
           ]
         },
         right: {
           title: 'Autour de l\'iPhone',
           items: [
-            { name: 'Assistance iPhone', path: '/support' }
+            { name: 'Accessoires iPhone', path: '/accessories' }
           ]
         }
       }
@@ -105,8 +105,7 @@ const Header = () => {
     { name: 'Watch', path: '/watch' },
     { name: 'AirPods', path: '/airpods' },
     { name: 'TV & Home', path: '/tv-home' },
-    { name: 'Accessories', path: '/accessoires' },
-    { name: 'Support', path: '/support' }
+    { name: 'Accessories', path: '/accessories' }
   ];
 
   // Déterminer si la page doit avoir un header noir

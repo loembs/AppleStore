@@ -5,9 +5,15 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { AppleProductGrid } from '@/components/AppleProductGrid';
+import { ProductSkeleton } from '@/components/ProductSkeleton';
+import { useProducts } from '@/hooks/useSupabase';
 
 const IPad = () => {
   const navigate = useNavigate();
+  
+  // Charger les produits iPad depuis le backend (catégorie 2 = iPad)
+  const { products: ipadProducts, loading, error } = useProducts(2);
 
   const ipadModels = [
     {
@@ -155,87 +161,20 @@ const IPad = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {ipadModels.map((model, idx) => (
-                <Card 
-                  key={model.id}
-                  className="overflow-hidden hover:shadow-2xl transition-all duration-500 cursor-pointer group border-0 bg-gray-50"
-                  onClick={() => navigate('/product-config', { state: { product: model } })}
-                  style={{ animationDelay: `${idx * 0.1}s` }}
-                >
-                  <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center p-8 overflow-hidden">
-                    <img 
-                      src={model.image} 
-                      alt={model.name} 
-                      className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
-                    />
-                  </div>
-                  
-                  <div className="p-8 space-y-6">
-                    <div className="space-y-3">
-                      <h3 className="text-2xl font-bold">{model.name}</h3>
-                      <p className="text-lg text-gray-600">{model.tagline}</p>
-                      <p className="text-2xl font-bold">{model.price}</p>
-                    </div>
-                    
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-sm text-gray-500 uppercase tracking-wide">Sizes</h4>
-                      <div className="flex gap-2 flex-wrap">
-                        {model.sizes.map((size) => (
-                          <Badge key={size} variant="outline" className="text-xs">
-                            {size}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-sm text-gray-500 uppercase tracking-wide">Colors</h4>
-                      <div className="flex gap-2 flex-wrap">
-                        {model.colors.map((color) => (
-                          <div
-                            key={color.code}
-                            className="w-6 h-6 rounded-full border-2 border-gray-300"
-                            style={{ backgroundColor: color.hex }}
-                            title={color.name}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-sm text-gray-500 uppercase tracking-wide">Connectivity</h4>
-                      <div className="flex gap-2 flex-wrap">
-                        {model.connectivity.map((option) => (
-                          <Badge key={option.name} variant="outline" className="text-xs">
-                            {option.name}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-sm text-gray-500 uppercase tracking-wide">Key Features</h4>
-                      <ul className="space-y-1">
-                        {model.features.slice(0, 2).map((feature, i) => (
-                          <li key={i} className="text-sm text-gray-600">• {feature}</li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    <Button 
-                      className="w-full bg-blue-600 text-white hover:bg-blue-700 font-medium"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate('/product-config', { state: { product: model } });
-                      }}
-                    >
-                      Configure
-                    </Button>
-                  </div>
-                </Card>
-              ))}
-            </div>
+            {/* Utiliser les données du backend si disponibles, sinon les données statiques */}
+            {ipadProducts.length > 0 ? (
+              <AppleProductGrid 
+                categoryId={2}
+                onProductClick={(product) => navigate(`/ipad/${product.id}`)}
+              />
+            ) : loading ? (
+              <ProductSkeleton count={6} />
+            ) : (
+              <div className="text-center py-12">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Aucun produit trouvé</h3>
+                <p className="text-gray-600">Aucun iPad disponible pour le moment.</p>
+              </div>
+            )}
           </div>
         </section>
 
