@@ -5,9 +5,10 @@
 import { 
   productService as supabaseProductService,
   cartService as supabaseCartService,
-  orderService as supabaseOrderService,
-  authService as supabaseAuthService
+  orderService as supabaseOrderService
 } from '@/lib/supabase'
+
+import { authService as supabaseAuthService } from '@/services/auth.service'
 
 import type { 
   IProductService, 

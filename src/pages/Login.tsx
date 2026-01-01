@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card' 
 import { useAuth } from '@/hooks/useSupabase'
-import { appAuthService } from '@/services/auth'
 
 const Login = () => {
   const navigate = useNavigate()
   const location = useLocation() as any
+  const [searchParams] = useSearchParams()
   const returnUrl = location.state?.returnUrl || '/checkout'
   const { signIn, signUp, signInWithGoogle } = useAuth()
 
@@ -19,6 +19,16 @@ const Login = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // Vérifier les erreurs OAuth dans l'URL
+  useEffect(() => {
+    const errorParam = searchParams.get('error')
+    if (errorParam) {
+      setError(decodeURIComponent(errorParam))
+      // Nettoyer l'URL
+      navigate('/login', { replace: true })
+    }
+  }, [searchParams, navigate])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -26,10 +36,13 @@ const Login = () => {
     try {
       if (isSignup) {
         await signUp(email, password, { first_name: '', last_name: '' })
+        // Après inscription réussie, rediriger
+        navigate(returnUrl)
       } else {
-        await appAuthService.loginWithEmail(email, password)
+        await signIn(email, password)
+        // Après connexion réussie, rediriger
+        navigate(returnUrl)
       }
-      navigate(returnUrl)
     } catch (err: any) {
       setError(err?.message || 'Erreur lors de l\'authentification')
     } finally {

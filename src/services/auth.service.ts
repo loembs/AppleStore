@@ -5,11 +5,13 @@ import { supabase, supabaseUrl, supabaseAnonKey } from '@/config/supabase'
 
 export const authService = {
   // Connexion avec Google
-  async signInWithGoogle() {
+  async signInWithGoogle(returnUrl?: string) {
+    const redirectTo = `${window.location.origin}/auth/oauth2/callback${returnUrl ? `?returnUrl=${encodeURIComponent(returnUrl)}` : ''}`
+    
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo,
         queryParams: {
           access_type: 'offline',
           prompt: 'consent'
@@ -83,7 +85,7 @@ export const authService = {
       password,
       options: {
         data: userData,
-        emailRedirectTo: `${window.location.origin}/auth/callback`
+        emailRedirectTo: `${window.location.origin}/auth/oauth2/callback`
       }
     })
 
