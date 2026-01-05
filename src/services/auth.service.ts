@@ -146,16 +146,22 @@ export const authService = {
     return this.signOut()
   },
 
-  // Obtenir l'utilisateur actuel
-  async getCurrentUser() {
+  // Obtenir l'utilisateur Supabase (utilisateur authentifié uniquement)
+  async getSupabaseUser() {
     const { data: { user }, error } = await supabase.auth.getUser()
     if (error) throw error
     return user
   },
 
-  // Obtenir le profil complet
+  // Obtenir l'utilisateur actuel (retourne le profil complet pour compatibilité)
+  async getCurrentUser() {
+    // Retourner le profil complet au lieu de seulement l'utilisateur Supabase
+    return this.getUser()
+  },
+
+  // Obtenir le profil complet depuis la table users
   async getUserProfile() {
-    const user = await this.getCurrentUser()
+    const user = await this.getSupabaseUser()
     if (!user) return null
 
     const { data, error } = await supabase
@@ -210,10 +216,10 @@ export const authService = {
     }
   },
 
-  // Obtenir l'utilisateur stocké localement (avec profil)
+  // Obtenir l'utilisateur avec profil complet (méthode principale)
   async getUser() {
     try {
-      const user = await this.getCurrentUser()
+      const user = await this.getSupabaseUser()
       if (!user) return null
       
       const profile = await this.getUserProfile()

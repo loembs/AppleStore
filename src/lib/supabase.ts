@@ -1,4 +1,3 @@
-import { createClient } from '@supabase/supabase-js'
 import { 
   productService as providerProductService,
   cartService as providerCartService,
@@ -6,11 +5,11 @@ import {
   authService as providerAuthService
 } from '@/services/providers'
 
+// Importer le client Supabase depuis la configuration centrale (évite les instances multiples)
+export { supabase } from '@/config/supabase'
+
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-key'
-
-// Créer le client Supabase même avec des valeurs par défaut
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 // Fonction pour vérifier si Supabase est configuré
 export const isSupabaseConfigured = () => {
