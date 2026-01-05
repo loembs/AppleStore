@@ -519,14 +519,15 @@ export const javaBackendAuthProvider: IAuthService = {
   },
 
   async signInWithGoogle(returnUrl?: string) {
-    // Spring Security OAuth2 utilise /oauth2/authorization/google
+    // Utiliser l'endpoint personnalisé du backend qui gère OAuth
+    // Le backend doit rediriger vers Google OAuth
     // On stocke le returnUrl dans sessionStorage pour le récupérer après
     if (returnUrl) {
       sessionStorage.setItem('oauth_return_url', returnUrl)
     }
     
-    // Rediriger vers l'endpoint OAuth2 de Spring Security
-    const redirectUrl = `${JAVA_BACKEND_BASE_URL}/oauth2/authorization/google`
+    // Utiliser l'endpoint /api/auth/oauth2/google qui doit rediriger vers Google
+    const redirectUrl = `${JAVA_BACKEND_URL}/auth/oauth2/google`
     window.location.href = redirectUrl
   }
 }

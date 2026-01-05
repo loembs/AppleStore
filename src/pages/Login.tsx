@@ -111,10 +111,6 @@ const Login = () => {
               </div>
             </CardContent>
           </Card>
-
-          <p className="mt-6 text-center text-xs text-gray-500">
-            Sécurisé par Supabase Auth
-          </p>
         </div>
       </div>
     </div>
