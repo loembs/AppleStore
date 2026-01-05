@@ -23,14 +23,25 @@ import type {
   ProductImages
 } from '@/lib/supabase'
 
+// Flag pour éviter les requêtes multiples avec un token invalide
+let tokenInvalidated = false
+
 // Helper pour récupérer le token d'authentification
 const getAuthToken = (): string | null => {
+  // Si le token a été invalidé, ne plus essayer
+  if (tokenInvalidated) return null
+  
   // Essayer d'abord 'token' (utilisé par authService)
   const token = localStorage.getItem('token')
   if (token) return token
   
   // Sinon essayer 'auth_token' (utilisé par javaBackendAuthProvider)
   return localStorage.getItem('auth_token')
+}
+
+// Helper pour réinitialiser le flag d'invalidation (après une nouvelle connexion)
+export const resetTokenInvalidation = () => {
+  tokenInvalidated = false
 }
 
 // Helper pour les appels API avec authentification
@@ -49,14 +60,17 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
   })
 
   if (!response.ok) {
-    // Si erreur 403 (Forbidden), nettoyer le token invalide
-    if (response.status === 403) {
-      console.warn('Token invalide ou expiré, nettoyage de l\'authentification')
-      localStorage.removeItem('token')
-      localStorage.removeItem('auth_token')
-      localStorage.removeItem('user')
-      // Déclencher un événement pour notifier la déconnexion
-      window.dispatchEvent(new CustomEvent('userLoggedOut'))
+    // Si erreur 403 (Forbidden) ou 401 (Unauthorized), nettoyer le token invalide
+    if (response.status === 403 || response.status === 401) {
+      if (!tokenInvalidated) {
+        tokenInvalidated = true
+        console.warn('Token invalide ou expiré, nettoyage de l\'authentification')
+        localStorage.removeItem('token')
+        localStorage.removeItem('auth_token')
+        localStorage.removeItem('user')
+        // Déclencher un événement pour notifier la déconnexion
+        window.dispatchEvent(new CustomEvent('userLoggedOut'))
+      }
     }
     
     let errorMessage = `API Error: ${response.statusText}`
@@ -71,6 +85,11 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
     // Ajouter le status code à l'erreur
     ;(error as any).status = response.status
     throw error
+  }
+  
+  // Si la requête réussit, le token est valide, réinitialiser le flag
+  if (tokenInvalidated) {
+    tokenInvalidated = false
   }
 
   const data = await response.json()
@@ -370,6 +389,9 @@ export const javaBackendOrderProvider: IOrderService = {
 
 export const javaBackendAuthProvider: IAuthService = {
   async signIn(email: string, password: string) {
+    // Réinitialiser le flag d'invalidation avant une nouvelle connexion
+    tokenInvalidated = false
+    
     const data = await apiCall('/api/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password })
@@ -404,6 +426,9 @@ export const javaBackendAuthProvider: IAuthService = {
   },
 
   async signUp(email: string, password: string, userData) {
+    // Réinitialiser le flag d'invalidation avant une nouvelle inscription
+    tokenInvalidated = false
+    
     const data = await apiCall('/api/auth/register', {
       method: 'POST',
       body: JSON.stringify({ 
