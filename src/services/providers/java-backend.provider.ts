@@ -49,6 +49,16 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
   })
 
   if (!response.ok) {
+    // Si erreur 403 (Forbidden), nettoyer le token invalide
+    if (response.status === 403) {
+      console.warn('Token invalide ou expiré, nettoyage de l\'authentification')
+      localStorage.removeItem('token')
+      localStorage.removeItem('auth_token')
+      localStorage.removeItem('user')
+      // Déclencher un événement pour notifier la déconnexion
+      window.dispatchEvent(new CustomEvent('userLoggedOut'))
+    }
+    
     let errorMessage = `API Error: ${response.statusText}`
     try {
       const errorData = await response.json()
@@ -56,7 +66,11 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
     } catch {
       // Ignorer si on ne peut pas parser l'erreur
     }
-    throw new Error(errorMessage)
+    
+    const error = new Error(errorMessage)
+    // Ajouter le status code à l'erreur
+    ;(error as any).status = response.status
+    throw error
   }
 
   const data = await response.json()
@@ -253,9 +267,10 @@ export const javaBackendCartProvider: ICartService = {
       }
       
       return []
-    } catch (error) {
-      // Si non authentifié, retourner un panier vide
-      if (error instanceof Error && error.message.includes('403')) {
+    } catch (error: any) {
+      // Si erreur 403 (Forbidden), retourner un panier vide silencieusement
+      // Le token a déjà été nettoyé dans apiCall
+      if (error?.status === 403) {
         return []
       }
       throw error
