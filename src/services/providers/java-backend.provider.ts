@@ -52,10 +52,24 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
   if (!token) {
     console.warn(`[API Call] Aucun token disponible pour ${endpoint}`)
   } else {
-    console.debug(`[API Call] Token présent pour ${endpoint}`, { 
-      tokenLength: token.length, 
-      tokenStart: token.substring(0, 20) + '...' 
-    })
+    // Décoder le token JWT pour vérifier son contenu (sans validation)
+    let tokenInfo: any = { tokenLength: token.length, tokenStart: token.substring(0, 30) + '...' }
+    try {
+      const parts = token.split('.')
+      if (parts.length === 3) {
+        const payload = JSON.parse(atob(parts[1]))
+        tokenInfo = {
+          ...tokenInfo,
+          email: payload.sub || payload.email,
+          exp: payload.exp ? new Date(payload.exp * 1000).toISOString() : null,
+          role: payload.role,
+          isExpired: payload.exp ? payload.exp * 1000 < Date.now() : null
+        }
+      }
+    } catch (e) {
+      console.warn('[API Call] Impossible de décoder le token JWT:', e)
+    }
+    console.log(`[API Call] Token présent pour ${endpoint}`, tokenInfo)
   }
   
   const headers: HeadersInit = {
@@ -441,8 +455,12 @@ export const javaBackendAuthProvider: IAuthService = {
     
     const data = await response.json()
     
+    console.log('[Auth] Réponse complète du serveur:', data)
+    
     // Extraire data si c'est dans un format ApiResponse
     const responseData = (data && typeof data === 'object' && 'data' in data && 'success' in data) ? data.data : data
+    
+    console.log('[Auth] Données extraites:', responseData)
     
     // Stocker le token dans les deux formats pour compatibilité
     if (responseData.token) {
