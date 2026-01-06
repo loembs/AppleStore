@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card' 
 import { useAuth } from '@/hooks/useSupabase'
+import { authService } from '@/lib/supabase'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -47,7 +48,7 @@ const Login = () => {
   }
   
   const returnUrl = getReturnUrl()
-  const { signIn, signUp, signInWithGoogle } = useAuth()
+  const { user, loading: authLoading, signIn, signUp, signInWithGoogle } = useAuth()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -55,12 +56,36 @@ const Login = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // Rediriger automatiquement si l'utilisateur est déjà connecté
+  useEffect(() => {
+    if (!authLoading && user) {
+      console.log('[Login] Utilisateur déjà connecté, redirection vers:', returnUrl)
+      navigate(returnUrl, { replace: true })
+    }
+  }, [user, authLoading, returnUrl, navigate])
+
   // Sauvegarder le returnUrl dans sessionStorage si pas déjà présent
   useEffect(() => {
     if (returnUrl && returnUrl !== '/store' && !sessionStorage.getItem('returnUrl')) {
       sessionStorage.setItem('returnUrl', returnUrl)
     }
   }, [returnUrl])
+
+  // Écouter l'événement de connexion réussie pour rediriger
+  useEffect(() => {
+    const handleUserLoggedIn = () => {
+      console.log('[Login] Événement userLoggedIn reçu, redirection vers:', returnUrl)
+      // Attendre un peu pour que l'état soit mis à jour
+      setTimeout(() => {
+        navigate(returnUrl, { replace: true })
+      }, 300)
+    }
+
+    window.addEventListener('userLoggedIn', handleUserLoggedIn)
+    return () => {
+      window.removeEventListener('userLoggedIn', handleUserLoggedIn)
+    }
+  }, [returnUrl, navigate])
 
   // Vérifier les erreurs OAuth dans l'URL
   useEffect(() => {
@@ -79,18 +104,39 @@ const Login = () => {
     try {
       if (isSignup) {
         await signUp(email, password, { first_name: '', last_name: '' })
-        // Après inscription réussie, rediriger
-        navigate(returnUrl)
+        // Attendre que l'utilisateur soit chargé
+        await new Promise(resolve => setTimeout(resolve, 500))
+        // Vérifier que l'utilisateur est bien connecté avant de rediriger
+        const currentUser = await authService.getCurrentUser()
+        if (currentUser) {
+          console.log('[Login] Inscription réussie, redirection vers:', returnUrl)
+          navigate(returnUrl, { replace: true })
+        } else {
+          console.warn('[Login] Utilisateur non trouvé après inscription')
+        }
       } else {
-        const result = await signIn(email, password)
-        // Attendre un peu pour que le token soit bien stocké et que l'état soit mis à jour
-        await new Promise(resolve => setTimeout(resolve, 200))
-        // Après connexion réussie, rediriger
-        navigate(returnUrl, { replace: true })
+        await signIn(email, password)
+        // Attendre que l'utilisateur soit chargé et que l'événement soit déclenché
+        await new Promise(resolve => setTimeout(resolve, 500))
+        // Vérifier que l'utilisateur est bien connecté avant de rediriger
+        const currentUser = await authService.getCurrentUser()
+        if (currentUser) {
+          console.log('[Login] Connexion réussie, redirection vers:', returnUrl)
+          navigate(returnUrl, { replace: true })
+        } else {
+          console.warn('[Login] Utilisateur non trouvé après connexion, attente...')
+          // Réessayer après un délai supplémentaire
+          setTimeout(async () => {
+            const retryUser = await authService.getCurrentUser()
+            if (retryUser) {
+              console.log('[Login] Utilisateur trouvé après attente, redirection vers:', returnUrl)
+              navigate(returnUrl, { replace: true })
+            }
+          }, 500)
+        }
       }
     } catch (err: any) {
       setError(err?.message || 'Erreur lors de l\'authentification')
-    } finally {
       setLoading(false)
     }
   }
