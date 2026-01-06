@@ -26,6 +26,20 @@ import type {
 // Flag pour éviter les requêtes multiples avec un token invalide
 let tokenInvalidated = false
 
+// Helper pour vérifier si un token est un token JWT valide du backend Java
+const isValidJavaToken = (token: string): boolean => {
+  try {
+    const parts = token.split('.')
+    if (parts.length !== 3) return false // Un JWT a 3 parties
+    
+    const payload = JSON.parse(atob(parts[1]))
+    // Un token Java devrait avoir 'sub' (email) et 'role'
+    return !!(payload.sub && payload.role)
+  } catch {
+    return false
+  }
+}
+
 // Helper pour récupérer le token d'authentification
 const getAuthToken = (): string | null => {
   // Si le token a été invalidé, ne plus essayer
@@ -33,10 +47,33 @@ const getAuthToken = (): string | null => {
   
   // Essayer d'abord 'token' (utilisé par authService)
   const token = localStorage.getItem('token')
-  if (token) return token
+  if (token) {
+    // Vérifier si c'est un token Java valide
+    if (!isValidJavaToken(token)) {
+      console.warn('[Auth] Token trouvé mais invalide (probablement un token Supabase), nettoyage...')
+      localStorage.removeItem('token')
+      localStorage.removeItem('auth_token')
+      localStorage.removeItem('user')
+      return null
+    }
+    return token
+  }
   
   // Sinon essayer 'auth_token' (utilisé par javaBackendAuthProvider)
-  return localStorage.getItem('auth_token')
+  const authToken = localStorage.getItem('auth_token')
+  if (authToken) {
+    // Vérifier si c'est un token Java valide
+    if (!isValidJavaToken(authToken)) {
+      console.warn('[Auth] auth_token trouvé mais invalide (probablement un token Supabase), nettoyage...')
+      localStorage.removeItem('token')
+      localStorage.removeItem('auth_token')
+      localStorage.removeItem('user')
+      return null
+    }
+    return authToken
+  }
+  
+  return null
 }
 
 // Helper pour réinitialiser le flag d'invalidation (après une nouvelle connexion)
@@ -464,11 +501,30 @@ export const javaBackendAuthProvider: IAuthService = {
     
     // Stocker le token dans les deux formats pour compatibilité
     if (responseData.token) {
-      console.log('[Auth] Token reçu du serveur:', {
-        tokenLength: responseData.token.length,
-        tokenStart: responseData.token.substring(0, 30) + '...',
-        hasUser: !!responseData.user
-      })
+      // Vérifier que c'est bien un token JWT valide
+      if (!isValidJavaToken(responseData.token)) {
+        console.error('[Auth] ERREUR: Le token reçu n\'est pas un token JWT valide!', {
+          tokenLength: responseData.token.length,
+          tokenStart: responseData.token.substring(0, 50)
+        })
+        throw new Error('Token invalide reçu du serveur')
+      }
+      
+      // Décoder le token pour vérifier son contenu
+      try {
+        const parts = responseData.token.split('.')
+        const payload = JSON.parse(atob(parts[1]))
+        console.log('[Auth] Token reçu du serveur (décodé):', {
+          tokenLength: responseData.token.length,
+          email: payload.sub || payload.email,
+          role: payload.role,
+          exp: payload.exp ? new Date(payload.exp * 1000).toISOString() : null,
+          isExpired: payload.exp ? payload.exp * 1000 < Date.now() : null,
+          hasUser: !!responseData.user
+        })
+      } catch (e) {
+        console.warn('[Auth] Impossible de décoder le token:', e)
+      }
       
       localStorage.setItem('token', responseData.token)
       localStorage.setItem('auth_token', responseData.token)
