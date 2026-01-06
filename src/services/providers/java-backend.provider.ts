@@ -25,6 +25,8 @@ import type {
 
 // Flag pour éviter les requêtes multiples avec un token invalide
 let tokenInvalidated = false
+// Timestamp de la dernière connexion réussie pour éviter de nettoyer le token trop rapidement
+let lastSuccessfulLogin: number | null = null
 
 // Helper pour vérifier si un token est un token JWT valide du backend Java
 const isValidJavaToken = (token: string): boolean => {
@@ -185,17 +187,26 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
       }
       
       if (isAuthError && !tokenInvalidated) {
-        tokenInvalidated = true
-        console.error(`[API Call] Token invalide (${response.status}) pour ${endpoint}. Nettoyage de l'authentification.`, {
-          tokenPresent: !!token,
-          tokenLength: token?.length || 0,
-          endpoint
-        })
-        localStorage.removeItem('token')
-        localStorage.removeItem('auth_token')
-        localStorage.removeItem('user')
-        // Déclencher un événement pour notifier la déconnexion
-        window.dispatchEvent(new CustomEvent('userLoggedOut'))
+        // Ne pas nettoyer le token si on vient de se connecter (dans les 10 dernières secondes)
+        const timeSinceLogin = lastSuccessfulLogin ? Date.now() - lastSuccessfulLogin : Infinity
+        const shouldCleanToken = timeSinceLogin > 10000 // 10 secondes
+        
+        if (!shouldCleanToken) {
+          console.warn(`[API Call] ⚠️ Erreur ${response.status} pour ${endpoint} mais connexion récente (${Math.round(timeSinceLogin/1000)}s), ne pas nettoyer le token. Le backend peut avoir besoin de temps pour synchroniser.`)
+        } else {
+          tokenInvalidated = true
+          console.error(`[API Call] ❌ Token invalide (${response.status}) pour ${endpoint}. Nettoyage de l'authentification.`, {
+            tokenPresent: !!token,
+            tokenLength: token?.length || 0,
+            endpoint,
+            timeSinceLogin: timeSinceLogin < Infinity ? `${Math.round(timeSinceLogin/1000)}s` : 'never'
+          })
+          localStorage.removeItem('token')
+          localStorage.removeItem('auth_token')
+          localStorage.removeItem('user')
+          // Déclencher un événement pour notifier la déconnexion
+          window.dispatchEvent(new CustomEvent('userLoggedOut'))
+        }
       } else if (response.status === 403) {
         // Pour les erreurs 403 qui ne sont pas des erreurs d'auth, juste logger
         console.warn(`[API Call] Accès refusé (403) pour ${endpoint} - peut-être un problème de permissions`, {
@@ -596,6 +607,9 @@ export const javaBackendAuthProvider: IAuthService = {
       
       // Réinitialiser le flag maintenant que nous avons un nouveau token valide
       tokenInvalidated = false
+      // Enregistrer le timestamp de la connexion réussie
+      lastSuccessfulLogin = Date.now()
+      console.log('[Auth] Timestamp de connexion enregistré:', new Date(lastSuccessfulLogin).toISOString())
       
       // Tester le token immédiatement avec /api/auth/me pour vérifier qu'il fonctionne
       try {
