@@ -413,6 +413,30 @@ export const javaBackendProductProvider: IProductService = {
 
 export const javaBackendCartProvider: ICartService = {
   async getCart(): Promise<CartItem[]> {
+    // Vérifier d'abord que le token fonctionne avec /api/auth/me
+    const token = getAuthToken()
+    if (token) {
+      try {
+        console.log('[Cart] Vérification du token avant récupération du panier...')
+        const meResponse = await fetch(`${JAVA_BACKEND_URL}/api/auth/me`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        })
+        
+        if (!meResponse.ok) {
+          console.error(`[Cart] ❌ Token invalide pour /api/auth/me (${meResponse.status}). Impossible de récupérer le panier.`)
+          throw new Error(`Token invalide: ${meResponse.status}`)
+        } else {
+          console.log('[Cart] ✅ Token validé avec /api/auth/me, récupération du panier...')
+        }
+      } catch (error) {
+        console.error('[Cart] Erreur lors de la vérification du token:', error)
+        throw error
+      }
+    }
+    
     try {
       const cartResponse = await apiCall('/api/cart')
       
