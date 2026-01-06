@@ -143,19 +143,53 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
   })
 
   if (!response.ok) {
-    // Si erreur 403 (Forbidden) ou 401 (Unauthorized), nettoyer le token invalide
+    // Si erreur 403 (Forbidden) ou 401 (Unauthorized), vérifier d'abord si c'est vraiment un problème de token
     if (response.status === 403 || response.status === 401) {
-      if (!tokenInvalidated) {
+      // Ne nettoyer le token que si c'est une erreur d'authentification explicite
+      // Certaines erreurs 403 peuvent être des erreurs d'autorisation (permissions) et non d'authentification
+      // Pour les endpoints authentifiés (/api/cart, /api/orders, etc.), une erreur 403 signifie généralement un problème d'authentification
+      const isAuthenticatedEndpoint = endpoint.includes('/api/cart') || 
+                                     endpoint.includes('/api/orders') || 
+                                     endpoint.includes('/api/payments')
+      
+      let isAuthError = false
+      try {
+        const errorData = await response.clone().json()
+        console.log(`[API Call] Détails de l'erreur ${response.status} pour ${endpoint}:`, errorData)
+        
+        // Si le message d'erreur indique explicitement un problème d'authentification
+        const errorMessage = (errorData.message || errorData.error || '').toLowerCase()
+        isAuthError = errorMessage.includes('token') || 
+                     errorMessage.includes('unauthorized') || 
+                     errorMessage.includes('authentication') ||
+                     errorMessage.includes('expired') ||
+                     errorMessage.includes('forbidden') ||
+                     response.status === 401 ||
+                     (response.status === 403 && isAuthenticatedEndpoint)
+      } catch {
+        // Si on ne peut pas parser l'erreur, considérer 401 comme erreur d'auth
+        // Pour les endpoints authentifiés, considérer 403 comme erreur d'auth aussi
+        isAuthError = response.status === 401 || (response.status === 403 && isAuthenticatedEndpoint)
+      }
+      
+      if (isAuthError && !tokenInvalidated) {
         tokenInvalidated = true
         console.error(`[API Call] Token invalide (${response.status}) pour ${endpoint}. Nettoyage de l'authentification.`, {
           tokenPresent: !!token,
-          tokenLength: token?.length || 0
+          tokenLength: token?.length || 0,
+          endpoint
         })
         localStorage.removeItem('token')
         localStorage.removeItem('auth_token')
         localStorage.removeItem('user')
         // Déclencher un événement pour notifier la déconnexion
         window.dispatchEvent(new CustomEvent('userLoggedOut'))
+      } else if (response.status === 403) {
+        // Pour les erreurs 403 qui ne sont pas des erreurs d'auth, juste logger
+        console.warn(`[API Call] Accès refusé (403) pour ${endpoint} - peut-être un problème de permissions`, {
+          tokenPresent: !!token,
+          endpoint
+        })
       }
     }
     
