@@ -510,15 +510,29 @@ export const javaBackendCartProvider: ICartService = {
   },
 
   async addToCart(productId: string, quantity: number, colorId?: number, storageId?: number): Promise<void> {
-    await apiCall('/api/cart/items', {
-      method: 'POST',
-      body: JSON.stringify({ 
-        productId: productId, // Backend attend String
-        quantity, 
-        colorId: colorId || null, 
-        storageId: storageId || null
+    const token = getAuthToken()
+    if (!token) {
+      throw new Error('Vous devez être connecté pour ajouter des articles au panier')
+    }
+    
+    try {
+      await apiCall('/api/cart/items', {
+        method: 'POST',
+        body: JSON.stringify({ 
+          productId: productId, // Backend attend String
+          quantity, 
+          colorId: colorId || null, 
+          storageId: storageId || null
+        })
       })
-    })
+    } catch (error: any) {
+      // Si erreur 403, c'est un problème de configuration backend
+      if (error?.status === 403) {
+        console.error('[Cart] Erreur 403 lors de l\'ajout au panier. Le token fonctionne avec /api/auth/me mais pas avec /api/cart/items. Vérifiez la configuration backend.')
+        throw new Error('Impossible d\'ajouter l\'article au panier. Vérifiez la configuration du backend.')
+      }
+      throw error
+    }
   },
 
   async updateCartItemQuantity(itemId: number, quantity: number): Promise<void> {

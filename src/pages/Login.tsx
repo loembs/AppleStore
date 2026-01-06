@@ -10,7 +10,43 @@ const Login = () => {
   const navigate = useNavigate()
   const location = useLocation() as any
   const [searchParams] = useSearchParams()
-  const returnUrl = location.state?.returnUrl || '/checkout'
+  
+  // Déterminer le returnUrl depuis plusieurs sources (par ordre de priorité)
+  const getReturnUrl = () => {
+    // 1. Depuis location.state (navigation programmatique)
+    if (location.state?.returnUrl) {
+      return location.state.returnUrl
+    }
+    // 2. Depuis les paramètres URL
+    const urlReturnUrl = searchParams.get('returnUrl')
+    if (urlReturnUrl) {
+      return decodeURIComponent(urlReturnUrl)
+    }
+    // 3. Depuis sessionStorage (pour OAuth)
+    const sessionReturnUrl = sessionStorage.getItem('returnUrl')
+    if (sessionReturnUrl) {
+      sessionStorage.removeItem('returnUrl')
+      return sessionReturnUrl
+    }
+    // 4. Depuis le referrer (page précédente)
+    const referrer = document.referrer
+    if (referrer) {
+      try {
+        const referrerUrl = new URL(referrer)
+        const currentUrl = new URL(window.location.href)
+        // Si le referrer est du même domaine, utiliser le chemin
+        if (referrerUrl.origin === currentUrl.origin && referrerUrl.pathname !== '/login') {
+          return referrerUrl.pathname + referrerUrl.search
+        }
+      } catch (e) {
+        // Ignorer les erreurs de parsing URL
+      }
+    }
+    // 5. Fallback par défaut : /store au lieu de /checkout
+    return '/store'
+  }
+  
+  const returnUrl = getReturnUrl()
   const { signIn, signUp, signInWithGoogle } = useAuth()
 
   const [email, setEmail] = useState('')
@@ -18,6 +54,13 @@ const Login = () => {
   const [isSignup, setIsSignup] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  // Sauvegarder le returnUrl dans sessionStorage si pas déjà présent
+  useEffect(() => {
+    if (returnUrl && returnUrl !== '/store' && !sessionStorage.getItem('returnUrl')) {
+      sessionStorage.setItem('returnUrl', returnUrl)
+    }
+  }, [returnUrl])
 
   // Vérifier les erreurs OAuth dans l'URL
   useEffect(() => {
