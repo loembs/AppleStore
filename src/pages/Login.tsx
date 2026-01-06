@@ -15,17 +15,17 @@ const Login = () => {
   // Déterminer le returnUrl depuis plusieurs sources (par ordre de priorité)
   const getReturnUrl = () => {
     // 1. Depuis location.state (navigation programmatique)
-    if (location.state?.returnUrl) {
+    if (location.state?.returnUrl && location.state.returnUrl !== '/login') {
       return location.state.returnUrl
     }
     // 2. Depuis les paramètres URL
     const urlReturnUrl = searchParams.get('returnUrl')
-    if (urlReturnUrl) {
+    if (urlReturnUrl && urlReturnUrl !== '/login') {
       return decodeURIComponent(urlReturnUrl)
     }
     // 3. Depuis sessionStorage (pour OAuth)
     const sessionReturnUrl = sessionStorage.getItem('returnUrl')
-    if (sessionReturnUrl) {
+    if (sessionReturnUrl && sessionReturnUrl !== '/login') {
       sessionStorage.removeItem('returnUrl')
       return sessionReturnUrl
     }
@@ -36,14 +36,16 @@ const Login = () => {
         const referrerUrl = new URL(referrer)
         const currentUrl = new URL(window.location.href)
         // Si le referrer est du même domaine, utiliser le chemin
-        if (referrerUrl.origin === currentUrl.origin && referrerUrl.pathname !== '/login') {
+        if (referrerUrl.origin === currentUrl.origin && 
+            referrerUrl.pathname !== '/login' && 
+            referrerUrl.pathname !== '/checkout') {
           return referrerUrl.pathname + referrerUrl.search
         }
       } catch (e) {
         // Ignorer les erreurs de parsing URL
       }
     }
-    // 5. Fallback par défaut : /store au lieu de /checkout
+    // 5. Fallback par défaut : /store (jamais /checkout pour éviter les boucles)
     return '/store'
   }
   
@@ -59,14 +61,21 @@ const Login = () => {
   // Rediriger automatiquement si l'utilisateur est déjà connecté
   useEffect(() => {
     if (!authLoading && user) {
-      console.log('[Login] Utilisateur déjà connecté, redirection vers:', returnUrl)
-      navigate(returnUrl, { replace: true })
+      // Éviter la boucle infinie : ne pas rediriger si on est déjà sur la page de destination
+      const currentPath = location.pathname
+      // Ne pas utiliser /checkout comme fallback pour éviter les boucles avec Checkout.tsx
+      const finalReturnUrl = returnUrl === '/checkout' ? '/store' : returnUrl
+      
+      if (currentPath === '/login' && finalReturnUrl !== '/login') {
+        console.log('[Login] Utilisateur déjà connecté, redirection vers:', finalReturnUrl, '(returnUrl original:', returnUrl, ')')
+        navigate(finalReturnUrl, { replace: true })
+      }
     }
-  }, [user, authLoading, returnUrl, navigate])
+  }, [user, authLoading, returnUrl, navigate, location.pathname])
 
-  // Sauvegarder le returnUrl dans sessionStorage si pas déjà présent
+  // Sauvegarder le returnUrl dans sessionStorage si pas déjà présent (mais jamais /checkout)
   useEffect(() => {
-    if (returnUrl && returnUrl !== '/store' && !sessionStorage.getItem('returnUrl')) {
+    if (returnUrl && returnUrl !== '/store' && returnUrl !== '/checkout' && !sessionStorage.getItem('returnUrl')) {
       sessionStorage.setItem('returnUrl', returnUrl)
     }
   }, [returnUrl])
@@ -74,10 +83,14 @@ const Login = () => {
   // Écouter l'événement de connexion réussie pour rediriger
   useEffect(() => {
     const handleUserLoggedIn = () => {
-      console.log('[Login] Événement userLoggedIn reçu, redirection vers:', returnUrl)
+      // Ne pas utiliser /checkout comme fallback pour éviter les boucles
+      const finalReturnUrl = returnUrl === '/checkout' ? '/store' : returnUrl
+      console.log('[Login] Événement userLoggedIn reçu, redirection vers:', finalReturnUrl)
       // Attendre un peu pour que l'état soit mis à jour
       setTimeout(() => {
-        navigate(returnUrl, { replace: true })
+        if (finalReturnUrl !== '/login') {
+          navigate(finalReturnUrl, { replace: true })
+        }
       }, 300)
     }
 
@@ -109,8 +122,10 @@ const Login = () => {
         // Vérifier que l'utilisateur est bien connecté avant de rediriger
         const currentUser = await authService.getCurrentUser()
         if (currentUser) {
-          console.log('[Login] Inscription réussie, redirection vers:', returnUrl)
-          navigate(returnUrl, { replace: true })
+          // Ne pas utiliser /checkout comme fallback pour éviter les boucles
+          const finalReturnUrl = returnUrl === '/checkout' ? '/store' : returnUrl
+          console.log('[Login] Inscription réussie, redirection vers:', finalReturnUrl, '(returnUrl original:', returnUrl, ')')
+          navigate(finalReturnUrl, { replace: true })
         } else {
           console.warn('[Login] Utilisateur non trouvé après inscription')
         }
@@ -121,16 +136,19 @@ const Login = () => {
         // Vérifier que l'utilisateur est bien connecté avant de rediriger
         const currentUser = await authService.getCurrentUser()
         if (currentUser) {
-          console.log('[Login] Connexion réussie, redirection vers:', returnUrl)
-          navigate(returnUrl, { replace: true })
+          // Ne pas utiliser /checkout comme fallback pour éviter les boucles
+          const finalReturnUrl = returnUrl === '/checkout' ? '/store' : returnUrl
+          console.log('[Login] Connexion réussie, redirection vers:', finalReturnUrl, '(returnUrl original:', returnUrl, ')')
+          navigate(finalReturnUrl, { replace: true })
         } else {
           console.warn('[Login] Utilisateur non trouvé après connexion, attente...')
           // Réessayer après un délai supplémentaire
           setTimeout(async () => {
             const retryUser = await authService.getCurrentUser()
             if (retryUser) {
-              console.log('[Login] Utilisateur trouvé après attente, redirection vers:', returnUrl)
-              navigate(returnUrl, { replace: true })
+              const finalReturnUrl = returnUrl === '/checkout' ? '/store' : returnUrl
+              console.log('[Login] Utilisateur trouvé après attente, redirection vers:', finalReturnUrl, '(returnUrl original:', returnUrl, ')')
+              navigate(finalReturnUrl, { replace: true })
             }
           }, 500)
         }
