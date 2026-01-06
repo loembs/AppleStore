@@ -39,9 +39,11 @@ const Login = () => {
         // Après inscription réussie, rediriger
         navigate(returnUrl)
       } else {
-        await signIn(email, password)
+        const result = await signIn(email, password)
+        // Attendre un peu pour que le token soit bien stocké et que l'état soit mis à jour
+        await new Promise(resolve => setTimeout(resolve, 200))
         // Après connexion réussie, rediriger
-        navigate(returnUrl)
+        navigate(returnUrl, { replace: true })
       }
     } catch (err: any) {
       setError(err?.message || 'Erreur lors de l\'authentification')

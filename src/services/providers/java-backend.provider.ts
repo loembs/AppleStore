@@ -392,37 +392,62 @@ export const javaBackendAuthProvider: IAuthService = {
     // Réinitialiser le flag d'invalidation avant une nouvelle connexion
     tokenInvalidated = false
     
-    const data = await apiCall('/api/auth/login', {
+    // Faire l'appel API sans authentification pour la connexion
+    const response = await fetch(`${JAVA_BACKEND_URL}/api/auth/login`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({ email, password })
     })
     
+    if (!response.ok) {
+      let errorMessage = `Erreur de connexion: ${response.statusText}`
+      try {
+        const errorData = await response.json()
+        errorMessage = errorData.message || errorData.error || errorMessage
+      } catch {
+        // Ignorer si on ne peut pas parser l'erreur
+      }
+      throw new Error(errorMessage)
+    }
+    
+    const data = await response.json()
+    
+    // Extraire data si c'est dans un format ApiResponse
+    const responseData = (data && typeof data === 'object' && 'data' in data && 'success' in data) ? data.data : data
+    
     // Stocker le token dans les deux formats pour compatibilité
-    if (data.token) {
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('auth_token', data.token)
+    if (responseData.token) {
+      localStorage.setItem('token', responseData.token)
+      localStorage.setItem('auth_token', responseData.token)
+      
+      // Réinitialiser le flag maintenant que nous avons un nouveau token valide
+      tokenInvalidated = false
       
       // Stocker l'utilisateur
-      if (data.user) {
+      if (responseData.user) {
         localStorage.setItem('user', JSON.stringify({
-          id: data.user.id,
-          email: data.user.email,
-          firstName: data.user.nomcomplet?.split(' ')[0] || '',
-          lastName: data.user.nomcomplet?.split(' ').slice(1).join(' ') || '',
-          phone: data.user.phone,
-          address: data.user.address,
-          role: data.user.role || 'CLIENT',
-          isActive: data.user.enabled !== false,
-          createdAt: data.user.createdAt,
-          updatedAt: data.user.lastLogin || data.user.createdAt
+          id: responseData.user.id,
+          email: responseData.user.email,
+          firstName: responseData.user.nomcomplet?.split(' ')[0] || '',
+          lastName: responseData.user.nomcomplet?.split(' ').slice(1).join(' ') || '',
+          phone: responseData.user.phone,
+          address: responseData.user.address,
+          role: responseData.user.role || 'CLIENT',
+          isActive: responseData.user.enabled !== false,
+          createdAt: responseData.user.createdAt,
+          updatedAt: responseData.user.lastLogin || responseData.user.createdAt
         }))
       }
       
       // Déclencher l'événement de connexion
       window.dispatchEvent(new CustomEvent('userLoggedIn'))
+    } else {
+      throw new Error('Token non reçu du serveur')
     }
     
-    return data
+    return responseData
   },
 
   async signUp(email: string, password: string, userData) {
