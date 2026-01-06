@@ -415,6 +415,12 @@ export const javaBackendCartProvider: ICartService = {
   async getCart(): Promise<CartItem[]> {
     // Vérifier d'abord que le token fonctionne avec /api/auth/me
     const token = getAuthToken()
+    console.log('[Cart] getCart appelé, token présent:', !!token, { 
+      tokenLength: token?.length || 0,
+      tokenInvalidated,
+      lastSuccessfulLogin: lastSuccessfulLogin ? new Date(lastSuccessfulLogin).toISOString() : null
+    })
+    
     if (token) {
       try {
         console.log('[Cart] Vérification du token avant récupération du panier...')
