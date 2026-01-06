@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from './useSupabase'
-import { cartService } from '../lib/supabase'
+import { cartService } from '../services/providers'
 import type { CartItem, Product, LocalCartItem } from '../lib/supabase'
 import { toast } from 'sonner'
 

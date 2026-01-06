@@ -203,18 +203,47 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
         if (!shouldCleanToken) {
           console.warn(`[API Call] ⚠️ Erreur ${response.status} pour ${endpoint} mais connexion récente (${Math.round(timeSinceLogin/1000)}s), ne pas nettoyer le token. Le backend peut avoir besoin de temps pour synchroniser.`)
         } else {
-          tokenInvalidated = true
-          console.error(`[API Call] ❌ Token invalide (${response.status}) pour ${endpoint}. Nettoyage de l'authentification.`, {
-            tokenPresent: !!token,
-            tokenLength: token?.length || 0,
-            endpoint,
-            timeSinceLogin: timeSinceLogin < Infinity ? `${Math.round(timeSinceLogin/1000)}s` : 'never'
-          })
-          localStorage.removeItem('token')
-          localStorage.removeItem('auth_token')
-          localStorage.removeItem('user')
-          // Déclencher un événement pour notifier la déconnexion
-          window.dispatchEvent(new CustomEvent('userLoggedOut'))
+          // Vérifier si le token fonctionne toujours avec /api/auth/me avant de le nettoyer
+          // Si /api/auth/me fonctionne, c'est un problème de permissions/configuration pour cet endpoint spécifique
+          console.log(`[API Call] 🔍 Vérification du token avec /api/auth/me avant nettoyage pour ${endpoint}...`)
+          let tokenStillValid = false
+          if (token) {
+            try {
+              console.log(`[API Call] 🔍 Test du token avec /api/auth/me...`)
+              const meCheckResponse = await fetch(`${JAVA_BACKEND_URL}/api/auth/me`, {
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Content-Type': 'application/json'
+                }
+              })
+              tokenStillValid = meCheckResponse.ok
+              console.log(`[API Call] 🔍 Résultat du test /api/auth/me: ${meCheckResponse.status} ${meCheckResponse.statusText}, tokenStillValid: ${tokenStillValid}`)
+              if (tokenStillValid) {
+                console.warn(`[API Call] ⚠️ Token toujours valide pour /api/auth/me mais erreur ${response.status} pour ${endpoint}. Probablement un problème de permissions/configuration backend pour cet endpoint. Ne pas nettoyer le token.`)
+              } else {
+                console.error(`[API Call] ❌ Token invalide pour /api/auth/me aussi (${meCheckResponse.status}). Le token est vraiment invalide.`)
+              }
+            } catch (e) {
+              console.error('[API Call] Erreur lors de la vérification du token avec /api/auth/me:', e)
+            }
+          } else {
+            console.error(`[API Call] ❌ Aucun token disponible pour vérification avec /api/auth/me`)
+          }
+          
+          if (!tokenStillValid) {
+            tokenInvalidated = true
+            console.error(`[API Call] ❌ Token invalide (${response.status}) pour ${endpoint}. Nettoyage de l'authentification.`, {
+              tokenPresent: !!token,
+              tokenLength: token?.length || 0,
+              endpoint,
+              timeSinceLogin: timeSinceLogin < Infinity ? `${Math.round(timeSinceLogin/1000)}s` : 'never'
+            })
+            localStorage.removeItem('token')
+            localStorage.removeItem('auth_token')
+            localStorage.removeItem('user')
+            // Déclencher un événement pour notifier la déconnexion
+            window.dispatchEvent(new CustomEvent('userLoggedOut'))
+          }
         }
       } else if (response.status === 403) {
         // Pour les erreurs 403 qui ne sont pas des erreurs d'auth, juste logger
