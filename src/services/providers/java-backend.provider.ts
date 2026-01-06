@@ -115,10 +115,20 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
     ...options?.headers
   }
 
+  // Log détaillé du header Authorization pour débogage
+  if (token) {
+    console.log(`[API Call] Header Authorization pour ${endpoint}:`, {
+      header: `Bearer ${token.substring(0, 50)}...`,
+      tokenLength: token.length,
+      hasBearer: true
+    })
+  }
+
   console.debug(`[API Call] Requête vers ${JAVA_BACKEND_URL}${endpoint}`, {
     method: options?.method || 'GET',
     hasAuth: !!token,
-    headers: Object.keys(headers)
+    headers: Object.keys(headers),
+    authorizationHeader: token ? `Bearer ${token.substring(0, 30)}...` : 'none'
   })
 
   const response = await fetch(`${JAVA_BACKEND_URL}${endpoint}`, {
@@ -540,6 +550,31 @@ export const javaBackendAuthProvider: IAuthService = {
       
       // Réinitialiser le flag maintenant que nous avons un nouveau token valide
       tokenInvalidated = false
+      
+      // Tester le token immédiatement avec /api/auth/me pour vérifier qu'il fonctionne
+      try {
+        console.log('[Auth] Test du token avec /api/auth/me...')
+        const testResponse = await fetch(`${JAVA_BACKEND_URL}/api/auth/me`, {
+          headers: {
+            'Authorization': `Bearer ${responseData.token}`,
+            'Content-Type': 'application/json'
+          }
+        })
+        
+        if (testResponse.ok) {
+          const testData = await testResponse.json()
+          console.log('[Auth] ✅ Token validé avec succès par /api/auth/me:', testData)
+        } else {
+          console.error('[Auth] ❌ ERREUR: Le token ne fonctionne pas avec /api/auth/me:', {
+            status: testResponse.status,
+            statusText: testResponse.statusText
+          })
+          const errorText = await testResponse.text()
+          console.error('[Auth] Détails de l\'erreur:', errorText)
+        }
+      } catch (testError) {
+        console.error('[Auth] Erreur lors du test du token:', testError)
+      }
       
       // Stocker l'utilisateur
       if (responseData.user) {
