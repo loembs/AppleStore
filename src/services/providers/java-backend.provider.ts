@@ -48,15 +48,37 @@ export const resetTokenInvalidation = () => {
 const apiCall = async (endpoint: string, options?: RequestInit) => {
   const token = getAuthToken()
   
+  // Debug: vérifier si le token est présent
+  if (!token) {
+    console.warn(`[API Call] Aucun token disponible pour ${endpoint}`)
+  } else {
+    console.debug(`[API Call] Token présent pour ${endpoint}`, { 
+      tokenLength: token.length, 
+      tokenStart: token.substring(0, 20) + '...' 
+    })
+  }
+  
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
     ...(token && { Authorization: `Bearer ${token}` }),
     ...options?.headers
   }
 
+  console.debug(`[API Call] Requête vers ${JAVA_BACKEND_URL}${endpoint}`, {
+    method: options?.method || 'GET',
+    hasAuth: !!token,
+    headers: Object.keys(headers)
+  })
+
   const response = await fetch(`${JAVA_BACKEND_URL}${endpoint}`, {
     ...options,
     headers
+  })
+
+  console.debug(`[API Call] Réponse de ${endpoint}`, {
+    status: response.status,
+    statusText: response.statusText,
+    ok: response.ok
   })
 
   if (!response.ok) {
@@ -64,7 +86,10 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
     if (response.status === 403 || response.status === 401) {
       if (!tokenInvalidated) {
         tokenInvalidated = true
-        console.warn('Token invalide ou expiré, nettoyage de l\'authentification')
+        console.error(`[API Call] Token invalide (${response.status}) pour ${endpoint}. Nettoyage de l'authentification.`, {
+          tokenPresent: !!token,
+          tokenLength: token?.length || 0
+        })
         localStorage.removeItem('token')
         localStorage.removeItem('auth_token')
         localStorage.removeItem('user')
@@ -77,6 +102,7 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
     try {
       const errorData = await response.json()
       errorMessage = errorData.message || errorData.error || errorMessage
+      console.error(`[API Call] Détails de l'erreur pour ${endpoint}:`, errorData)
     } catch {
       // Ignorer si on ne peut pas parser l'erreur
     }
@@ -90,6 +116,7 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
   // Si la requête réussit, le token est valide, réinitialiser le flag
   if (tokenInvalidated) {
     tokenInvalidated = false
+    console.debug(`[API Call] Token validé avec succès pour ${endpoint}`)
   }
 
   const data = await response.json()
@@ -419,15 +446,30 @@ export const javaBackendAuthProvider: IAuthService = {
     
     // Stocker le token dans les deux formats pour compatibilité
     if (responseData.token) {
+      console.log('[Auth] Token reçu du serveur:', {
+        tokenLength: responseData.token.length,
+        tokenStart: responseData.token.substring(0, 30) + '...',
+        hasUser: !!responseData.user
+      })
+      
       localStorage.setItem('token', responseData.token)
       localStorage.setItem('auth_token', responseData.token)
+      
+      // Vérifier que le token est bien stocké
+      const storedToken = localStorage.getItem('token')
+      if (storedToken !== responseData.token) {
+        console.error('[Auth] ERREUR: Le token n\'a pas été correctement stocké!')
+        throw new Error('Erreur lors du stockage du token')
+      }
+      
+      console.log('[Auth] Token stocké avec succès dans localStorage')
       
       // Réinitialiser le flag maintenant que nous avons un nouveau token valide
       tokenInvalidated = false
       
       // Stocker l'utilisateur
       if (responseData.user) {
-        localStorage.setItem('user', JSON.stringify({
+        const userData = {
           id: responseData.user.id,
           email: responseData.user.email,
           firstName: responseData.user.nomcomplet?.split(' ')[0] || '',
@@ -438,12 +480,16 @@ export const javaBackendAuthProvider: IAuthService = {
           isActive: responseData.user.enabled !== false,
           createdAt: responseData.user.createdAt,
           updatedAt: responseData.user.lastLogin || responseData.user.createdAt
-        }))
+        }
+        localStorage.setItem('user', JSON.stringify(userData))
+        console.log('[Auth] Utilisateur stocké:', { email: userData.email, role: userData.role })
       }
       
       // Déclencher l'événement de connexion
       window.dispatchEvent(new CustomEvent('userLoggedIn'))
+      console.log('[Auth] Événement userLoggedIn déclenché')
     } else {
+      console.error('[Auth] ERREUR: Aucun token dans la réponse du serveur:', responseData)
       throw new Error('Token non reçu du serveur')
     }
     

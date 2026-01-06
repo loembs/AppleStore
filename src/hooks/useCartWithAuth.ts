@@ -59,6 +59,27 @@ export const useCartWithAuth = () => {
   const syncLocalToSupabase = useCallback(async () => {
     if (!user || localItems.length === 0) return
 
+    // Vérifier que le token est disponible avant de synchroniser
+    const token = localStorage.getItem('token') || localStorage.getItem('auth_token')
+    if (!token) {
+      console.warn('[Cart Sync] Token non disponible, attente avant synchronisation...')
+      // Attendre un peu et réessayer
+      setTimeout(() => {
+        const retryToken = localStorage.getItem('token') || localStorage.getItem('auth_token')
+        if (!retryToken) {
+          console.error('[Cart Sync] Token toujours non disponible après attente')
+          return
+        }
+        syncLocalToSupabase()
+      }, 500)
+      return
+    }
+
+    console.log('[Cart Sync] Début de la synchronisation du panier', {
+      itemsCount: localItems.length,
+      hasToken: !!token
+    })
+
     try {
       setLoading(true)
       
@@ -79,8 +100,10 @@ export const useCartWithAuth = () => {
       // Recharger le panier Supabase
       const supabaseItems = await loadSupabaseCart()
       setItems(supabaseItems)
+      
+      console.log('[Cart Sync] Synchronisation terminée avec succès')
     } catch (error) {
-      console.error('Erreur lors de la synchronisation:', error)
+      console.error('[Cart Sync] Erreur lors de la synchronisation:', error)
       setError('Erreur lors de la synchronisation du panier')
     } finally {
       setLoading(false)
