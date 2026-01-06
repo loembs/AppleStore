@@ -87,7 +87,10 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
   
   // Debug: vérifier si le token est présent
   if (!token) {
-    console.warn(`[API Call] Aucun token disponible pour ${endpoint}`)
+    console.error(`[API Call] ❌ Aucun token disponible pour ${endpoint}`)
+    console.error(`[API Call] localStorage.getItem('token'):`, localStorage.getItem('token'))
+    console.error(`[API Call] localStorage.getItem('auth_token'):`, localStorage.getItem('auth_token'))
+    console.error(`[API Call] tokenInvalidated:`, tokenInvalidated)
   } else {
     // Décoder le token JWT pour vérifier son contenu (sans validation)
     let tokenInfo: any = { tokenLength: token.length, tokenStart: token.substring(0, 30) + '...' }
@@ -95,18 +98,27 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
       const parts = token.split('.')
       if (parts.length === 3) {
         const payload = JSON.parse(atob(parts[1]))
+        const isExpired = payload.exp ? payload.exp * 1000 < Date.now() : null
         tokenInfo = {
           ...tokenInfo,
           email: payload.sub || payload.email,
           exp: payload.exp ? new Date(payload.exp * 1000).toISOString() : null,
           role: payload.role,
-          isExpired: payload.exp ? payload.exp * 1000 < Date.now() : null
+          isExpired: isExpired,
+          expTimestamp: payload.exp
         }
+        
+        if (isExpired) {
+          console.error(`[API Call] ⚠️ Token EXPIRÉ pour ${endpoint}!`, tokenInfo)
+        } else {
+          console.log(`[API Call] ✅ Token présent pour ${endpoint}`, tokenInfo)
+        }
+      } else {
+        console.error(`[API Call] ❌ Token invalide (pas un JWT valide) pour ${endpoint}`, { partsCount: parts.length })
       }
     } catch (e) {
-      console.warn('[API Call] Impossible de décoder le token JWT:', e)
+      console.error('[API Call] ❌ Impossible de décoder le token JWT:', e, { tokenStart: token.substring(0, 50) })
     }
-    console.log(`[API Call] Token présent pour ${endpoint}`, tokenInfo)
   }
   
   const headers: HeadersInit = {
