@@ -138,11 +138,12 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
     })
   }
 
-  console.debug(`[API Call] Requête vers ${JAVA_BACKEND_URL}${endpoint}`, {
+  console.log(`[API Call] 🔍 Requête vers ${JAVA_BACKEND_URL}${endpoint}`, {
     method: options?.method || 'GET',
     hasAuth: !!token,
     headers: Object.keys(headers),
-    authorizationHeader: token ? `Bearer ${token.substring(0, 30)}...` : 'none'
+    authorizationHeader: token ? `Bearer ${token.substring(0, 30)}...` : 'none',
+    fullAuthHeader: token ? `Bearer ${token}` : undefined
   })
 
   const response = await fetch(`${JAVA_BACKEND_URL}${endpoint}`, {
@@ -150,10 +151,11 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
     headers
   })
 
-  console.debug(`[API Call] Réponse de ${endpoint}`, {
+  console.log(`[API Call] 📥 Réponse de ${endpoint}`, {
     status: response.status,
     statusText: response.statusText,
-    ok: response.ok
+    ok: response.ok,
+    headers: Object.fromEntries(response.headers.entries())
   })
 
   if (!response.ok) {
@@ -169,7 +171,14 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
       let isAuthError = false
       try {
         const errorData = await response.clone().json()
-        console.log(`[API Call] Détails de l'erreur ${response.status} pour ${endpoint}:`, errorData)
+        console.error(`[API Call] ❌ Détails de l'erreur ${response.status} pour ${endpoint}:`, {
+          errorData,
+          requestHeaders: {
+            authorization: token ? `Bearer ${token.substring(0, 50)}...` : 'none',
+            contentType: headers['Content-Type']
+          },
+          responseHeaders: Object.fromEntries(response.headers.entries())
+        })
         
         // Si le message d'erreur indique explicitement un problème d'authentification
         const errorMessage = (errorData.message || errorData.error || '').toLowerCase()
