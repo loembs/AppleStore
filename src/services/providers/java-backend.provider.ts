@@ -486,16 +486,52 @@ export const javaBackendCartProvider: ICartService = {
       
       // Le backend retourne CartResponse avec items, total, itemCount
       if (cartResponse && cartResponse.items) {
-        return cartResponse.items.map((item: any) => ({
-          id: item.id,
-          product_id: String(item.product?.id || item.productId),
-          product: item.product ? mapProduct(item.product) : null,
-          quantity: item.quantity,
-          price: item.unitPrice || item.totalPrice || item.price || item.product?.price || 0,
-          color_id: item.colorId,
-          storage_id: item.storageId,
-          created_at: item.addedAt || item.createdAt || new Date().toISOString()
-        }))
+        return cartResponse.items.map((item: any) => {
+          // Mapper le produit si présent
+          const product = item.product ? mapProduct(item.product) : null
+          
+          // Mapper la couleur si présente
+          const color = item.color ? {
+            id: item.color.id,
+            product_id: String(item.product?.id || item.productId),
+            name: item.color.name,
+            hex: item.color.hexCode || item.color.hex || null,
+            code: item.color.code || null,
+            image: item.color.image || null,
+            price_adjustment: item.color.priceAdjustment || 0,
+            available: item.color.available !== false,
+            created_at: new Date().toISOString()
+          } : undefined
+          
+          // Mapper le stockage si présent
+          const storage = item.storage ? {
+            id: item.storage.id,
+            product_id: String(item.product?.id || item.productId),
+            size: item.storage.capacity || item.storage.size,
+            price: item.storage.price || 0,
+            available: item.storage.available !== false,
+            created_at: new Date().toISOString()
+          } : undefined
+          
+          const unitPrice = item.unitPrice || item.product?.price || 0
+          const totalPrice = item.totalPrice || unitPrice * item.quantity
+          
+          return {
+            id: item.id,
+            cart_id: item.cartId || 0,
+            product_id: String(item.product?.id || item.productId),
+            product: product,
+            quantity: item.quantity,
+            unit_price: unitPrice,
+            total_price: totalPrice,
+            color_id: item.colorId || item.color?.id || null,
+            storage_id: item.storageId || item.storage?.id || null,
+            color: color,
+            storage: storage,
+            added_at: item.addedAt || item.createdAt || new Date().toISOString(),
+            updated_at: item.updatedAt || new Date().toISOString()
+          }
+        })
       }
       
       return []
