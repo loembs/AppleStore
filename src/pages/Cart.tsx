@@ -71,8 +71,13 @@ const Cart = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Liste des articles */}
               <div className="lg:col-span-2 space-y-4">
-                {displayItems.map((item, index) => (
-                  <div key={index} className="bg-white rounded-lg p-6 shadow-sm border flex flex-col sm:flex-row items-center gap-6">
+                {displayItems.map((item, index) => {
+                  // Pour les utilisateurs authentifiés, utiliser item.id, sinon utiliser index
+                  const itemId: number = isAuthenticated && 'id' in item && typeof (item as any).id === 'number' ? (item as any).id : index
+                  const itemKey = isAuthenticated && 'id' in item && typeof (item as any).id === 'number' ? (item as any).id : index
+                  
+                  return (
+                  <div key={itemKey} className="bg-white rounded-lg p-6 shadow-sm border flex flex-col sm:flex-row items-center gap-6">
                     {/* Image du produit */}
                     <div className="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                       {item.product?.image ? (
@@ -91,15 +96,37 @@ const Cart = () => {
                         <div className="flex gap-4 text-sm text-gray-500">
                           <p>Quantité :</p>
                           <div className="inline-flex border rounded overflow-hidden">
-                            <Button size="icon" variant="ghost" onClick={() => updateQuantity(index, Math.max(1, item.quantity - 1))} disabled={item.quantity <= 1}>−</Button>
+                            <Button 
+                              size="icon" 
+                              variant="ghost" 
+                              onClick={() => updateQuantity(itemId, Math.max(1, item.quantity - 1))} 
+                              disabled={item.quantity <= 1 || loading}
+                            >
+                              −
+                            </Button>
                             <span className="px-3 py-1 bg-gray-50 text-base">{item.quantity}</span>
-                            <Button size="icon" variant="ghost" onClick={() => updateQuantity(index, item.quantity + 1)}>+</Button>
+                            <Button 
+                              size="icon" 
+                              variant="ghost" 
+                              onClick={() => updateQuantity(itemId, item.quantity + 1)}
+                              disabled={loading}
+                            >
+                              +
+                            </Button>
                           </div>
                         </div>
                         {item.color && <p className="text-xs text-gray-500 mt-1">Couleur: {item.color.name}</p>}
                         {item.storage && <p className="text-xs text-gray-500">Stockage: {item.storage.size}</p>}
                       </div>
-                      <Button variant="ghost" size="sm" onClick={() => removeFromCart(index)} className="mt-2 text-red-600 hover:text-red-700 self-start">Supprimer</Button>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => removeFromCart(itemId)} 
+                        className="mt-2 text-red-600 hover:text-red-700 self-start"
+                        disabled={loading}
+                      >
+                        Supprimer
+                      </Button>
                     </div>
                     {/* Prix */}
                     <div className="text-right">
@@ -109,7 +136,8 @@ const Cart = () => {
                         </p>
                     </div>
                   </div>
-                ))}
+                  )
+                })}
               </div>
 
               {/* Résumé de commande */}
