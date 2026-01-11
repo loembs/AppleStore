@@ -275,14 +275,33 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
     console.debug(`[API Call] Token validé avec succès pour ${endpoint}`)
   }
 
-  const data = await response.json()
+  // Vérifier si la réponse a un body (pour les DELETE qui retournent 200 OK vide)
+  const contentType = response.headers.get('content-type')
+  const contentLength = response.headers.get('content-length')
   
-  // Si la réponse est déjà dans le format ApiResponse, extraire data
-  if (data && typeof data === 'object' && 'data' in data && 'success' in data) {
-    return data.data
+  // Lire le texte une seule fois pour vérifier s'il est vide
+  const text = await response.text()
+  
+  // Si le body est vide, retourner null
+  if (!text || text.trim() === '') {
+    return null // Réponse vide (DELETE réussi, etc.)
   }
   
-  return data
+  // Essayer de parser le JSON
+  try {
+    const data = JSON.parse(text)
+    
+    // Si la réponse est déjà dans le format ApiResponse, extraire data
+    if (data && typeof data === 'object' && 'data' in data && 'success' in data) {
+      return data.data
+    }
+    
+    return data
+  } catch (e) {
+    // Si ce n'est pas du JSON valide, retourner le texte brut ou null
+    console.warn(`[API Call] Réponse non-JSON pour ${endpoint}:`, text.substring(0, 100))
+    return null
+  }
 }
 
 // Mapper les données du backend Java vers le format frontend
