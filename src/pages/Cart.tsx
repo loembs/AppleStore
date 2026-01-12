@@ -161,9 +161,18 @@ const Cart = () => {
                     </div>
                   </div>
                   <Button 
+                    type="button"
                     className="w-full bg-blue-600 hover:bg-blue-700 h-12 text-lg" 
                     disabled={displayItemCount === 0 || loading}
-                    onClick={() => isAuthenticated ? navigate('/checkout') : navigate('/login', { state: { returnUrl: '/checkout' } })}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      if (isAuthenticated) {
+                        navigate('/checkout');
+                      } else {
+                        navigate('/login', { state: { returnUrl: '/checkout' } });
+                      }
+                    }}
                   >
                     Passer la commande
                   </Button>
