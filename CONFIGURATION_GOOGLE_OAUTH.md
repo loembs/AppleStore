@@ -1,7 +1,7 @@
-# Configuration Google OAuth avec Supabase
+# Configuration Google OAuth avec Backend Java
 
 ## ⚠️ Problème
-Vous avez activé Google dans Supabase, mais vous n'avez pas configuré les **credentials Google OAuth** (Client ID et Client Secret).
+Le backend Java utilise une implémentation manuelle d'OAuth2 (pas Spring Security OAuth2 Client standard). L'URL de callback doit correspondre à ce qui est configuré dans le backend.
 
 ## ✅ Solution : Configuration complète
 
@@ -25,64 +25,71 @@ Vous avez activé Google dans Supabase, mais vous n'avez pas configuré les **cr
    **Authorized JavaScript origins** (ajoutez) :
    ```
    http://localhost:5173
-   https://votre-domaine.com
-   https://votre-projet.supabase.co
+   http://localhost:8081
+   https://istar-back.onrender.com
+   https://apple-store-hazel.vercel.app
    ```
    
-   **Authorized redirect URIs** (IMPORTANT - ajoutez votre URL Supabase) :
+   **Authorized redirect URIs** (IMPORTANT - ajoutez EXACTEMENT l'URL utilisée par le backend) :
    ```
-   https://votre-projet.supabase.co/auth/v1/callback
-   http://localhost:5173/auth/oauth2/callback
-   https://votre-domaine.com/auth/oauth2/callback
+   http://localhost:8081/api/auth/oauth2/callback
+   https://istar-back.onrender.com/api/auth/oauth2/callback
    ```
+   
+   ⚠️ **CRITIQUE** : L'URL doit correspondre EXACTEMENT à celle configurée dans `GOOGLE_REDIRECT_URI` du backend (même protocole, même domaine, même port, même chemin)
    
 6. **Copiez le Client ID et Client Secret** générés
 
-### 2. Configurer Supabase
+### 2. Configurer le Backend Java
 
-1. **Allez dans votre Dashboard Supabase**
-2. **Authentication → Providers**
-3. **Activez Google** (si ce n'est pas déjà fait)
-4. **Collez les credentials** (que vous avez copiés depuis Google Cloud Console) :
-   - ⚠️ **IMPORTANT** : Vous devez entrer les valeurs DIRECTEMENT dans l'interface Supabase, pas comme des variables d'environnement
-   - Dans l'interface Supabase, vous verrez deux champs :
-     - **Client ID** : Collez ici votre Client ID (ressemble à `123456789-abc123def456.apps.googleusercontent.com`)
-       - Vous le trouvez dans Google Cloud Console → APIs & Services → Credentials
-       - Après avoir créé un "OAuth client ID", il s'affiche sous le nom "Your Client ID"
-     - **Client Secret** : Collez ici votre Client Secret (ressemble à `GOCSPX-abc123def456xyz789`)
-       - Vous le trouvez au même endroit, juste en dessous du Client ID
-       - ⚠️ **Important** : Le Client Secret n'est affiché qu'une seule fois lors de la création. Si vous l'avez perdu, vous devrez créer de nouveaux credentials.
-5. **Cliquez sur "Save"**
-
-**❌ NE PAS créer de variables d'environnement** : Ces valeurs doivent être entrées directement dans l'interface Supabase Dashboard, pas dans un fichier `.env` ou des variables d'environnement.
-
-### 3. Vérifier les URLs autorisées dans Supabase
-
-1. **Authentication → URL Configuration**
-2. **Site URL** : `http://localhost:5173` (pour le développement)
-3. **Redirect URLs** : Ajoutez :
+1. **Variables d'environnement à configurer dans le backend** :
+   ```bash
+   GOOGLE_CLIENT_ID=votre-client-id.apps.googleusercontent.com
+   GOOGLE_CLIENT_SECRET=votre-client-secret
+   GOOGLE_REDIRECT_URI=http://localhost:8081/api/auth/oauth2/callback
    ```
-   http://localhost:5173/auth/oauth2/callback
-   http://localhost:5173/**
-   https://votre-domaine.com/auth/oauth2/callback
-   https://votre-domaine.com/**
+   
+   Pour la production (Render) :
+   ```bash
+   GOOGLE_CLIENT_ID=votre-client-id.apps.googleusercontent.com
+   GOOGLE_CLIENT_SECRET=votre-client-secret
+   GOOGLE_REDIRECT_URI=https://istar-back.onrender.com/api/auth/oauth2/callback
    ```
+
+### 3. Vérifier la configuration dans application.properties
+
+Le fichier `application.properties` contient des configurations Spring Security OAuth2 Client qui ne sont PAS utilisées par l'implémentation manuelle. Ces configurations peuvent être ignorées ou supprimées si vous n'utilisez que l'implémentation manuelle.
+
+### 4. Comment ça fonctionne
+
+1. L'utilisateur clique sur "Continuer avec Google" dans le frontend
+2. Le frontend redirige vers `/api/auth/oauth2/google` (backend Java)
+3. Le backend redirige vers Google avec le `redirect_uri` configuré dans `GOOGLE_REDIRECT_URI`
+4. Google authentifie l'utilisateur et redirige vers le `redirect_uri` (par exemple : `http://localhost:8081/api/auth/oauth2/callback`)
+5. Le backend doit avoir un endpoint pour gérer ce callback (à vérifier dans `AuthController`)
 
 ## 🔍 Vérification
 
-1. Redémarrez votre application frontend
-2. Essayez de vous connecter avec Google
-3. Vérifiez la console du navigateur pour les erreurs
-4. Vérifiez les logs Supabase : Dashboard → Logs → Auth Logs
+1. Vérifiez que les variables d'environnement sont correctement configurées dans le backend
+2. Vérifiez que l'URL de redirection dans Google Cloud Console correspond exactement à `GOOGLE_REDIRECT_URI`
+3. Redémarrez le backend après avoir configuré les variables d'environnement
+4. Testez la connexion Google depuis le frontend
 
 ## ⚠️ Erreurs courantes
 
-- **"redirect_uri_mismatch"** : L'URL de redirection dans Google Cloud ne correspond pas à celle configurée dans Supabase
-- **"invalid_client"** : Le Client ID ou Client Secret est incorrect dans Supabase
-- **"access_denied"** : L'écran de consentement OAuth n'est pas configuré correctement dans Google Cloud
+- **"redirect_uri_mismatch" (Erreur 400)** : 
+  - L'URL dans Google Cloud Console ne correspond PAS EXACTEMENT à celle utilisée par le backend
+  - Vérifiez que l'URL dans Google Cloud Console est identique à `GOOGLE_REDIRECT_URI` (ou la valeur par défaut `https://istar-back.onrender.com/api/auth/oauth2/callback`)
+  - Pour le développement local, utilisez : `http://localhost:8081/api/auth/oauth2/callback`
+  - Pour la production, utilisez : `https://istar-back.onrender.com/api/auth/oauth2/callback`
+  - ⚠️ Attention aux différences : `http` vs `https`, `localhost` vs domaine, `8081` vs autre port
+- **"ERR_CONNECTION_REFUSED"** : Le backend n'est pas démarré ou l'URL de callback n'est pas accessible
+- **"invalid_client"** : Le Client ID ou Client Secret est incorrect dans les variables d'environnement
 
 ## 📝 Notes importantes
 
-- Les credentials Google doivent être configurés dans **Google Cloud Console** ET dans **Supabase**
-- L'URL de redirection dans Google Cloud doit être : `https://votre-projet.supabase.co/auth/v1/callback`
-- Pour la production, changez l'URL dans Google Cloud vers votre domaine réel
+- L'URL de redirection dans Google Cloud Console doit être **exactement** la même que `GOOGLE_REDIRECT_URI`
+- Pour le développement local : `http://localhost:8081/api/auth/oauth2/callback`
+- Pour la production : `https://istar-back.onrender.com/api/auth/oauth2/callback`
+- ⚠️ Le backend Java utilise une implémentation manuelle, PAS Spring Security OAuth2 Client standard
+- Il faut vérifier que le backend a bien un endpoint pour gérer le callback `/api/auth/oauth2/callback`

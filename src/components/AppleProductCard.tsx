@@ -114,7 +114,7 @@ export const AppleProductCard: React.FC<AppleProductCardProps> = ({
           {/* Prix */}
           <div className="flex items-center justify-between">
             <span className="text-2xl font-bold">
-              {product.price.toLocaleString('fr-FR')} €
+              {product.price.toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} €
             </span>
             
             {/* Stock */}
