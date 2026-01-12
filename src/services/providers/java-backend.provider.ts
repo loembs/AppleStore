@@ -806,8 +806,12 @@ export const javaBackendAuthProvider: IAuthService = {
     // Réinitialiser le flag d'invalidation avant une nouvelle inscription
     tokenInvalidated = false
     
-    const data = await apiCall('/api/auth/register', {
+    // Faire l'appel API sans authentification pour l'inscription
+    const response = await fetch(`${JAVA_BACKEND_URL}/api/auth/register`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({ 
         email, 
         password,
@@ -819,30 +823,56 @@ export const javaBackendAuthProvider: IAuthService = {
       })
     })
     
+    if (!response.ok) {
+      let errorMessage = `Erreur d'inscription: ${response.statusText}`
+      try {
+        const errorData = await response.json()
+        errorMessage = errorData.message || errorData.error || errorMessage
+      } catch {
+        // Ignorer si on ne peut pas parser l'erreur
+      }
+      throw new Error(errorMessage)
+    }
+    
+    const data = await response.json()
+    
+    // Extraire data si c'est dans un format ApiResponse
+    const responseData = (data && typeof data === 'object' && 'data' in data && 'success' in data) ? data.data : data
+    
     // Stocker le token si présent
-    if (data.token) {
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('auth_token', data.token)
+    if (responseData.token) {
+      // Vérifier que c'est bien un token JWT valide
+      if (!isValidJavaToken(responseData.token)) {
+        console.error('[Auth] ERREUR: Le token reçu n\'est pas un token JWT valide!')
+        throw new Error('Token invalide reçu du serveur')
+      }
       
-      if (data.user) {
+      localStorage.setItem('token', responseData.token)
+      localStorage.setItem('auth_token', responseData.token)
+      
+      // Réinitialiser le flag maintenant que nous avons un nouveau token valide
+      tokenInvalidated = false
+      lastSuccessfulLogin = Date.now()
+      
+      if (responseData.user) {
         localStorage.setItem('user', JSON.stringify({
-          id: data.user.id,
-          email: data.user.email,
-          firstName: data.user.nomcomplet?.split(' ')[0] || '',
-          lastName: data.user.nomcomplet?.split(' ').slice(1).join(' ') || '',
-          phone: data.user.phone,
-          address: data.user.address,
-          role: data.user.role || 'CLIENT',
-          isActive: data.user.enabled !== false,
-          createdAt: data.user.createdAt,
-          updatedAt: data.user.createdAt
+          id: responseData.user.id,
+          email: responseData.user.email,
+          firstName: responseData.user.nomcomplet?.split(' ')[0] || '',
+          lastName: responseData.user.nomcomplet?.split(' ').slice(1).join(' ') || '',
+          phone: responseData.user.phone,
+          address: responseData.user.address,
+          role: responseData.user.role || 'CLIENT',
+          isActive: responseData.user.enabled !== false,
+          createdAt: responseData.user.createdAt,
+          updatedAt: responseData.user.createdAt
         }))
       }
       
       window.dispatchEvent(new CustomEvent('userLoggedIn'))
     }
     
-    return data
+    return responseData
   },
 
   async signOut(): Promise<void> {
