@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Package, ArrowLeft, Truck, CheckCircle, Clock, XCircle, Eye } from 'lucide-react';
 import { useAuth } from '@/hooks/useSupabase';
-import { ordersService } from '@/services/orders.service';
+import { orderService } from '@/services/providers';
 import { formatCurrency } from '@/utils/currency';
 import { toast } from 'sonner';
 
@@ -55,7 +55,7 @@ const Orders = () => {
   const loadOrders = async () => {
     try {
       setLoading(true);
-      const data = await ordersService.getMyOrders();
+      const data = await orderService.getUserOrders();
       setOrders(data || []);
     } catch (error) {
       console.error('Erreur lors du chargement des commandes:', error);

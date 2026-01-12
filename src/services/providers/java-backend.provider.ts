@@ -944,7 +944,7 @@ export const javaBackendAuthProvider: IAuthService = {
     }
     
     // Utiliser l'endpoint /api/auth/oauth2/google qui doit rediriger vers Google
-    const redirectUrl = `${JAVA_BACKEND_URL}/auth/oauth2/google`
+    const redirectUrl = `${JAVA_BACKEND_URL}/api/auth/oauth2/google${returnUrl ? `?returnUrl=${encodeURIComponent(returnUrl)}` : ''}`
     window.location.href = redirectUrl
   }
 }
