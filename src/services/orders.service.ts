@@ -52,7 +52,7 @@ export const ordersService = {
     // 3. Générer un numéro de commande unique
     const orderNumber = `GZ-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
 
-    // 4. Préparer la commande
+    // 4. Préparer la commande avec les champs d'adresse séparés
     const orderPayload = {
       user_id: userData.id,
       order_number: orderNumber,
@@ -60,7 +60,13 @@ export const ordersService = {
       payment_method: orderData.payment_method,
       payment_status: 'PENDING',
       status: 'PENDING',
-      shipping_address: orderData.shipping_address,
+      shipping_first_name: orderData.shipping_address.first_name,
+      shipping_last_name: orderData.shipping_address.last_name,
+      shipping_address: orderData.shipping_address.street,
+      shipping_city: orderData.shipping_address.city,
+      shipping_postal_code: orderData.shipping_address.postal_code,
+      shipping_country: orderData.shipping_address.country,
+      shipping_phone: orderData.shipping_address.phone,
       notes: orderData.notes
     }
     

@@ -20,6 +20,7 @@ import OrderConfirmation from "./pages/OrderConfirmation";
 import Login from "./pages/Login";
 import Payment from "./pages/Payment";
 import Profile from "./pages/Profile";
+import Orders from "./pages/Orders";
 import OAuth2Callback from "./pages/OAuth2Callback";
 import NotFound from "./pages/NotFound";
 
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/auth/oauth2/callback" element={<OAuth2Callback />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/orders" element={<Orders />} />
           <Route path="/order-confirmation" element={<OrderConfirmation />} />
           <Route path="/:category/:productId" element={<ProductDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

@@ -14,7 +14,7 @@ import { toast } from 'sonner';
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const { localItems, items, itemCount, total, isAuthenticated, clearCart } = useCartWithAuth();
+  const { localItems, items, itemCount, total, isAuthenticated, clearCart, loading: cartLoading } = useCartWithAuth();
   
   const displayItems = isAuthenticated ? items : localItems;
   const displayItemCount = displayItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -63,11 +63,12 @@ const Checkout = () => {
   }, [displayItemCount, navigate]);
 
   // Si non connecté, rediriger vers la page de connexion avec retour prévu
+  // Attendre que le chargement soit terminé pour éviter les redirections prématurées
   React.useEffect(() => {
-    if (!isAuthenticated) {
+    if (!cartLoading && !isAuthenticated) {
       navigate('/login', { state: { returnUrl: '/checkout' } })
     }
-  }, [isAuthenticated, navigate])
+  }, [cartLoading, isAuthenticated, navigate])
 
   const handleChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));

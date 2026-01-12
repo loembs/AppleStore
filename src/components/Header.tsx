@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, Menu, X, User, LogOut } from 'lucide-react';
+import { Search, ShoppingBag, Menu, X, User, LogOut, Package } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -219,6 +219,9 @@ const Header = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem onClick={() => navigate('/profile')}>Profil</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/orders')}>
+                    <Package className="h-4 w-4 mr-2" /> Mes commandes
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => signOut()} className="text-red-600">
                     <LogOut className="h-4 w-4 mr-2" /> Se déconnecter
                   </DropdownMenuItem>
@@ -233,6 +236,18 @@ const Header = () => {
                 onClick={() => navigate('/login', { state: { returnUrl: '/checkout' } })}
               >
                 <User className="h-4 w-4" />
+              </Button>
+            )}
+            {/* Commandes - visible seulement si connecté */}
+            {user && (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className={`h-8 w-8 ${isBlackHeaderPage() ? 'text-white hover:text-gray-300 hover:bg-white/10' : 'text-black hover:text-gray-600 hover:bg-black/10'}`}
+                aria-label="Mes commandes"
+                onClick={() => navigate('/orders')}
+              >
+                <Package className="h-4 w-4" />
               </Button>
             )}
             <Button 
@@ -382,14 +397,30 @@ const Header = () => {
                 Rechercher
               </Button>
               {user ? (
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  className={`flex-1 ${isBlackHeaderPage() ? 'text-white hover:text-gray-300 hover:bg-white/10' : 'text-black hover:text-gray-600 hover:bg-black/10'}`}
-                  onClick={() => navigate('/profile')}
-                >
-                  <User className="h-4 w-4 mr-2" /> Profil
-                </Button>
+                <>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    className={`flex-1 ${isBlackHeaderPage() ? 'text-white hover:text-gray-300 hover:bg-white/10' : 'text-black hover:text-gray-600 hover:bg-black/10'}`}
+                    onClick={() => {
+                      navigate('/profile');
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    <User className="h-4 w-4 mr-2" /> Profil
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    className={`flex-1 ${isBlackHeaderPage() ? 'text-white hover:text-gray-300 hover:bg-white/10' : 'text-black hover:text-gray-600 hover:bg-black/10'}`}
+                    onClick={() => {
+                      navigate('/orders');
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    <Package className="h-4 w-4 mr-2" /> Mes commandes
+                  </Button>
+                </>
               ) : (
                 <Button 
                   variant="ghost" 
