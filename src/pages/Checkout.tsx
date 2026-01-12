@@ -7,10 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useCartWithAuth } from '@/hooks/useCartWithAuth';
 import { useAuth } from '@/hooks/useSupabase';
-import { ShoppingCart, CreditCard, Truck, Lock, ArrowLeft, Package, Mail, Phone, MapPin, User, CheckCircle } from 'lucide-react';
+import { ShoppingCart, Truck, Lock, ArrowLeft, Package, Mail, Phone, MapPin, User, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatCurrency } from '@/utils/currency';
 
@@ -33,10 +32,7 @@ const Checkout = () => {
     address: '',
     city: '',
     postalCode: '',
-    country: 'France',
-    
-    // Méthode de paiement
-    paymentMethod: 'card',
+    country: 'Senegal',
   });
 
   const [loading, setLoading] = useState(false);
@@ -144,7 +140,6 @@ const Checkout = () => {
           postalCode: formData.postalCode,
           country: formData.country,
         },
-        paymentMethod: formData.paymentMethod,
         createdAt: new Date().toISOString()
       };
       
@@ -338,39 +333,6 @@ const Checkout = () => {
                       />
                     </div>
 
-                    {/* Méthode de paiement */}
-                    <Separator className="my-6" />
-                    <div>
-                      <CardTitle className="flex items-center gap-2 mb-4 text-lg">
-                        <CreditCard className="w-5 h-5 text-blue-600" />
-                        Méthode de paiement
-                      </CardTitle>
-                      
-                      <RadioGroup 
-                        value={formData.paymentMethod} 
-                        onValueChange={(value) => handleChange('paymentMethod', value)}
-                      >
-                        <div className="flex items-center space-x-2 p-4 border rounded-lg hover:border-blue-500 transition-colors">
-                          <RadioGroupItem value="card" id="card" />
-                          <Label htmlFor="card" className="flex-1 cursor-pointer font-medium">
-                            Carte bancaire
-                          </Label>
-                        </div>
-                        <div className="flex items-center space-x-2 p-4 border rounded-lg hover:border-blue-500 transition-colors">
-                          <RadioGroupItem value="paypal" id="paypal" />
-                          <Label htmlFor="paypal" className="flex-1 cursor-pointer font-medium">
-                            PayPal
-                          </Label>
-                        </div>
-                        <div className="flex items-center space-x-2 p-4 border rounded-lg hover:border-blue-500 transition-colors">
-                          <RadioGroupItem value="apple" id="apple" />
-                          <Label htmlFor="apple" className="flex-1 cursor-pointer font-medium">
-                            Apple Pay
-                          </Label>
-                        </div>
-                      </RadioGroup>
-                    </div>
-
                     {/* Bouton de soumission */}
                     <Button
                       type="submit"
@@ -409,9 +371,9 @@ const Checkout = () => {
                     {displayItems.map((item, index) => (
                       <div key={index} className="flex gap-3 pb-4 border-b last:border-0">
                         <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                          {item.product?.image || item.product?.image_url ? (
+                          {item.product?.image ? (
                             <img
-                              src={item.product.image || item.product.image_url}
+                              src={item.product.image}
                               alt={item.product.name}
                               className="w-full h-full object-cover"
                             />

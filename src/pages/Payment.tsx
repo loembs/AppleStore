@@ -72,37 +72,59 @@ const Payment = () => {
       const order = await ordersService.createOrder({
         items: orderItems,
         total_amount: displayTotal,
-        payment_method: draft.paymentMethod || 'card',
+        payment_method: 'PAYTECH',
         shipping_address: shippingAddress,
         notes: '',
         clear_cart: false // On videra le panier après paiement réussi
       })
 
-      // 2. Simuler le paiement (dans un vrai système, ce serait un appel à une API de paiement)
-      await new Promise(resolve => setTimeout(resolve, 1500))
-
-      // 3. Après paiement réussi, on devrait mettre à jour la commande
-      // Pour l'instant, on simule que le paiement est réussi
-      // Dans un vrai système, cela se ferait via webhook ou callback de l'API de paiement
+      // 2. Initier le paiement PayTech
+      const idTransaction = `ORDER_${order.id}`
       
-      toast.success('Paiement effectué avec succès !', {
-        description: `Commande ${order.orderNumber} confirmée`
+      // Appeler l'endpoint PayTech pour obtenir l'URL de redirection
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/payments/requestPayment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        },
+        body: JSON.stringify({ idTransaction })
       })
 
-      // Vider le panier et nettoyer le localStorage
-      await clearCart()
-      try { 
-        localStorage.removeItem('draft_order')
-        localStorage.removeItem('checkout_form')
-      } catch {}
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || 'Erreur lors de la demande de paiement PayTech')
+      }
 
-      // Rediriger vers la confirmation
-      navigate('/order-confirmation', { 
-        state: { 
-          orderNumber: order.orderNumber,
-          orderId: order.id
-        } 
-      })
+      const payTechResponse = await response.json()
+      
+      // La réponse PayTech contient une URL de redirection
+      // Selon la documentation PayTech, la réponse JSON contient "redirect_url" ou "token"
+      if (payTechResponse.redirect_url) {
+        // Rediriger vers la page de paiement PayTech
+        window.location.href = payTechResponse.redirect_url
+        return
+      } else if (payTechResponse.token) {
+        // Si PayTech retourne un token, construire l'URL de redirection
+        window.location.href = `https://paytech.sn/checkout/${payTechResponse.token}`
+        return
+      } else {
+        // Si la réponse est une chaîne JSON, essayer de la parser
+        let parsedResponse
+        try {
+          parsedResponse = typeof payTechResponse === 'string' ? JSON.parse(payTechResponse) : payTechResponse
+          if (parsedResponse.redirect_url) {
+            window.location.href = parsedResponse.redirect_url
+            return
+          } else if (parsedResponse.token) {
+            window.location.href = `https://paytech.sn/checkout/${parsedResponse.token}`
+            return
+          }
+        } catch (e) {
+          // Ignorer l'erreur de parsing
+        }
+        throw new Error('URL de redirection PayTech non reçue dans la réponse')
+      }
     } catch (error: any) {
       console.error('Erreur lors du paiement:', error)
       toast.error('Erreur lors du paiement', {
