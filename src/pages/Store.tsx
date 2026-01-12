@@ -2,24 +2,54 @@ import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { useProducts, useCategories } from '@/hooks/useSupabase';
+import { useProducts, useCategories, useFeaturedProducts } from '@/hooks/useSupabase';
 import { AppleProductCard } from '@/components/AppleProductCard';
+import { ProductListView } from '@/components/ProductListView';
 import { ProductSkeleton } from '@/components/ProductSkeleton';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Filter, Grid2x2, List } from 'lucide-react';
+
+// Icône personnalisée pour grille compacte (2x3)
+const Grid3x2Icon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <rect x="3" y="3" width="7" height="7" rx="1" />
+    <rect x="14" y="3" width="7" height="7" rx="1" />
+    <rect x="3" y="14" width="7" height="7" rx="1" />
+    <rect x="14" y="14" width="7" height="7" rx="1" />
+  </svg>
+);
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import type { Product } from '@/lib/supabase';
 
 const ITEMS_PER_PAGE = 12;
+
+type ViewMode = 'grid-compact' | 'grid-dense' | 'list';
+type SortOption = 'default' | 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc' | 'newest';
 
 const Store = () => {
   const navigate = useNavigate();
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [viewMode, setViewMode] = useState<ViewMode>('grid-compact');
+  const [sortOption, setSortOption] = useState<SortOption>('default');
 
   // Charger toutes les catégories
   const { categories, loading: categoriesLoading } = useCategories();
   
   // Charger tous les produits ou les produits filtrés par catégorie
-  const { products, loading: productsLoading } = useProducts(selectedCategoryId || undefined);
+  const { products: allProducts, loading: productsLoading } = useProducts(selectedCategoryId || undefined);
+  
+  // Charger les produits mis en avant pour le carrousel
+  const { products: featuredProducts } = useFeaturedProducts();
 
   // Fonction pour naviguer vers la page du produit
   const handleProductClick = (product: Product) => {
@@ -33,15 +63,39 @@ const Store = () => {
     setCurrentPage(1); // Réinitialiser à la première page
   };
 
+  // Trier les produits
+  const sortedProducts = useMemo(() => {
+    const sorted = [...allProducts];
+    
+    switch (sortOption) {
+      case 'price-asc':
+        return sorted.sort((a, b) => (a.price || 0) - (b.price || 0));
+      case 'price-desc':
+        return sorted.sort((a, b) => (b.price || 0) - (a.price || 0));
+      case 'name-asc':
+        return sorted.sort((a, b) => a.name.localeCompare(b.name));
+      case 'name-desc':
+        return sorted.sort((a, b) => b.name.localeCompare(a.name));
+      case 'newest':
+        return sorted.sort((a, b) => {
+          const dateA = new Date(a.created_at || 0).getTime();
+          const dateB = new Date(b.created_at || 0).getTime();
+          return dateB - dateA;
+        });
+      default:
+        return sorted;
+    }
+  }, [allProducts, sortOption]);
+
   // Calculer les produits paginés
   const paginatedProducts = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
-    return products.slice(startIndex, endIndex);
-  }, [products, currentPage]);
+    return sortedProducts.slice(startIndex, endIndex);
+  }, [sortedProducts, currentPage]);
 
   // Calculer le nombre total de pages
-  const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(sortedProducts.length / ITEMS_PER_PAGE);
 
   // Fonction pour changer de page
   const handlePageChange = (page: number) => {
@@ -53,11 +107,51 @@ const Store = () => {
     <div className="min-h-screen bg-white">
       <Header />
       <main>
-        {/* Store Hero - Raccourci */}
-        <section className="relative h-64 md:h-80 flex items-center justify-center bg-black text-white">
-          <div className="text-center px-6">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">Store</h1>
-            <p className="text-xl md:text-2xl font-light">The best way to buy the products you love.</p>
+        {/* Store Hero avec Carrousel */}
+        <section className="relative bg-black text-white py-12 md:py-16">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-8">
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">Store</h1>
+              <p className="text-xl md:text-2xl font-light">The best way to buy the products you love.</p>
+            </div>
+            
+            {/* Carrousel de produits mis en avant */}
+            {featuredProducts.length > 0 && (
+              <div className="mt-8">
+                <Carousel
+                  opts={{
+                    align: "start",
+                    loop: true,
+                  }}
+                  className="w-full"
+                >
+                  <CarouselContent className="-ml-2 md:-ml-4">
+                    {featuredProducts.slice(0, 8).map((product) => (
+                      <CarouselItem key={product.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                        <div 
+                          className="bg-white/10 backdrop-blur-sm rounded-lg p-4 cursor-pointer hover:bg-white/20 transition-all"
+                          onClick={() => handleProductClick(product)}
+                        >
+                          <div className="aspect-square mb-4 flex items-center justify-center">
+                            <img
+                              src={product.image || '/placeholder-product.jpg'}
+                              alt={product.name}
+                              className="max-w-full max-h-full object-contain"
+                            />
+                          </div>
+                          <h3 className="text-lg font-semibold mb-2 line-clamp-2">{product.name}</h3>
+                          <p className="text-2xl font-bold">
+                            {product.price.toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} €
+                          </p>
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-0 text-white border-white/20 hover:bg-white/10" />
+                  <CarouselNext className="right-0 text-white border-white/20 hover:bg-white/10" />
+                </Carousel>
+              </div>
+            )}
           </div>
         </section>
 
@@ -105,6 +199,74 @@ const Store = () => {
           </div>
         </section>
 
+        {/* Barre de filtres */}
+        <section className="py-4 bg-white border-b border-gray-200 sticky top-0 z-20 bg-opacity-95 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex items-center justify-between gap-4">
+              {/* Bouton FILTRES */}
+              <button className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors">
+                <Filter className="h-5 w-5 text-gray-700" />
+                <span className="font-semibold text-gray-900">FILTRES</span>
+              </button>
+
+              {/* Options de vue */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setViewMode('grid-compact')}
+                  className={`p-2 rounded-lg transition-colors ${
+                    viewMode === 'grid-compact'
+                      ? 'bg-gray-900 text-white'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                  aria-label="Vue grille compacte"
+                >
+                  <Grid3x2Icon className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={() => setViewMode('grid-dense')}
+                  className={`p-2 rounded-lg transition-colors ${
+                    viewMode === 'grid-dense'
+                      ? 'bg-gray-900 text-white'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                  aria-label="Vue grille dense"
+                >
+                  <Grid2x2 className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={`p-2 rounded-lg transition-colors ${
+                    viewMode === 'list'
+                      ? 'bg-gray-900 text-white'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                  aria-label="Vue liste"
+                >
+                  <List className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* Menu Trier par */}
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600">Trier par</span>
+                <Select value={sortOption} onValueChange={(value) => setSortOption(value as SortOption)}>
+                  <SelectTrigger className="w-[150px] border-gray-300">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="default">Défaut</SelectItem>
+                    <SelectItem value="price-asc">Prix: Croissant</SelectItem>
+                    <SelectItem value="price-desc">Prix: Décroissant</SelectItem>
+                    <SelectItem value="name-asc">Nom: A-Z</SelectItem>
+                    <SelectItem value="name-desc">Nom: Z-A</SelectItem>
+                    <SelectItem value="newest">Plus récent</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Produits avec pagination */}
         <section className="py-12 bg-gray-50">
           <div className="max-w-7xl mx-auto px-6">
@@ -114,7 +276,7 @@ const Store = () => {
                 <span>Chargement...</span>
               ) : (
                 <span>
-                  {products.length} {products.length === 1 ? 'produit trouvé' : 'produits trouvés'}
+                  {sortedProducts.length} {sortedProducts.length === 1 ? 'produit trouvé' : 'produits trouvés'}
                   {selectedCategoryId && (
                     <span className="ml-2">
                       dans {categories.find(cat => cat.id === selectedCategoryId)?.libelle}
@@ -124,7 +286,7 @@ const Store = () => {
               )}
             </div>
 
-            {/* Grille de produits */}
+            {/* Grille/Liste de produits */}
             {productsLoading ? (
               <ProductSkeleton count={ITEMS_PER_PAGE} />
             ) : paginatedProducts.length === 0 ? (
@@ -141,15 +303,31 @@ const Store = () => {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-                  {paginatedProducts.map((product) => (
-                    <AppleProductCard
-                      key={product.id}
-                      product={product}
-                      onViewDetails={handleProductClick}
-                    />
-                  ))}
-                </div>
+                {viewMode === 'list' ? (
+                  <div className="space-y-4 mb-8">
+                    {paginatedProducts.map((product) => (
+                      <ProductListView
+                        key={product.id}
+                        product={product}
+                        onViewDetails={handleProductClick}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className={`grid gap-6 mb-8 ${
+                    viewMode === 'grid-compact'
+                      ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+                      : 'grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'
+                  }`}>
+                    {paginatedProducts.map((product) => (
+                      <AppleProductCard
+                        key={product.id}
+                        product={product}
+                        onViewDetails={handleProductClick}
+                      />
+                    ))}
+                  </div>
+                )}
 
                 {/* Pagination */}
                 {totalPages > 1 && (
