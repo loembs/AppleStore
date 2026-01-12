@@ -18,7 +18,7 @@ const Index = () => {
               <div className="flex items-center justify-center">
                 <img 
                   src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1761221311/iphone17_sfkbuk.jpg" 
-                  className="object-contain h-[400px] w-auto"
+                  className="object-contain h-[600px] w-auto max-w-full"
                   alt="iPhone 17"
                 />
               </div>
@@ -35,12 +35,14 @@ const Index = () => {
             </div>
           </div>
           {/* Desktop: Design centré original */}
-          <div className="hidden md:block absolute inset-0 w-full h-full flex items-center justify-center">
-            <img 
-              src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1761221311/iphone17_sfkbuk.jpg" 
-              className="object-contain h-full w-auto"
-              alt="iPhone 17"
-            />
+          <div className="hidden md:block absolute inset-0 w-full h-full">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <img 
+                src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1761221311/iphone17_sfkbuk.jpg" 
+                className="object-contain h-full w-auto max-h-full mx-auto"
+                alt="iPhone 17"
+              />
+            </div>
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
           <div className="hidden md:block relative z-10 text-center px-6">
