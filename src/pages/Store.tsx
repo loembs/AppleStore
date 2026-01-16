@@ -124,8 +124,8 @@ const Store = () => {
         <section className="relative bg-white text-black py-12 md:py-16">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-8">
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">Store</h1>
-              <p className="text-xl md:text-2xl font-light">The best way to buy the products you love.</p>
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">Boutique</h1>
+              <p className="text-xl md:text-2xl font-light">La meilleure façon d'acheter les produits que vous aimez.</p>
             </div>
             
             {/* Carrousel de produits mis en avant */}
@@ -183,7 +183,7 @@ const Store = () => {
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  All
+                  Tout
                 </button>
                 
                 {/* Catégories */}

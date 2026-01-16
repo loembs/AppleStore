@@ -105,9 +105,9 @@ const AirPods = () => {
         <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Which AirPods are right for you?</h2>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Quels AirPods vous conviennent ?</h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Compare features, comfort, and prices to find the perfect AirPods for your lifestyle.
+                Comparez les fonctionnalités, le confort et les prix pour trouver les AirPods parfaits pour votre style de vie.
               </p>
             </div>
 
@@ -133,9 +133,9 @@ const AirPods = () => {
         <section className="py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-bold mb-8">Audio Technology</h2>
+              <h2 className="text-5xl md:text-6xl font-bold mb-8">Technologie Audio</h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Experience sound like never before with Apple's most advanced audio technology.
+                Découvrez le son comme jamais auparavant avec la technologie audio la plus avancée d'Apple.
               </p>
             </div>
 
@@ -146,15 +146,15 @@ const AirPods = () => {
         {/* Compare Section */}
         <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-6 text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-8">Compare AirPods models</h2>
+            <h2 className="text-5xl md:text-6xl font-bold mb-8">Comparez les modèles d'AirPods</h2>
             <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
-              See the differences between AirPods models and find the one that's right for you.
+              Découvrez les différences entre les modèles d'AirPods et trouvez celui qui vous convient.
             </p>
             <Button 
               size="lg"
               className="bg-blue-600 text-white hover:bg-blue-700 px-8 py-4 text-lg"
             >
-              Compare all models
+              Comparer tous les modèles
             </Button>
           </div>
         </section>

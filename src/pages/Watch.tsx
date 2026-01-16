@@ -18,28 +18,28 @@ const Watch = () => {
 
   const healthInfo = [
     {
-      title: "Heart Health",
-      description: "Monitor your heart rate, detect irregular rhythms, and track your cardiovascular health with advanced sensors.",
+      title: "Santé cardiaque",
+      description: "Surveillez votre fréquence cardiaque, détectez les rythmes irréguliers et suivez votre santé cardiovasculaire avec des capteurs avancés.",
       icon: "❤️",
       color: "red",
       data: "72 BPM",
       status: "Normal"
     },
     {
-      title: "Fitness Tracking", 
-      description: "Track your workouts, monitor your activity, and achieve your fitness goals with comprehensive metrics.",
+      title: "Suivi fitness", 
+      description: "Suivez vos entraînements, surveillez votre activité et atteignez vos objectifs de fitness avec des métriques complètes.",
       icon: "🏃",
       color: "green",
-      data: "8,247 steps",
-      status: "Goal: 10k"
+      data: "8 247 pas",
+      status: "Objectif : 10k"
     },
     {
-      title: "Sleep Monitoring",
-      description: "Track your sleep patterns and get insights to improve your rest with detailed sleep analysis.",
+      title: "Surveillance du sommeil",
+      description: "Suivez vos habitudes de sommeil et obtenez des informations pour améliorer votre repos avec une analyse détaillée du sommeil.",
       icon: "😴", 
       color: "purple",
       data: "7h 32m",
-      status: "Good"
+      status: "Bon"
     }
   ];
 
@@ -118,7 +118,7 @@ const Watch = () => {
           
           <div className="relative z-10 text-center px-6">
             <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">Apple Watch</h1>
-            <p className="text-2xl md:text-3xl mb-12 font-light">The most advanced Apple Watch lineup ever.</p>
+            <p className="text-2xl md:text-3xl mb-12 font-light">La gamme d'Apple Watch la plus avancée jamais créée.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
@@ -141,9 +141,9 @@ const Watch = () => {
         <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Which Apple Watch is right for you?</h2>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Quelle Apple Watch vous convient ?</h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Compare features, sizes, and prices to find the perfect Apple Watch for your lifestyle.
+                Comparez les fonctionnalités, les tailles et les prix pour trouver l'Apple Watch parfaite pour votre style de vie.
               </p>
             </div>
 
@@ -170,10 +170,10 @@ const Watch = () => {
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-20">
               <h2 className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent">
-                Health & Fitness
+                Santé et Fitness
               </h2>
               <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-                Track your health metrics, monitor your fitness goals, and stay connected to what matters most.
+                Suivez vos indicateurs de santé, surveillez vos objectifs de fitness et restez connecté à ce qui compte le plus.
               </p>
             </div>
 
@@ -192,7 +192,7 @@ const Watch = () => {
                       {/* Time */}
                       <div className="text-center">
                         <div className="text-3xl font-light">9:41</div>
-                        <div className="text-xs text-gray-400 mt-1">Monday, Oct 28</div>
+                        <div className="text-xs text-gray-400 mt-1">Lundi, 28 oct.</div>
                       </div>
 
                       {/* Scrolling Health Info */}
@@ -210,9 +210,9 @@ const Watch = () => {
 
                       {/* Bottom Status */}
                       <div className="text-center text-xs text-gray-400">
-                        <div>Battery 87%</div>
+                        <div>Batterie 87%</div>
                         <div className="mt-1 text-xs text-gray-500">
-                          {currentInfoIndex + 1} of {healthInfo.length}
+                          {currentInfoIndex + 1} sur {healthInfo.length}
                         </div>
                       </div>
                     </div>
@@ -233,15 +233,15 @@ const Watch = () => {
         {/* Compare Section */}
         <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-6 text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-8">Compare Apple Watch models</h2>
+            <h2 className="text-5xl md:text-6xl font-bold mb-8">Comparez les modèles d'Apple Watch</h2>
             <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
-              See the differences between Apple Watch models and find the one that's right for you.
+              Découvrez les différences entre les modèles d'Apple Watch et trouvez celui qui vous convient.
             </p>
             <Button 
               size="lg"
               className="bg-blue-600 text-white hover:bg-blue-700 px-8 py-4 text-lg"
             >
-              Compare all models
+              Comparer tous les modèles
             </Button>
           </div>
         </section>

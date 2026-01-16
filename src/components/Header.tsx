@@ -28,7 +28,7 @@ const Header = () => {
   }, []);
 
   const menuItems = [
-    { name: 'Store', path: '/store' },
+    { name: 'Boutique', path: '/store' },
     { 
       name: 'Mac', 
       path: '/mac',

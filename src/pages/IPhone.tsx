@@ -135,7 +135,7 @@ const IPhone = () => {
           </div>
           <div className="relative z-10 text-center px-6">
             <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">iPhone</h1>
-            <p className="text-2xl md:text-3xl mb-12 font-light">The most advanced iPhone lineup ever.</p>
+            <p className="text-2xl md:text-3xl mb-12 font-light">La gamme d'iPhone la plus avancée jamais créée.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
@@ -158,9 +158,9 @@ const IPhone = () => {
         <section className="py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Which iPhone is right for you?</h2>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Quel iPhone vous convient ?</h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Compare features, technical specifications, and prices to find the perfect iPhone.
+                Comparez les fonctionnalités, les spécifications techniques et les prix pour trouver l'iPhone parfait.
               </p>
             </div>
 
@@ -202,15 +202,15 @@ const IPhone = () => {
         {/* Compare Section */}
         <section className="py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-6 text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-8">Compare iPhone models</h2>
+            <h2 className="text-5xl md:text-6xl font-bold mb-8">Comparez les modèles d'iPhone</h2>
             <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
-              See the differences between iPhone models and find the one that's right for you.
+              Découvrez les différences entre les modèles d'iPhone et trouvez celui qui vous convient.
             </p>
             <Button 
               size="lg"
               className="bg-blue-600 text-white hover:bg-blue-700 px-8 py-4 text-lg"
             >
-              Compare all models
+              Comparer tous les modèles
             </Button>
           </div>
         </section>
@@ -218,9 +218,9 @@ const IPhone = () => {
         {/* Apple Trade In */}
         <section className="py-24 bg-black text-white">
           <div className="max-w-7xl mx-auto px-6 text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-8">Apple Trade In</h2>
+            <h2 className="text-5xl md:text-6xl font-bold mb-8">Reprise Apple</h2>
             <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">
-              Get up to $200–$700 in credit when you trade in iPhone 13 or higher.
+              Obtenez jusqu'à 200 à 700 $ de crédit lors de la reprise de votre iPhone 13 ou plus récent.
             </p>
             <Button 
               size="lg"

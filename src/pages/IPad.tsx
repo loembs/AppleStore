@@ -155,9 +155,9 @@ const IPad = () => {
         <section className="py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Which iPad is right for you?</h2>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Quel iPad vous convient ?</h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Compare features, sizes, and prices to find the perfect iPad for your needs.
+                Comparez les fonctionnalités, les tailles et les prix pour trouver l'iPad parfait pour vos besoins.
               </p>
             </div>
 
@@ -185,7 +185,7 @@ const IPad = () => {
             <div className="text-center mb-16">
               <h2 className="text-5xl md:text-6xl font-bold mb-8">Apple Pencil</h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                The most advanced Apple Pencil ever. Now with Find My support.
+                L'Apple Pencil le plus avancé jamais créé. Maintenant avec le support Localiser.
               </p>
             </div>
 
@@ -195,15 +195,15 @@ const IPad = () => {
         {/* Compare Section */}
         <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-6 text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-8">Compare iPad models</h2>
+            <h2 className="text-5xl md:text-6xl font-bold mb-8">Comparez les modèles d'iPad</h2>
             <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
-              See the differences between iPad models and find the one that's right for you.
+              Découvrez les différences entre les modèles d'iPad et trouvez celui qui vous convient.
             </p>
             <Button 
               size="lg"
               className="bg-blue-600 text-white hover:bg-blue-700 px-8 py-4 text-lg"
             >
-              Compare all models
+              Comparer tous les modèles
             </Button>
           </div>
         </section>

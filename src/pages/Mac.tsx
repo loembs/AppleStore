@@ -181,9 +181,9 @@ const Mac = () => {
         <section className="py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Which Mac is right for you?</h2>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Quel Mac vous convient ?</h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Compare features, performance, and prices to find the perfect Mac for your needs.
+                Comparez les fonctionnalités, les performances et les prix pour trouver le Mac parfait pour vos besoins.
               </p>
             </div>
 
@@ -211,9 +211,9 @@ const Mac = () => {
         <section className="py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">M5 Performance</h2>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Performance M5</h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                The most advanced chip ever built for a personal computer.
+                La puce la plus avancée jamais créée pour un ordinateur personnel.
               </p>
             </div>
 
@@ -223,15 +223,15 @@ const Mac = () => {
         {/* Compare Section */}
         <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-6 text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Compare Mac models</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Comparez les modèles de Mac</h2>
             <p className="text-lg text-gray-600 mb-12 max-w-3xl mx-auto">
-              See the differences between Mac models and find the one that's right for you.
+              Découvrez les différences entre les modèles de Mac et trouvez celui qui vous convient.
             </p>
             <Button 
               size="lg"
               className="bg-blue-600 text-white hover:bg-blue-700 px-8 py-4 text-lg"
             >
-              Compare all models
+              Comparer tous les modèles
             </Button>
           </div>
         </section>

@@ -34,7 +34,7 @@ const TVHome = () => {
                 className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
                 onClick={() => navigate('/tv-home')}
               >
-                Learn more
+                En savoir plus
               </Button>
               <Button 
                 variant="outline"
@@ -51,20 +51,20 @@ const TVHome = () => {
         <section className="relative h-screen flex items-center justify-center bg-white text-black">
           <div className="text-center">
             <h1 className="text-6xl md:text-8xl font-bold mb-4">HomePod</h1>
-            <p className="text-2xl md:text-3xl mb-8">The ultimate home audio experience.</p>
+            <p className="text-2xl md:text-3xl mb-8">L'expérience audio domestique ultime.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
                 onClick={() => navigate('/tv-home')}
               >
-                Learn more
+                En savoir plus
               </Button>
               <Button 
                 variant="outline"
                 className="border-black text-black hover:bg-black hover:text-white px-6 py-3 text-lg"
                 onClick={() => navigate('/tv-home')}
               >
-                Buy
+                Acheter
               </Button>
             </div>
           </div>
@@ -74,20 +74,20 @@ const TVHome = () => {
         <section className="relative h-screen flex items-center justify-center bg-black text-white">
           <div className="text-center">
             <h1 className="text-6xl md:text-8xl font-bold mb-4">HomePod mini</h1>
-            <p className="text-2xl md:text-3xl mb-8">Big sound. Small package.</p>
+            <p className="text-2xl md:text-3xl mb-8">Grand son. Petit format.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
                 onClick={() => navigate('/tv-home')}
               >
-                Learn more
+                En savoir plus
               </Button>
               <Button 
                 variant="outline"
                 className="border-white text-white hover:bg-white hover:text-black px-6 py-3 text-lg"
                 onClick={() => navigate('/tv-home')}
               >
-                Buy
+                Acheter
               </Button>
             </div>
           </div>
@@ -97,20 +97,20 @@ const TVHome = () => {
         <section className="relative h-screen flex items-center justify-center bg-white text-black">
           <div className="text-center">
             <h1 className="text-6xl md:text-8xl font-bold mb-4">Apple TV+</h1>
-            <p className="text-2xl md:text-3xl mb-8">Original stories from the most creative minds in TV and film.</p>
+            <p className="text-2xl md:text-3xl mb-8">Des histoires originales des esprits les plus créatifs de la télévision et du cinéma.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
                 onClick={() => navigate('/tv-home')}
               >
-                Learn more
+                En savoir plus
               </Button>
               <Button 
                 variant="outline"
                 className="border-black text-black hover:bg-black hover:text-white px-6 py-3 text-lg"
                 onClick={() => navigate('/tv-home')}
               >
-                Try it free
+                Essayer gratuitement
               </Button>
             </div>
           </div>
