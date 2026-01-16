@@ -119,21 +119,20 @@ const Store = () => {
             
             {/* Carrousel de produits mis en avant */}
             {featuredProducts.length > 0 && (
-              <div className="mt-8 -mx-6 md:mx-0 md:px-8">
+              <div className="mt-8 px-6 md:px-8">
                 <Carousel
                   opts={{
                     align: "start",
                     loop: false,
-                    skipSnaps: false,
-                    containScroll: "trimSnaps",
-                    dragFree: false,
-                    watchDrag: true,
+                    slidesToScroll: 1,
+                    containScroll: "keepSnaps",
+                    watchDrag: false,
                   }}
                   className="w-full"
                 >
-                  <CarouselContent className="ml-0 md:-ml-4">
+                  <CarouselContent className="-ml-2 md:-ml-4">
                     {featuredProducts.slice(0, 8).map((product) => (
-                      <CarouselItem key={product.id} className="pl-6 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                      <CarouselItem key={product.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
                         <div 
                           className="bg-gray-50 border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-100 transition-all"
                           onClick={() => handleProductClick(product)}
