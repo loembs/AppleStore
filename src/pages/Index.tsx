@@ -90,7 +90,7 @@ const Index = () => {
         </section>
 
         {/* iPad Air */}
-        <section className="relative min-h-screen flex items-center bg-white text-white">
+        <section className="relative min-h-screen flex items-center bg-white text-black">
           <div className="max-w-7xl mx-auto w-full px-6 py-12 md:py-0">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
               {/* Image à gauche */}
