@@ -66,7 +66,7 @@ const Index = () => {
               {/* Image à gauche */}
               <div className="flex items-center justify-center">
                 <img 
-                  src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1761667919/mack_otyxqu.jpg" 
+                  src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1761667919/mack_otyxqu.jpghttps://res.cloudinary.com/dprbhsvxl/image/upload/v1767151612/MacBook_Air_M3_tynfdg.jpg" 
                   className="object-contain h-[400px] md:h-[600px] lg:h-[700px] w-auto"
                   alt="MacBook Air"
                 />
@@ -96,7 +96,7 @@ const Index = () => {
               {/* Image à gauche */}
               <div className="order-2 md:order-1 flex items-center justify-center">
                 <img 
-                  src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1761221311/iphone17_sfkbuk.jpg" 
+                  src="https://res.cloudinary.com/dprbhsvxl/image/upload/v1767151614/iPad_Air_rpgkfj.webp" 
                   className="object-contain h-[400px] md:h-[600px] lg:h-[700px] w-auto opacity-80"
                   alt="iPad Air"
                 />
@@ -105,35 +105,6 @@ const Index = () => {
               <div className="order-1 md:order-2 text-center md:text-left">
                 <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">iPad Air</h1>
                 <p className="text-2xl md:text-3xl mb-12 font-light">Maintenant boosté par la puce M3.</p>
-                <div className="flex justify-center md:justify-start">
-                  <Button 
-                    className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
-                    onClick={() => navigate('/ipad')}
-                  >
-                    En savoir plus
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* iPad */}
-        <section className="relative min-h-screen flex items-center bg-white text-black">
-          <div className="max-w-7xl mx-auto w-full px-6 py-12 md:py-0">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-              {/* Image à gauche */}
-              <div className="flex items-center justify-center">
-                <img 
-                  src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1761221311/iphone17_sfkbuk.jpg" 
-                  className="object-contain h-[400px] md:h-[600px] lg:h-[700px] w-auto"
-                  alt="iPad"
-                />
-              </div>
-              {/* Texte à droite */}
-              <div className="text-center md:text-left">
-                <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">iPad</h1>
-                <p className="text-2xl md:text-3xl mb-12 font-light">Maintenant avec la vitesse de la puce A16 et un stockage de base doublé.</p>
                 <div className="flex justify-center md:justify-start">
                   <Button 
                     className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
@@ -183,7 +154,7 @@ const Index = () => {
               {/* Image à gauche */}
               <div className="flex items-center justify-center">
                 <img 
-                  src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1761221311/iphone17_sfkbuk.jpg" 
+                  src="https://res.cloudinary.com/dprbhsvxl/image/upload/v1767151615/iPad_Pro_qaw13r.jpg" 
                   className="object-contain h-[400px] md:h-[600px] lg:h-[700px] w-auto"
                   alt="iPad Pro"
                 />

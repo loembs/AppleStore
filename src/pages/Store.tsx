@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -26,7 +26,7 @@ const Grid3x2Icon = ({ className }: { className?: string }) => (
     <rect x="14" y="14" width="7" height="7" rx="1" />
   </svg>
 );
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import type { Product } from '@/lib/supabase';
 
@@ -41,6 +41,7 @@ const Store = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState<ViewMode>('grid-compact');
   const [sortOption, setSortOption] = useState<SortOption>('default');
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
 
   // Charger toutes les catégories
   const { categories, loading: categoriesLoading } = useCategories();
@@ -103,12 +104,23 @@ const Store = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Défilement automatique du carrousel
+  useEffect(() => {
+    if (!carouselApi) return;
+
+    const interval = setInterval(() => {
+      carouselApi.scrollNext();
+    }, 3000); // Défile toutes les 3 secondes
+
+    return () => clearInterval(interval);
+  }, [carouselApi]);
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
       <main>
         {/* Store Hero avec Carrousel */}
-        <section className="relative bg-black text-white py-12 md:py-16">
+        <section className="relative bg-white text-black py-12 md:py-16">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-8">
               <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">Store</h1>
@@ -123,13 +135,14 @@ const Store = () => {
                     align: "start",
                     loop: true,
                   }}
+                  setApi={setCarouselApi}
                   className="w-full"
                 >
                   <CarouselContent className="-ml-2 md:-ml-4">
                     {featuredProducts.slice(0, 8).map((product) => (
                       <CarouselItem key={product.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
                         <div 
-                          className="bg-white/10 backdrop-blur-sm rounded-lg p-4 cursor-pointer hover:bg-white/20 transition-all"
+                          className="bg-gray-50 border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-100 transition-all"
                           onClick={() => handleProductClick(product)}
                         >
                           <div className="aspect-square mb-4 flex items-center justify-center">
@@ -139,16 +152,16 @@ const Store = () => {
                               className="max-w-full max-h-full object-contain"
                             />
                           </div>
-                          <h3 className="text-lg font-semibold mb-2 line-clamp-2">{product.name}</h3>
-                          <p className="text-2xl font-bold">
+                          <h3 className="text-lg font-semibold mb-2 line-clamp-2 text-black">{product.name}</h3>
+                          <p className="text-2xl font-bold text-black">
                             {product.price.toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} €
                           </p>
                         </div>
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="left-0 text-white border-white/20 hover:bg-white/10" />
-                  <CarouselNext className="right-0 text-white border-white/20 hover:bg-white/10" />
+                  <CarouselPrevious className="left-0 text-black border-gray-300 hover:bg-gray-100" />
+                  <CarouselNext className="right-0 text-black border-gray-300 hover:bg-gray-100" />
                 </Carousel>
               </div>
             )}
