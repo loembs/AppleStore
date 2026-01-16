@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -42,6 +42,7 @@ const Store = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState<ViewMode>('grid-compact');
   const [sortOption, setSortOption] = useState<SortOption>('default');
+  const [currentMobileSlide, setCurrentMobileSlide] = useState(0);
 
   // Charger toutes les catégories
   const { categories, loading: categoriesLoading } = useCategories();
@@ -104,6 +105,17 @@ const Store = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Auto-changement des slides sur mobile
+  useEffect(() => {
+    if (featuredProducts.length === 0) return;
+    
+    const interval = setInterval(() => {
+      setCurrentMobileSlide((prev) => (prev + 1) % Math.min(featuredProducts.length, 8));
+    }, 3000); // Change toutes les 3 secondes
+
+    return () => clearInterval(interval);
+  }, [featuredProducts.length]);
+
 
   return (
     <div className="min-h-screen bg-white">
@@ -120,27 +132,45 @@ const Store = () => {
             {/* Carrousel de produits mis en avant */}
             {featuredProducts.length > 0 && (
               <div className="mt-8">
-                {/* Version mobile : Grille verticale */}
-                <div className="md:hidden grid grid-cols-2 gap-4 px-6">
-                  {featuredProducts.slice(0, 8).map((product) => (
-                    <div 
+                {/* Version mobile : Slides plein écran avec auto-changement */}
+                <div className="md:hidden relative h-[70vh] w-full overflow-hidden">
+                  {featuredProducts.slice(0, 8).map((product, index) => (
+                    <div
                       key={product.id}
-                      className="bg-gray-50 border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-100 transition-all"
+                      className={`absolute inset-0 transition-opacity duration-700 ${
+                        index === currentMobileSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                      }`}
                       onClick={() => handleProductClick(product)}
                     >
-                      <div className="aspect-square mb-4 flex items-center justify-center">
-                        <img
-                          src={product.image || '/placeholder-product.jpg'}
-                          alt={product.name}
-                          className="max-w-full max-h-full object-contain"
-                        />
+                      <div className="w-full h-full flex flex-col items-center justify-center bg-white px-6 py-8 cursor-pointer">
+                        <div className="flex-1 flex items-center justify-center w-full mb-6">
+                          <img
+                            src={product.image || '/placeholder-product.jpg'}
+                            alt={product.name}
+                            className="max-w-full max-h-full object-contain"
+                          />
+                        </div>
+                        <div className="text-center">
+                          <h3 className="text-2xl font-semibold mb-3 text-black">{product.name}</h3>
+                          <p className="text-3xl font-bold text-black">
+                            {formatPrice(product.price, 'XOF')}
+                          </p>
+                        </div>
                       </div>
-                      <h3 className="text-lg font-semibold mb-2 line-clamp-2 text-black">{product.name}</h3>
-                      <p className="text-2xl font-bold text-black">
-                        {formatPrice(product.price, 'XOF')}
-                      </p>
                     </div>
                   ))}
+                  {/* Indicateurs de slide */}
+                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 flex gap-2">
+                    {featuredProducts.slice(0, 8).map((_, index) => (
+                      <div
+                        key={index}
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          index === currentMobileSlide ? 'w-8 bg-black' : 'w-2 bg-gray-400'
+                        }`}
+                        onClick={() => setCurrentMobileSlide(index)}
+                      />
+                    ))}
+                  </div>
                 </div>
 
                 {/* Version desktop : Carrousel */}
