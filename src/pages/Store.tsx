@@ -7,6 +7,7 @@ import { AppleProductCard } from '@/components/AppleProductCard';
 import { ProductListView } from '@/components/ProductListView';
 import { ProductSkeleton } from '@/components/ProductSkeleton';
 import { ChevronLeft, ChevronRight, Filter, Grid2x2, List } from 'lucide-react';
+import { formatPrice } from '@/utils/currency';
 
 // Icône personnalisée pour grille compacte (2x3)
 const Grid3x2Icon = ({ className }: { className?: string }) => (
@@ -154,7 +155,7 @@ const Store = () => {
                           </div>
                           <h3 className="text-lg font-semibold mb-2 line-clamp-2 text-black">{product.name}</h3>
                           <p className="text-2xl font-bold text-black">
-                            {product.price.toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} €
+                            {formatPrice(product.price, 'XOF')}
                           </p>
                         </div>
                       </CarouselItem>

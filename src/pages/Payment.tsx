@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useCartWithAuth } from '@/hooks/useCartWithAuth'
 import { useAuth } from '@/hooks/useSupabase'
 import { ordersService } from '@/services/orders.service'
-import { formatCurrency } from '@/utils/currency'
+import { formatPrice } from '@/utils/currency'
 import { toast } from 'sonner'
 import { CreditCard, Lock, CheckCircle, ArrowLeft } from 'lucide-react'
 
@@ -175,7 +175,7 @@ const Payment = () => {
                         {item.product?.name || `Produit ${item.product_id}`} × {item.quantity}
                       </span>
                       <span className="font-medium">
-                        {formatCurrency(item.total_price)}
+                        {formatPrice(item.total_price, 'XOF')}
                       </span>
                     </div>
                   ))}
@@ -188,7 +188,7 @@ const Payment = () => {
                 <div className="border-t pt-3">
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total à payer</span>
-                    <span className="text-blue-600">{formatCurrency(displayTotal)}</span>
+                    <span className="text-blue-600">{formatPrice(displayTotal, 'XOF')}</span>
                   </div>
                 </div>
               </div>
@@ -230,7 +230,7 @@ const Payment = () => {
                 ) : (
                   <>
                     <CreditCard className="w-5 h-5 mr-2" />
-                    Confirmer et payer {formatCurrency(displayTotal)}
+                    Confirmer et payer {formatPrice(displayTotal, 'XOF')}
                   </>
                 )}
               </Button>

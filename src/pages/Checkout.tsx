@@ -11,7 +11,7 @@ import { useCartWithAuth } from '@/hooks/useCartWithAuth';
 import { useAuth } from '@/hooks/useSupabase';
 import { ShoppingCart, Truck, Lock, ArrowLeft, Package, Mail, Phone, MapPin, User, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
-import { formatCurrency } from '@/utils/currency';
+import { formatPrice } from '@/utils/currency';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -397,7 +397,7 @@ const Checkout = () => {
                             <p className="text-xs text-gray-500">Stockage: {item.storage.size}</p>
                           )}
                           <p className="font-semibold text-gray-900 mt-2">
-                            {formatCurrency(item.total_price)}
+                            {formatPrice(item.total_price, 'XOF')}
                           </p>
                         </div>
                       </div>
@@ -411,7 +411,7 @@ const Checkout = () => {
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Sous-total</span>
                       <span className="font-medium text-gray-900">
-                        {formatCurrency(displayTotal)}
+                        {formatPrice(displayTotal, 'XOF')}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
@@ -422,7 +422,7 @@ const Checkout = () => {
                     <div className="flex justify-between text-lg font-bold">
                       <span>Total</span>
                       <span className="text-blue-600">
-                        {formatCurrency(displayTotal)}
+                        {formatPrice(displayTotal, 'XOF')}
                       </span>
                     </div>
                   </div>

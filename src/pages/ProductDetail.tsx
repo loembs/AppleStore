@@ -11,6 +11,7 @@ import { useCartWithAuth } from '@/hooks/useCartWithAuth';
 import { ProductSkeleton } from '@/components/ProductSkeleton';
 import { SimpleCart } from '@/components/SimpleCart';
 import { ArrowLeft, ShoppingCart, Heart, Share2, Star } from 'lucide-react';
+import { formatPrice } from '@/utils/currency';
 
 // Icône WhatsApp personnalisée
 const WhatsAppIcon = ({ className }: { className?: string }) => (
@@ -233,10 +234,7 @@ const ProductDetail = () => {
                   </p>
                 )}
                 <div className="text-3xl font-bold text-gray-900">
-                  {calculatePrice().toLocaleString('fr-FR', {
-                    style: 'currency',
-                    currency: 'EUR'
-                  })}
+                  {formatPrice(calculatePrice(), 'XOF')}
                 </div>
               </div>
 
@@ -288,10 +286,7 @@ const ProductDetail = () => {
                         <div className="font-medium">{storageOption.size}</div>
                         {storageOption.price && storageOption.price > 0 && (
                           <div className="text-sm text-gray-600">
-                            +{(storageOption.price).toLocaleString('fr-FR', {
-                              style: 'currency',
-                              currency: 'EUR'
-                            })}
+                            +{formatPrice(storageOption.price, 'XOF')}
                           </div>
                         )}
                       </button>

@@ -5,6 +5,7 @@ import { Button } from './ui/button'
 import { Star, ShoppingCart, Heart } from 'lucide-react'
 import { useCartWithAuth } from '../hooks/useCartWithAuth'
 import type { Product } from '../lib/supabase'
+import { formatPrice } from '../utils/currency'
 
 interface ProductListViewProps {
   product: Product
@@ -118,7 +119,7 @@ export const ProductListView: React.FC<ProductListViewProps> = ({
               {/* Prix et Stock */}
               <div className="flex items-center justify-between gap-2">
                 <span className="text-xl md:text-2xl font-bold whitespace-nowrap">
-                  {product.price.toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} €
+                  {formatPrice(product.price, 'XOF')}
                 </span>
                 
                 <div className="text-xs md:text-sm text-muted-foreground flex-shrink-0">

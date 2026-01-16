@@ -5,6 +5,7 @@ import { Button } from './ui/button'
 import { Star, ShoppingCart, Heart } from 'lucide-react'
 import { useCartWithAuth } from '../hooks/useCartWithAuth'
 import type { Product } from '../lib/supabase'
+import { formatPrice } from '../utils/currency'
 
 interface AppleProductCardProps {
   product: Product
@@ -114,7 +115,7 @@ export const AppleProductCard: React.FC<AppleProductCardProps> = ({
           {/* Prix */}
           <div className="flex items-center justify-between">
             <span className="text-2xl font-bold">
-              {product.price.toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} €
+              {formatPrice(product.price, 'XOF')}
             </span>
             
             {/* Stock */}

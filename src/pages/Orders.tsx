@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Package, ArrowLeft, Truck, CheckCircle, Clock, XCircle, Eye } from 'lucide-react';
 import { useAuth } from '@/hooks/useSupabase';
 import { orderService } from '@/services/providers';
-import { formatCurrency } from '@/utils/currency';
+import { formatPrice } from '@/utils/currency';
 import { toast } from 'sonner';
 
 interface OrderItem {
@@ -191,7 +191,7 @@ const Orders = () => {
                         <div className="text-right">
                           <p className="text-sm text-gray-600">Total</p>
                           <p className="text-xl font-bold text-gray-900">
-                            {formatCurrency(order.totalAmount)}
+                            {formatPrice(order.totalAmount, 'XOF')}
                           </p>
                         </div>
                       </div>
@@ -224,7 +224,7 @@ const Orders = () => {
                                 Quantité: {item.quantity}
                               </p>
                               <p className="font-medium text-gray-900 mt-1">
-                                {formatCurrency(item.total_price)}
+                                {formatPrice(item.total_price, 'XOF')}
                               </p>
                             </div>
                           </div>
