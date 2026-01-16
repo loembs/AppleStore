@@ -119,42 +119,68 @@ const Store = () => {
             
             {/* Carrousel de produits mis en avant */}
             {featuredProducts.length > 0 && (
-              <div className="mt-8 px-6 md:px-8">
-                <Carousel
-                  opts={{
-                    align: "start",
-                    loop: false,
-                    slidesToScroll: 1,
-                    containScroll: "keepSnaps",
-                    watchDrag: false,
-                  }}
-                  className="w-full"
-                >
-                  <CarouselContent className="-ml-2 md:-ml-4">
-                    {featuredProducts.slice(0, 8).map((product) => (
-                      <CarouselItem key={product.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                        <div 
-                          className="bg-gray-50 border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-100 transition-all"
-                          onClick={() => handleProductClick(product)}
-                        >
-                          <div className="aspect-square mb-4 flex items-center justify-center">
-                            <img
-                              src={product.image || '/placeholder-product.jpg'}
-                              alt={product.name}
-                              className="max-w-full max-h-full object-contain"
-                            />
+              <div className="mt-8">
+                {/* Version mobile : Grille verticale */}
+                <div className="md:hidden grid grid-cols-2 gap-4 px-6">
+                  {featuredProducts.slice(0, 8).map((product) => (
+                    <div 
+                      key={product.id}
+                      className="bg-gray-50 border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-100 transition-all"
+                      onClick={() => handleProductClick(product)}
+                    >
+                      <div className="aspect-square mb-4 flex items-center justify-center">
+                        <img
+                          src={product.image || '/placeholder-product.jpg'}
+                          alt={product.name}
+                          className="max-w-full max-h-full object-contain"
+                        />
+                      </div>
+                      <h3 className="text-lg font-semibold mb-2 line-clamp-2 text-black">{product.name}</h3>
+                      <p className="text-2xl font-bold text-black">
+                        {formatPrice(product.price, 'XOF')}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Version desktop : Carrousel */}
+                <div className="hidden md:block px-8">
+                  <Carousel
+                    opts={{
+                      align: "start",
+                      loop: false,
+                      slidesToScroll: 1,
+                      containScroll: "keepSnaps",
+                      watchDrag: false,
+                    }}
+                    className="w-full"
+                  >
+                    <CarouselContent className="-ml-4">
+                      {featuredProducts.slice(0, 8).map((product) => (
+                        <CarouselItem key={product.id} className="pl-4 basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                          <div 
+                            className="bg-gray-50 border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-100 transition-all"
+                            onClick={() => handleProductClick(product)}
+                          >
+                            <div className="aspect-square mb-4 flex items-center justify-center">
+                              <img
+                                src={product.image || '/placeholder-product.jpg'}
+                                alt={product.name}
+                                className="max-w-full max-h-full object-contain"
+                              />
+                            </div>
+                            <h3 className="text-lg font-semibold mb-2 line-clamp-2 text-black">{product.name}</h3>
+                            <p className="text-2xl font-bold text-black">
+                              {formatPrice(product.price, 'XOF')}
+                            </p>
                           </div>
-                          <h3 className="text-lg font-semibold mb-2 line-clamp-2 text-black">{product.name}</h3>
-                          <p className="text-2xl font-bold text-black">
-                            {formatPrice(product.price, 'XOF')}
-                          </p>
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="hidden md:flex left-0 md:-left-12 text-black border-gray-300 hover:bg-gray-100" />
-                  <CarouselNext className="hidden md:flex right-0 md:-right-12 text-black border-gray-300 hover:bg-gray-100" />
-                </Carousel>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="left-0 md:-left-12 text-black border-gray-300 hover:bg-gray-100" />
+                    <CarouselNext className="right-0 md:-right-12 text-black border-gray-300 hover:bg-gray-100" />
+                  </Carousel>
+                </div>
               </div>
             )}
           </div>
