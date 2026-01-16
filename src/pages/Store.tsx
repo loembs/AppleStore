@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -27,7 +27,7 @@ const Grid3x2Icon = ({ className }: { className?: string }) => (
     <rect x="14" y="14" width="7" height="7" rx="1" />
   </svg>
 );
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import type { Product } from '@/lib/supabase';
 
@@ -42,8 +42,6 @@ const Store = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState<ViewMode>('grid-compact');
   const [sortOption, setSortOption] = useState<SortOption>('default');
-  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
-  const [isCarouselHovered, setIsCarouselHovered] = useState(false);
 
   // Charger toutes les catégories
   const { categories, loading: categoriesLoading } = useCategories();
@@ -106,42 +104,6 @@ const Store = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Défilement automatique du carrousel
-  useEffect(() => {
-    if (!carouselApi) return;
-    
-    // Si on survole le carrousel, ne pas auto-scroller
-    if (isCarouselHovered) return;
-
-    const interval = setInterval(() => {
-      if (!carouselApi) return;
-      
-      try {
-        if (carouselApi.canScrollNext()) {
-          carouselApi.scrollNext();
-        } else {
-          // Si on est à la fin, retourner au début (car loop: true dans opts)
-          carouselApi.scrollTo(0);
-        }
-      } catch (error) {
-        // Ignorer les erreurs silencieusement
-        console.debug('Carousel scroll error:', error);
-      }
-    }, 4000); // Défile toutes les 4 secondes
-
-    return () => clearInterval(interval);
-  }, [carouselApi, isCarouselHovered]);
-
-  // Réinitialiser le hover après un délai pour reprendre l'auto-scroll
-  useEffect(() => {
-    if (!isCarouselHovered) return;
-
-    const timeout = setTimeout(() => {
-      setIsCarouselHovered(false);
-    }, 8000); // Reprendre l'auto-scroll après 8 secondes sans interaction
-
-    return () => clearTimeout(timeout);
-  }, [isCarouselHovered]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -157,19 +119,12 @@ const Store = () => {
             
             {/* Carrousel de produits mis en avant */}
             {featuredProducts.length > 0 && (
-              <div 
-                className="mt-8"
-                onMouseEnter={() => setIsCarouselHovered(true)}
-                onMouseLeave={() => setIsCarouselHovered(false)}
-              >
+              <div className="mt-8">
                 <Carousel
                   opts={{
                     align: "start",
                     loop: true,
-                    skipSnaps: false,
-                    dragFree: false,
                   }}
-                  setApi={setCarouselApi}
                   className="w-full"
                 >
                   <CarouselContent className="-ml-2 md:-ml-4">
@@ -194,14 +149,8 @@ const Store = () => {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious 
-                    className="left-0 text-black border-gray-300 hover:bg-gray-100"
-                    onClick={() => setIsCarouselHovered(true)}
-                  />
-                  <CarouselNext 
-                    className="right-0 text-black border-gray-300 hover:bg-gray-100"
-                    onClick={() => setIsCarouselHovered(true)}
-                  />
+                  <CarouselPrevious className="left-0 text-black border-gray-300 hover:bg-gray-100" />
+                  <CarouselNext className="right-0 text-black border-gray-300 hover:bg-gray-100" />
                 </Carousel>
               </div>
             )}
