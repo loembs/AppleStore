@@ -83,17 +83,53 @@ export const resetTokenInvalidation = () => {
   tokenInvalidated = false
 }
 
+// Liste des endpoints publics qui ne nécessitent pas d'authentification
+const PUBLIC_ENDPOINTS = [
+  '/api/categories',
+  '/api/products',
+  '/api/products/featured',
+  '/api/products/new',
+  '/api/products/bestsellers',
+  '/api/products/search',
+  '/api/products/category',
+  '/api/products/track-view' // Tracking de vues n'a pas besoin d'auth
+]
+
+// Vérifier si un endpoint est public
+const isPublicEndpoint = (endpoint: string): boolean => {
+  // Vérifier les endpoints publics exacts
+  if (PUBLIC_ENDPOINTS.some(publicEndpoint => endpoint.startsWith(publicEndpoint))) {
+    return true
+  }
+  
+  // Vérifier les endpoints de détails produits (colors, storage, features, specs)
+  // Format: /api/products/{id}/colors, /api/products/{id}/storage, etc.
+  const productDetailsPattern = /^\/api\/products\/\d+\/(colors|storage|features|specs)$/
+  if (productDetailsPattern.test(endpoint)) {
+    return true
+  }
+  
+  // Vérifier les endpoints de produit individuel /api/products/{id}
+  const singleProductPattern = /^\/api\/products\/\d+$/
+  if (singleProductPattern.test(endpoint)) {
+    return true
+  }
+  
+  return false
+}
+
 // Helper pour les appels API avec authentification
 const apiCall = async (endpoint: string, options?: RequestInit) => {
+  const isPublic = isPublicEndpoint(endpoint)
   const token = getAuthToken()
   
-  // Debug: vérifier si le token est présent
-  if (!token) {
+  // Debug: vérifier si le token est présent seulement pour les endpoints privés
+  if (!token && !isPublic) {
     console.error(`[API Call] ❌ Aucun token disponible pour ${endpoint}`)
     console.error(`[API Call] localStorage.getItem('token'):`, localStorage.getItem('token'))
     console.error(`[API Call] localStorage.getItem('auth_token'):`, localStorage.getItem('auth_token'))
     console.error(`[API Call] tokenInvalidated:`, tokenInvalidated)
-  } else {
+  } else if (token) {
     // Décoder le token JWT pour vérifier son contenu (sans validation)
     let tokenInfo: any = { tokenLength: token.length, tokenStart: token.substring(0, 30) + '...' }
     try {

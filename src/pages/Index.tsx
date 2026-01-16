@@ -66,7 +66,7 @@ const Index = () => {
               {/* Image à gauche */}
               <div className="flex items-center justify-center">
                 <img 
-                  src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1761667919/mack_otyxqu.jpghttps://res.cloudinary.com/dprbhsvxl/image/upload/v1767151612/MacBook_Air_M3_tynfdg.jpg" 
+                  src="https://res.cloudinary.com/dprbhsvxl/image/upload/v1768545540/Apple_16-inch-MacBook-Pro_111319.jpg.landing-big_2x_s6k1il.jpg" 
                   className="object-contain h-[400px] md:h-[600px] lg:h-[700px] w-auto"
                   alt="MacBook Air"
                 />
@@ -90,7 +90,7 @@ const Index = () => {
         </section>
 
         {/* iPad Air */}
-        <section className="relative min-h-screen flex items-center bg-black text-white">
+        <section className="relative min-h-screen flex items-center bg-white text-white">
           <div className="max-w-7xl mx-auto w-full px-6 py-12 md:py-0">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
               {/* Image à gauche */}
