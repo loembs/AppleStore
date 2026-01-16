@@ -58,6 +58,13 @@ const ProductDetail = () => {
     }
   }, [selectedColor, colors, product]);
 
+  // Réinitialiser l'option SIM si le produit n'est pas un iPhone
+  useEffect(() => {
+    if (product && product.categoryid !== 1) {
+      setSelectedSim('');
+    }
+  }, [product]);
+
   const handleAddToCart = async () => {
     if (!product) return;
 
@@ -295,36 +302,38 @@ const ProductDetail = () => {
                 </div>
               )}
 
-              {/* Sélection d'option SIM */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                  OPTION SIM
-                </h3>
-                <div className="space-y-2">
-                  <label className="flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all hover:border-gray-400">
-                    <input
-                      type="radio"
-                      name="simOption"
-                      value="Esim"
-                      checked={selectedSim === 'Esim'}
-                      onChange={(e) => setSelectedSim(e.target.value)}
-                      className="w-4 h-4 text-gray-900 border-gray-300 focus:ring-gray-900"
-                    />
-                    <span className="font-medium text-gray-900">Esim</span>
-                  </label>
-                  <label className="flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all hover:border-gray-400">
-                    <input
-                      type="radio"
-                      name="simOption"
-                      value="Sim Physique"
-                      checked={selectedSim === 'Sim Physique'}
-                      onChange={(e) => setSelectedSim(e.target.value)}
-                      className="w-4 h-4 text-gray-900 border-gray-300 focus:ring-gray-900"
-                    />
-                    <span className="font-medium text-gray-900">Sim Physique</span>
-                  </label>
+              {/* Sélection d'option SIM - Uniquement pour les iPhones (categoryid = 1) */}
+              {product.categoryid === 1 && (
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                    OPTION SIM
+                  </h3>
+                  <div className="space-y-2">
+                    <label className="flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all hover:border-gray-400">
+                      <input
+                        type="radio"
+                        name="simOption"
+                        value="Esim"
+                        checked={selectedSim === 'Esim'}
+                        onChange={(e) => setSelectedSim(e.target.value)}
+                        className="w-4 h-4 text-gray-900 border-gray-300 focus:ring-gray-900"
+                      />
+                      <span className="font-medium text-gray-900">Esim</span>
+                    </label>
+                    <label className="flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all hover:border-gray-400">
+                      <input
+                        type="radio"
+                        name="simOption"
+                        value="Sim Physique"
+                        checked={selectedSim === 'Sim Physique'}
+                        onChange={(e) => setSelectedSim(e.target.value)}
+                        className="w-4 h-4 text-gray-900 border-gray-300 focus:ring-gray-900"
+                      />
+                      <span className="font-medium text-gray-900">Sim Physique</span>
+                    </label>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Quantité */}
               <div>
