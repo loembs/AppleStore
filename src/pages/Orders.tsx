@@ -58,7 +58,7 @@ const Orders = () => {
       const data = await orderService.getUserOrders();
       setOrders(data || []);
     } catch (error) {
-      console.error('Erreur lors du chargement des commandes:', error);
+      // console.error('Erreur lors du chargement des commandes:', error);
       toast.error('Erreur lors du chargement des commandes');
     } finally {
       setLoading(false);

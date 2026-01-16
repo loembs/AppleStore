@@ -126,7 +126,7 @@ const Payment = () => {
         throw new Error('URL de redirection PayTech non reçue dans la réponse')
       }
     } catch (error: any) {
-      console.error('Erreur lors du paiement:', error)
+      // console.error('Erreur lors du paiement:', error)
       toast.error('Erreur lors du paiement', {
         description: error?.message || 'Une erreur est survenue'
       })

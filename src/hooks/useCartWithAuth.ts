@@ -38,7 +38,7 @@ export const useCartWithAuth = () => {
       // Notifier l'application qu'une mise à jour du panier a eu lieu
       window.dispatchEvent(new Event('cart-updated'))
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde du panier local:', error)
+      // console.error('Erreur lors de la sauvegarde du panier local:', error)
     }
   }, [])
 
@@ -50,7 +50,7 @@ export const useCartWithAuth = () => {
       const data = await cartService.getCart()
       return data
     } catch (error) {
-      console.error('Erreur lors du chargement du panier Supabase:', error)
+      // console.error('Erreur lors du chargement du panier Supabase:', error)
       return []
     }
   }, [user])
@@ -62,12 +62,12 @@ export const useCartWithAuth = () => {
     // Vérifier que le token est disponible avant de synchroniser
     const token = localStorage.getItem('token') || localStorage.getItem('auth_token')
     if (!token) {
-      console.warn('[Cart Sync] Token non disponible, attente avant synchronisation...')
+      // console.warn('[Cart Sync] Token non disponible, attente avant synchronisation...')
       // Attendre un peu et réessayer
       setTimeout(() => {
         const retryToken = localStorage.getItem('token') || localStorage.getItem('auth_token')
         if (!retryToken) {
-          console.error('[Cart Sync] Token toujours non disponible après attente')
+          // console.error('[Cart Sync] Token toujours non disponible après attente')
           return
         }
         syncLocalToSupabase()
@@ -75,10 +75,10 @@ export const useCartWithAuth = () => {
       return
     }
 
-    console.log('[Cart Sync] Début de la synchronisation du panier', {
-      itemsCount: localItems.length,
-      hasToken: !!token
-    })
+    // console.log('[Cart Sync] Début de la synchronisation du panier', {
+    //   itemsCount: localItems.length,
+    //   hasToken: !!token
+    // })
 
     try {
       setLoading(true)
@@ -101,9 +101,9 @@ export const useCartWithAuth = () => {
       const supabaseItems = await loadSupabaseCart()
       setItems(supabaseItems)
       
-      console.log('[Cart Sync] Synchronisation terminée avec succès')
+      // console.log('[Cart Sync] Synchronisation terminée avec succès')
     } catch (error) {
-      console.error('[Cart Sync] Erreur lors de la synchronisation:', error)
+      // console.error('[Cart Sync] Erreur lors de la synchronisation:', error)
       setError('Erreur lors de la synchronisation du panier')
     } finally {
       setLoading(false)
@@ -173,7 +173,7 @@ export const useCartWithAuth = () => {
     storageData?: any
   ) => {
     try {
-      console.log('🛒 addToCart appelé:', { productId, quantity, colorId, storageId, user: !!user })
+      // console.log('🛒 addToCart appelé:', { productId, quantity, colorId, storageId, user: !!user })
       setIsAddingToCart(true)
       setError(null)
 
@@ -183,7 +183,7 @@ export const useCartWithAuth = () => {
         await loadCart() // Recharger le panier
       } else {
         // Utilisateur non connecté : ajouter au panier local
-        console.log('🛒 Ajout au panier local (utilisateur non connecté)')
+        // console.log('🛒 Ajout au panier local (utilisateur non connecté)')
         let unitPrice = productData?.price || 0
         if (storageData?.price) unitPrice += storageData.price
         if (colorData?.priceAdd) unitPrice += colorData.priceAdd
@@ -202,7 +202,7 @@ export const useCartWithAuth = () => {
           storage: storageData
         }
 
-        console.log('🛒 Nouvel article créé:', newItem)
+        // console.log('🛒 Nouvel article créé:', newItem)
 
         // Vérifier si l'article existe déjà
         const existingIndex = localItems.findIndex(
@@ -212,25 +212,25 @@ export const useCartWithAuth = () => {
             item.storage_id === storageId
         )
 
-        console.log('🛒 Index existant:', existingIndex, 'Articles actuels:', localItems.length)
+        // console.log('🛒 Index existant:', existingIndex, 'Articles actuels:', localItems.length)
 
         let updatedItems: LocalCartItem[]
         if (existingIndex >= 0) {
           // Mettre à jour la quantité
-          console.log('🛒 Mise à jour de la quantité existante')
+          // console.log('🛒 Mise à jour de la quantité existante')
           updatedItems = [...localItems]
           updatedItems[existingIndex].quantity += quantity
           updatedItems[existingIndex].total_price = updatedItems[existingIndex].unit_price * updatedItems[existingIndex].quantity
         } else {
           // Ajouter un nouvel article
-          console.log('🛒 Ajout d\'un nouvel article')
+          // console.log('🛒 Ajout d\'un nouvel article')
           updatedItems = [...localItems, newItem]
         }
 
-        console.log('🛒 Articles mis à jour:', updatedItems.length)
+        // console.log('🛒 Articles mis à jour:', updatedItems.length)
         setLocalItems(updatedItems)
         saveLocalCart(updatedItems)
-        console.log('🛒 Panier sauvegardé dans localStorage')
+        // console.log('🛒 Panier sauvegardé dans localStorage')
         toast.success('Ajouté au panier', {
           description: productData?.name || `Produit ${productId}`
         })

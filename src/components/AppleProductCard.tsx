@@ -25,7 +25,7 @@ export const AppleProductCard: React.FC<AppleProductCardProps> = ({
       await addToCart(product.id, 1, undefined, undefined, product)
       // Optionnel: afficher une notification de succès
     } catch (error) {
-      console.error('Erreur lors de l\'ajout au panier:', error)
+      // console.error('Erreur lors de l\'ajout au panier:', error)
       // Optionnel: afficher une notification d'erreur
     }
   }

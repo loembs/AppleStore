@@ -9,7 +9,7 @@ export class LocalStorageUtils {
     try {
       localStorage.setItem(key, value);
     } catch (error) {
-      console.error(`Erreur lors de l'écriture dans localStorage pour la clé "${key}":`, error);
+      // console.error(`Erreur lors de l'écriture dans localStorage pour la clé "${key}":`, error);
     }
   }
 
@@ -20,7 +20,7 @@ export class LocalStorageUtils {
     try {
       return localStorage.getItem(key);
     } catch (error) {
-      console.error(`Erreur lors de la lecture depuis localStorage pour la clé "${key}":`, error);
+      // console.error(`Erreur lors de la lecture depuis localStorage pour la clé "${key}":`, error);
       return null;
     }
   }
@@ -33,7 +33,7 @@ export class LocalStorageUtils {
       const jsonString = JSON.stringify(value);
       localStorage.setItem(key, jsonString);
     } catch (error) {
-      console.error(`Erreur lors de l'écriture JSON dans localStorage pour la clé "${key}":`, error);
+      // console.error(`Erreur lors de l'écriture JSON dans localStorage pour la clé "${key}":`, error);
     }
   }
 
@@ -46,7 +46,7 @@ export class LocalStorageUtils {
       if (item === null) return null;
       return JSON.parse(item) as T;
     } catch (error) {
-      console.error(`Erreur lors de la lecture JSON depuis localStorage pour la clé "${key}":`, error);
+      // console.error(`Erreur lors de la lecture JSON depuis localStorage pour la clé "${key}":`, error);
       return null;
     }
   }
@@ -58,7 +58,7 @@ export class LocalStorageUtils {
     try {
       localStorage.removeItem(key);
     } catch (error) {
-      console.error(`Erreur lors de la suppression depuis localStorage pour la clé "${key}":`, error);
+      // console.error(`Erreur lors de la suppression depuis localStorage pour la clé "${key}":`, error);
     }
   }
 
@@ -69,7 +69,7 @@ export class LocalStorageUtils {
     try {
       localStorage.clear();
     } catch (error) {
-      console.error('Erreur lors du vidage de localStorage:', error);
+      // console.error('Erreur lors du vidage de localStorage:', error);
     }
   }
 }

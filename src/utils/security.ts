@@ -186,7 +186,7 @@ export const verifyPaymentIntegrity = (transaction: any): boolean => {
   
   for (const field of requiredFields) {
     if (!transaction[field]) {
-      console.warn('⚠️ Champ manquant dans la transaction');
+      // console.warn('⚠️ Champ manquant dans la transaction');
       return false;
     }
   }
@@ -194,7 +194,7 @@ export const verifyPaymentIntegrity = (transaction: any): boolean => {
   // Vérifier que le statut est valide
   const validStatuses = ['successful', 'completed', 'pending', 'failed', 'cancelled'];
   if (!validStatuses.includes(transaction.status)) {
-    console.warn('⚠️ Statut de transaction invalide');
+    // console.warn('⚠️ Statut de transaction invalide');
     return false;
   }
   
@@ -233,7 +233,7 @@ class RateLimiter {
     const recentRequests = requests.filter(time => now - time < this.windowMs);
     
     if (recentRequests.length >= this.maxRequests) {
-      console.warn('⚠️ Limite de requêtes atteinte');
+      // console.warn('⚠️ Limite de requêtes atteinte');
       return false;
     }
     
@@ -260,19 +260,19 @@ export const isSuspiciousRequest = (data: any): boolean => {
   
   // Trop de données
   if (dataStr.length > 50000) {
-    console.warn('⚠️ Requête suspecte : taille excessive');
+    // console.warn('⚠️ Requête suspecte : taille excessive');
     return true;
   }
   
   // Patterns d'injection
   if (detectSQLInjection(dataStr)) {
-    console.warn('⚠️ Requête suspecte : tentative d\'injection SQL');
+    // console.warn('⚠️ Requête suspecte : tentative d\'injection SQL');
     return true;
   }
   
   // Scripts malveillants
   if (/<script|javascript:|onerror=/i.test(dataStr)) {
-    console.warn('⚠️ Requête suspecte : script malveillant détecté');
+    // console.warn('⚠️ Requête suspecte : script malveillant détecté');
     return true;
   }
   

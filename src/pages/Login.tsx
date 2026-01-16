@@ -67,7 +67,7 @@ const Login = () => {
       const finalReturnUrl = returnUrl === '/checkout' ? '/store' : returnUrl
       
       if (currentPath === '/login' && finalReturnUrl !== '/login') {
-        console.log('[Login] Utilisateur déjà connecté, redirection vers:', finalReturnUrl, '(returnUrl original:', returnUrl, ')')
+        // console.log('[Login] Utilisateur déjà connecté, redirection vers:', finalReturnUrl, '(returnUrl original:', returnUrl, ')')
         navigate(finalReturnUrl, { replace: true })
       }
     }
@@ -85,7 +85,7 @@ const Login = () => {
     const handleUserLoggedIn = () => {
       // Ne pas utiliser /checkout comme fallback pour éviter les boucles
       const finalReturnUrl = returnUrl === '/checkout' ? '/store' : returnUrl
-      console.log('[Login] Événement userLoggedIn reçu, redirection vers:', finalReturnUrl)
+      // console.log('[Login] Événement userLoggedIn reçu, redirection vers:', finalReturnUrl)
       // Attendre un peu pour que l'état soit mis à jour
       setTimeout(() => {
         if (finalReturnUrl !== '/login') {
@@ -124,10 +124,10 @@ const Login = () => {
         if (currentUser) {
           // Ne pas utiliser /checkout comme fallback pour éviter les boucles
           const finalReturnUrl = returnUrl === '/checkout' ? '/store' : returnUrl
-          console.log('[Login] Inscription réussie, redirection vers:', finalReturnUrl, '(returnUrl original:', returnUrl, ')')
+          // console.log('[Login] Inscription réussie, redirection vers:', finalReturnUrl, '(returnUrl original:', returnUrl, ')')
           navigate(finalReturnUrl, { replace: true })
         } else {
-          console.warn('[Login] Utilisateur non trouvé après inscription')
+          // console.warn('[Login] Utilisateur non trouvé après inscription')
         }
       } else {
         await signIn(email, password)
@@ -138,16 +138,16 @@ const Login = () => {
         if (currentUser) {
           // Ne pas utiliser /checkout comme fallback pour éviter les boucles
           const finalReturnUrl = returnUrl === '/checkout' ? '/store' : returnUrl
-          console.log('[Login] Connexion réussie, redirection vers:', finalReturnUrl, '(returnUrl original:', returnUrl, ')')
+          // console.log('[Login] Connexion réussie, redirection vers:', finalReturnUrl, '(returnUrl original:', returnUrl, ')')
           navigate(finalReturnUrl, { replace: true })
         } else {
-          console.warn('[Login] Utilisateur non trouvé après connexion, attente...')
+          // console.warn('[Login] Utilisateur non trouvé après connexion, attente...')
           // Réessayer après un délai supplémentaire
           setTimeout(async () => {
             const retryUser = await authService.getCurrentUser()
             if (retryUser) {
               const finalReturnUrl = returnUrl === '/checkout' ? '/store' : returnUrl
-              console.log('[Login] Utilisateur trouvé après attente, redirection vers:', finalReturnUrl, '(returnUrl original:', returnUrl, ')')
+              // console.log('[Login] Utilisateur trouvé après attente, redirection vers:', finalReturnUrl, '(returnUrl original:', returnUrl, ')')
               navigate(finalReturnUrl, { replace: true })
             }
           }, 500)

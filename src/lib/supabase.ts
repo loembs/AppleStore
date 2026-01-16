@@ -13,11 +13,11 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-k
 
 // Fonction pour vérifier si Supabase est configuré
 export const isSupabaseConfigured = () => {
-  console.log('🔍 Debug Supabase:', {
-    supabaseUrl,
-    supabaseAnonKey: supabaseAnonKey.substring(0, 20) + '...',
-    isConfigured: supabaseUrl !== 'https://placeholder.supabase.co' && supabaseAnonKey !== 'placeholder-key'
-  })
+  // console.log('🔍 Debug Supabase:', {
+  //   supabaseUrl,
+  //   supabaseAnonKey: supabaseAnonKey.substring(0, 20) + '...',
+  //   isConfigured: supabaseUrl !== 'https://placeholder.supabase.co' && supabaseAnonKey !== 'placeholder-key'
+  // })
   return supabaseUrl !== 'https://placeholder.supabase.co' && supabaseAnonKey !== 'placeholder-key'
 }
 

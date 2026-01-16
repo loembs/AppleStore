@@ -24,7 +24,7 @@ export const ProductListView: React.FC<ProductListViewProps> = ({
     try {
       await addToCart(product.id, 1, undefined, undefined, product)
     } catch (error) {
-      console.error('Erreur lors de l\'ajout au panier:', error)
+      // console.error('Erreur lors de l\'ajout au panier:', error)
     }
   }
 

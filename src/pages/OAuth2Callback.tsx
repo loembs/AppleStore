@@ -49,7 +49,7 @@ const OAuth2Callback = () => {
                 navigate('/login?error=oauth_failed', { replace: true });
               }
             } catch (err) {
-              console.error('Erreur récupération token OAuth:', err);
+              // console.error('Erreur récupération token OAuth:', err);
               navigate('/login?error=oauth_failed', { replace: true });
             }
           }
@@ -60,7 +60,7 @@ const OAuth2Callback = () => {
           const { data, error } = await supabase.auth.getSession();
           
           if (error) {
-            console.error('Erreur OAuth:', error);
+            // console.error('Erreur OAuth:', error);
             navigate(`/login?error=${encodeURIComponent(error.message || 'oauth_failed')}`, { replace: true });
             return;
           }
@@ -95,7 +95,7 @@ const OAuth2Callback = () => {
           }
         }
       } catch (err: any) {
-        console.error('Erreur lors du traitement OAuth:', err);
+        // console.error('Erreur lors du traitement OAuth:', err);
         navigate(`/login?error=${encodeURIComponent(err.message || 'oauth_failed')}`, { replace: true });
       }
     };

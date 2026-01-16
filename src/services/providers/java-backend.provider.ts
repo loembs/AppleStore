@@ -52,7 +52,7 @@ const getAuthToken = (): string | null => {
   if (token) {
     // Vérifier si c'est un token Java valide
     if (!isValidJavaToken(token)) {
-      console.warn('[Auth] Token trouvé mais invalide (probablement un token Supabase), nettoyage...')
+      // console.warn('[Auth] Token trouvé mais invalide (probablement un token Supabase), nettoyage...')
       localStorage.removeItem('token')
       localStorage.removeItem('auth_token')
       localStorage.removeItem('user')
@@ -66,7 +66,7 @@ const getAuthToken = (): string | null => {
   if (authToken) {
     // Vérifier si c'est un token Java valide
     if (!isValidJavaToken(authToken)) {
-      console.warn('[Auth] auth_token trouvé mais invalide (probablement un token Supabase), nettoyage...')
+      // console.warn('[Auth] auth_token trouvé mais invalide (probablement un token Supabase), nettoyage...')
       localStorage.removeItem('token')
       localStorage.removeItem('auth_token')
       localStorage.removeItem('user')
@@ -125,10 +125,10 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
   
   // Debug: vérifier si le token est présent seulement pour les endpoints privés
   if (!token && !isPublic) {
-    console.error(`[API Call] ❌ Aucun token disponible pour ${endpoint}`)
-    console.error(`[API Call] localStorage.getItem('token'):`, localStorage.getItem('token'))
-    console.error(`[API Call] localStorage.getItem('auth_token'):`, localStorage.getItem('auth_token'))
-    console.error(`[API Call] tokenInvalidated:`, tokenInvalidated)
+    // console.error(`[API Call] ❌ Aucun token disponible pour ${endpoint}`)
+    // console.error(`[API Call] localStorage.getItem('token'):`, localStorage.getItem('token'))
+    // console.error(`[API Call] localStorage.getItem('auth_token'):`, localStorage.getItem('auth_token'))
+    // console.error(`[API Call] tokenInvalidated:`, tokenInvalidated)
   } else if (token) {
     // Décoder le token JWT pour vérifier son contenu (sans validation)
     let tokenInfo: any = { tokenLength: token.length, tokenStart: token.substring(0, 30) + '...' }
@@ -147,15 +147,15 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
         }
         
         if (isExpired) {
-          console.error(`[API Call] ⚠️ Token EXPIRÉ pour ${endpoint}!`, tokenInfo)
+          // console.error(`[API Call] ⚠️ Token EXPIRÉ pour ${endpoint}!`, tokenInfo)
         } else {
-          console.log(`[API Call] ✅ Token présent pour ${endpoint}`, tokenInfo)
+          // console.log(`[API Call] ✅ Token présent pour ${endpoint}`, tokenInfo)
         }
       } else {
-        console.error(`[API Call] ❌ Token invalide (pas un JWT valide) pour ${endpoint}`, { partsCount: parts.length })
+        // console.error(`[API Call] ❌ Token invalide (pas un JWT valide) pour ${endpoint}`, { partsCount: parts.length })
       }
     } catch (e) {
-      console.error('[API Call] ❌ Impossible de décoder le token JWT:', e, { tokenStart: token.substring(0, 50) })
+      // console.error('[API Call] ❌ Impossible de décoder le token JWT:', e, { tokenStart: token.substring(0, 50) })
     }
   }
   
@@ -167,32 +167,32 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
 
   // Log détaillé du header Authorization pour débogage
   if (token) {
-    console.log(`[API Call] Header Authorization pour ${endpoint}:`, {
-      header: `Bearer ${token.substring(0, 50)}...`,
-      tokenLength: token.length,
-      hasBearer: true
-    })
+    // console.log(`[API Call] Header Authorization pour ${endpoint}:`, {
+    //   header: `Bearer ${token.substring(0, 50)}...`,
+    //   tokenLength: token.length,
+    //   hasBearer: true
+    // })
   }
 
-  console.log(`[API Call] 🔍 Requête vers ${JAVA_BACKEND_URL}${endpoint}`, {
-    method: options?.method || 'GET',
-    hasAuth: !!token,
-    headers: Object.keys(headers),
-    authorizationHeader: token ? `Bearer ${token.substring(0, 30)}...` : 'none',
-    fullAuthHeader: token ? `Bearer ${token}` : undefined
-  })
+  // console.log(`[API Call] 🔍 Requête vers ${JAVA_BACKEND_URL}${endpoint}`, {
+  //   method: options?.method || 'GET',
+  //   hasAuth: !!token,
+  //   headers: Object.keys(headers),
+  //   authorizationHeader: token ? `Bearer ${token.substring(0, 30)}...` : 'none',
+  //   fullAuthHeader: token ? `Bearer ${token}` : undefined
+  // })
 
   const response = await fetch(`${JAVA_BACKEND_URL}${endpoint}`, {
     ...options,
     headers
   })
 
-  console.log(`[API Call] 📥 Réponse de ${endpoint}`, {
-    status: response.status,
-    statusText: response.statusText,
-    ok: response.ok,
-    headers: Object.fromEntries(response.headers.entries())
-  })
+  // console.log(`[API Call] 📥 Réponse de ${endpoint}`, {
+  //   status: response.status,
+  //   statusText: response.statusText,
+  //   ok: response.ok,
+  //   headers: Object.fromEntries(response.headers.entries())
+  // })
 
   if (!response.ok) {
     // Si erreur 403 (Forbidden) ou 401 (Unauthorized), vérifier d'abord si c'est vraiment un problème de token
@@ -207,14 +207,14 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
       let isAuthError = false
       try {
         const errorData = await response.clone().json()
-        console.error(`[API Call] ❌ Détails de l'erreur ${response.status} pour ${endpoint}:`, {
-          errorData,
-          requestHeaders: {
-            authorization: token ? `Bearer ${token.substring(0, 50)}...` : 'none',
-            contentType: headers['Content-Type']
-          },
-          responseHeaders: Object.fromEntries(response.headers.entries())
-        })
+        // console.error(`[API Call] ❌ Détails de l'erreur ${response.status} pour ${endpoint}:`, {
+        //   errorData,
+        //   requestHeaders: {
+        //     authorization: token ? `Bearer ${token.substring(0, 50)}...` : 'none',
+        //     contentType: headers['Content-Type']
+        //   },
+        //   responseHeaders: Object.fromEntries(response.headers.entries())
+        // })
         
         // Si le message d'erreur indique explicitement un problème d'authentification
         const errorMessage = (errorData.message || errorData.error || '').toLowerCase()
@@ -237,15 +237,15 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
         const shouldCleanToken = timeSinceLogin > 10000 // 10 secondes
         
         if (!shouldCleanToken) {
-          console.warn(`[API Call] ⚠️ Erreur ${response.status} pour ${endpoint} mais connexion récente (${Math.round(timeSinceLogin/1000)}s), ne pas nettoyer le token. Le backend peut avoir besoin de temps pour synchroniser.`)
+          // console.warn(`[API Call] ⚠️ Erreur ${response.status} pour ${endpoint} mais connexion récente (${Math.round(timeSinceLogin/1000)}s), ne pas nettoyer le token. Le backend peut avoir besoin de temps pour synchroniser.`)
         } else {
           // Vérifier si le token fonctionne toujours avec /api/auth/me avant de le nettoyer
           // Si /api/auth/me fonctionne, c'est un problème de permissions/configuration pour cet endpoint spécifique
-          console.log(`[API Call] 🔍 Vérification du token avec /api/auth/me avant nettoyage pour ${endpoint}...`)
+          // console.log(`[API Call] 🔍 Vérification du token avec /api/auth/me avant nettoyage pour ${endpoint}...`)
           let tokenStillValid = false
           if (token) {
             try {
-              console.log(`[API Call] 🔍 Test du token avec /api/auth/me...`)
+              // console.log(`[API Call] 🔍 Test du token avec /api/auth/me...`)
               const meCheckResponse = await fetch(`${JAVA_BACKEND_URL}/api/auth/me`, {
                 headers: {
                   'Authorization': `Bearer ${token}`,
@@ -253,27 +253,27 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
                 }
               })
               tokenStillValid = meCheckResponse.ok
-              console.log(`[API Call] 🔍 Résultat du test /api/auth/me: ${meCheckResponse.status} ${meCheckResponse.statusText}, tokenStillValid: ${tokenStillValid}`)
+              // console.log(`[API Call] 🔍 Résultat du test /api/auth/me: ${meCheckResponse.status} ${meCheckResponse.statusText}, tokenStillValid: ${tokenStillValid}`)
               if (tokenStillValid) {
-                console.warn(`[API Call] ⚠️ Token toujours valide pour /api/auth/me mais erreur ${response.status} pour ${endpoint}. Probablement un problème de permissions/configuration backend pour cet endpoint. Ne pas nettoyer le token.`)
+                // console.warn(`[API Call] ⚠️ Token toujours valide pour /api/auth/me mais erreur ${response.status} pour ${endpoint}. Probablement un problème de permissions/configuration backend pour cet endpoint. Ne pas nettoyer le token.`)
               } else {
-                console.error(`[API Call] ❌ Token invalide pour /api/auth/me aussi (${meCheckResponse.status}). Le token est vraiment invalide.`)
+                // console.error(`[API Call] ❌ Token invalide pour /api/auth/me aussi (${meCheckResponse.status}). Le token est vraiment invalide.`)
               }
             } catch (e) {
-              console.error('[API Call] Erreur lors de la vérification du token avec /api/auth/me:', e)
+              // console.error('[API Call] Erreur lors de la vérification du token avec /api/auth/me:', e)
             }
           } else {
-            console.error(`[API Call] ❌ Aucun token disponible pour vérification avec /api/auth/me`)
+            // console.error(`[API Call] ❌ Aucun token disponible pour vérification avec /api/auth/me`)
           }
           
           if (!tokenStillValid) {
             tokenInvalidated = true
-            console.error(`[API Call] ❌ Token invalide (${response.status}) pour ${endpoint}. Nettoyage de l'authentification.`, {
-              tokenPresent: !!token,
-              tokenLength: token?.length || 0,
-              endpoint,
-              timeSinceLogin: timeSinceLogin < Infinity ? `${Math.round(timeSinceLogin/1000)}s` : 'never'
-            })
+            // console.error(`[API Call] ❌ Token invalide (${response.status}) pour ${endpoint}. Nettoyage de l'authentification.`, {
+            //   tokenPresent: !!token,
+            //   tokenLength: token?.length || 0,
+            //   endpoint,
+            //   timeSinceLogin: timeSinceLogin < Infinity ? `${Math.round(timeSinceLogin/1000)}s` : 'never'
+            // })
             localStorage.removeItem('token')
             localStorage.removeItem('auth_token')
             localStorage.removeItem('user')
@@ -283,10 +283,10 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
         }
       } else if (response.status === 403) {
         // Pour les erreurs 403 qui ne sont pas des erreurs d'auth, juste logger
-        console.warn(`[API Call] Accès refusé (403) pour ${endpoint} - peut-être un problème de permissions`, {
-          tokenPresent: !!token,
-          endpoint
-        })
+        // console.warn(`[API Call] Accès refusé (403) pour ${endpoint} - peut-être un problème de permissions`, {
+        //   tokenPresent: !!token,
+        //   endpoint
+        // })
       }
     }
     
@@ -294,7 +294,7 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
     try {
       const errorData = await response.json()
       errorMessage = errorData.message || errorData.error || errorMessage
-      console.error(`[API Call] Détails de l'erreur pour ${endpoint}:`, errorData)
+      // console.error(`[API Call] Détails de l'erreur pour ${endpoint}:`, errorData)
     } catch {
       // Ignorer si on ne peut pas parser l'erreur
     }
@@ -308,7 +308,7 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
   // Si la requête réussit, le token est valide, réinitialiser le flag
   if (tokenInvalidated) {
     tokenInvalidated = false
-    console.debug(`[API Call] Token validé avec succès pour ${endpoint}`)
+    // console.debug(`[API Call] Token validé avec succès pour ${endpoint}`)
   }
 
   // Vérifier si la réponse a un body (pour les DELETE qui retournent 200 OK vide)
@@ -335,7 +335,7 @@ const apiCall = async (endpoint: string, options?: RequestInit) => {
     return data
   } catch (e) {
     // Si ce n'est pas du JSON valide, retourner le texte brut ou null
-    console.warn(`[API Call] Réponse non-JSON pour ${endpoint}:`, text.substring(0, 100))
+    // console.warn(`[API Call] Réponse non-JSON pour ${endpoint}:`, text.substring(0, 100))
     return null
   }
 }
@@ -499,7 +499,7 @@ export const javaBackendProductProvider: IProductService = {
       })
     } catch (error) {
       // Ignorer les erreurs de tracking
-      console.warn('Product view tracking failed:', error)
+      // console.warn('Product view tracking failed:', error)
     }
   }
 }
@@ -508,15 +508,15 @@ export const javaBackendCartProvider: ICartService = {
   async getCart(): Promise<CartItem[]> {
     // Vérifier d'abord que le token fonctionne avec /api/auth/me
     const token = getAuthToken()
-    console.log('[Cart] getCart appelé, token présent:', !!token, { 
-      tokenLength: token?.length || 0,
-      tokenInvalidated,
-      lastSuccessfulLogin: lastSuccessfulLogin ? new Date(lastSuccessfulLogin).toISOString() : null
-    })
+    // console.log('[Cart] getCart appelé, token présent:', !!token, { 
+    //   tokenLength: token?.length || 0,
+    //   tokenInvalidated,
+    //   lastSuccessfulLogin: lastSuccessfulLogin ? new Date(lastSuccessfulLogin).toISOString() : null
+    // })
     
     if (token) {
       try {
-        console.log('[Cart] Vérification du token avant récupération du panier...')
+        // console.log('[Cart] Vérification du token avant récupération du panier...')
         const meResponse = await fetch(`${JAVA_BACKEND_URL}/api/auth/me`, {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -525,13 +525,13 @@ export const javaBackendCartProvider: ICartService = {
         })
         
         if (!meResponse.ok) {
-          console.error(`[Cart] ❌ Token invalide pour /api/auth/me (${meResponse.status}). Impossible de récupérer le panier.`)
+          // console.error(`[Cart] ❌ Token invalide pour /api/auth/me (${meResponse.status}). Impossible de récupérer le panier.`)
           throw new Error(`Token invalide: ${meResponse.status}`)
         } else {
-          console.log('[Cart] ✅ Token validé avec /api/auth/me, récupération du panier...')
+          // console.log('[Cart] ✅ Token validé avec /api/auth/me, récupération du panier...')
         }
       } catch (error) {
-        console.error('[Cart] Erreur lors de la vérification du token:', error)
+        // console.error('[Cart] Erreur lors de la vérification du token:', error)
         throw error
       }
     }
@@ -619,7 +619,7 @@ export const javaBackendCartProvider: ICartService = {
     } catch (error: any) {
       // Si erreur 403, c'est un problème de configuration backend
       if (error?.status === 403) {
-        console.error('[Cart] Erreur 403 lors de l\'ajout au panier. Le token fonctionne avec /api/auth/me mais pas avec /api/cart/items. Vérifiez la configuration backend.')
+        // console.error('[Cart] Erreur 403 lors de l\'ajout au panier. Le token fonctionne avec /api/auth/me mais pas avec /api/cart/items. Vérifiez la configuration backend.')
         throw new Error('Impossible d\'ajouter l\'article au panier. Vérifiez la configuration du backend.')
       }
       throw error
@@ -732,21 +732,21 @@ export const javaBackendAuthProvider: IAuthService = {
     
     const data = await response.json()
     
-    console.log('[Auth] Réponse complète du serveur:', data)
+    // console.log('[Auth] Réponse complète du serveur:', data)
     
     // Extraire data si c'est dans un format ApiResponse
     const responseData = (data && typeof data === 'object' && 'data' in data && 'success' in data) ? data.data : data
     
-    console.log('[Auth] Données extraites:', responseData)
+    // console.log('[Auth] Données extraites:', responseData)
     
     // Stocker le token dans les deux formats pour compatibilité
     if (responseData.token) {
       // Vérifier que c'est bien un token JWT valide
       if (!isValidJavaToken(responseData.token)) {
-        console.error('[Auth] ERREUR: Le token reçu n\'est pas un token JWT valide!', {
-          tokenLength: responseData.token.length,
-          tokenStart: responseData.token.substring(0, 50)
-        })
+        // console.error('[Auth] ERREUR: Le token reçu n\'est pas un token JWT valide!', {
+        //   tokenLength: responseData.token.length,
+        //   tokenStart: responseData.token.substring(0, 50)
+        // })
         throw new Error('Token invalide reçu du serveur')
       }
       
@@ -754,16 +754,16 @@ export const javaBackendAuthProvider: IAuthService = {
       try {
         const parts = responseData.token.split('.')
         const payload = JSON.parse(atob(parts[1]))
-        console.log('[Auth] Token reçu du serveur (décodé):', {
-          tokenLength: responseData.token.length,
-          email: payload.sub || payload.email,
-          role: payload.role,
-          exp: payload.exp ? new Date(payload.exp * 1000).toISOString() : null,
-          isExpired: payload.exp ? payload.exp * 1000 < Date.now() : null,
-          hasUser: !!responseData.user
-        })
+        // console.log('[Auth] Token reçu du serveur (décodé):', {
+        //   tokenLength: responseData.token.length,
+        //   email: payload.sub || payload.email,
+        //   role: payload.role,
+        //   exp: payload.exp ? new Date(payload.exp * 1000).toISOString() : null,
+        //   isExpired: payload.exp ? payload.exp * 1000 < Date.now() : null,
+        //   hasUser: !!responseData.user
+        // })
       } catch (e) {
-        console.warn('[Auth] Impossible de décoder le token:', e)
+        // console.warn('[Auth] Impossible de décoder le token:', e)
       }
       
       localStorage.setItem('token', responseData.token)
@@ -772,21 +772,21 @@ export const javaBackendAuthProvider: IAuthService = {
       // Vérifier que le token est bien stocké
       const storedToken = localStorage.getItem('token')
       if (storedToken !== responseData.token) {
-        console.error('[Auth] ERREUR: Le token n\'a pas été correctement stocké!')
+        // console.error('[Auth] ERREUR: Le token n\'a pas été correctement stocké!')
         throw new Error('Erreur lors du stockage du token')
       }
       
-      console.log('[Auth] Token stocké avec succès dans localStorage')
+      // console.log('[Auth] Token stocké avec succès dans localStorage')
       
       // Réinitialiser le flag maintenant que nous avons un nouveau token valide
       tokenInvalidated = false
       // Enregistrer le timestamp de la connexion réussie
       lastSuccessfulLogin = Date.now()
-      console.log('[Auth] Timestamp de connexion enregistré:', new Date(lastSuccessfulLogin).toISOString())
+      // console.log('[Auth] Timestamp de connexion enregistré:', new Date(lastSuccessfulLogin).toISOString())
       
       // Tester le token immédiatement avec /api/auth/me pour vérifier qu'il fonctionne
       try {
-        console.log('[Auth] Test du token avec /api/auth/me...')
+        // console.log('[Auth] Test du token avec /api/auth/me...')
         const testResponse = await fetch(`${JAVA_BACKEND_URL}/api/auth/me`, {
           headers: {
             'Authorization': `Bearer ${responseData.token}`,
@@ -796,17 +796,17 @@ export const javaBackendAuthProvider: IAuthService = {
         
         if (testResponse.ok) {
           const testData = await testResponse.json()
-          console.log('[Auth] ✅ Token validé avec succès par /api/auth/me:', testData)
+          // console.log('[Auth] ✅ Token validé avec succès par /api/auth/me:', testData)
         } else {
-          console.error('[Auth] ❌ ERREUR: Le token ne fonctionne pas avec /api/auth/me:', {
-            status: testResponse.status,
-            statusText: testResponse.statusText
-          })
+          // console.error('[Auth] ❌ ERREUR: Le token ne fonctionne pas avec /api/auth/me:', {
+          //   status: testResponse.status,
+          //   statusText: testResponse.statusText
+          // })
           const errorText = await testResponse.text()
-          console.error('[Auth] Détails de l\'erreur:', errorText)
+          // console.error('[Auth] Détails de l\'erreur:', errorText)
         }
       } catch (testError) {
-        console.error('[Auth] Erreur lors du test du token:', testError)
+        // console.error('[Auth] Erreur lors du test du token:', testError)
       }
       
       // Stocker l'utilisateur
@@ -824,14 +824,14 @@ export const javaBackendAuthProvider: IAuthService = {
           updatedAt: responseData.user.lastLogin || responseData.user.createdAt
         }
         localStorage.setItem('user', JSON.stringify(userData))
-        console.log('[Auth] Utilisateur stocké:', { email: userData.email, role: userData.role })
+        // console.log('[Auth] Utilisateur stocké:', { email: userData.email, role: userData.role })
       }
       
       // Déclencher l'événement de connexion
       window.dispatchEvent(new CustomEvent('userLoggedIn'))
-      console.log('[Auth] Événement userLoggedIn déclenché')
+      // console.log('[Auth] Événement userLoggedIn déclenché')
     } else {
-      console.error('[Auth] ERREUR: Aucun token dans la réponse du serveur:', responseData)
+      // console.error('[Auth] ERREUR: Aucun token dans la réponse du serveur:', responseData)
       throw new Error('Token non reçu du serveur')
     }
     
@@ -879,7 +879,7 @@ export const javaBackendAuthProvider: IAuthService = {
     if (responseData.token) {
       // Vérifier que c'est bien un token JWT valide
       if (!isValidJavaToken(responseData.token)) {
-        console.error('[Auth] ERREUR: Le token reçu n\'est pas un token JWT valide!')
+        // console.error('[Auth] ERREUR: Le token reçu n\'est pas un token JWT valide!')
         throw new Error('Token invalide reçu du serveur')
       }
       
@@ -916,7 +916,7 @@ export const javaBackendAuthProvider: IAuthService = {
       await apiCall('/api/auth/logout', { method: 'POST' })
     } catch (error) {
       // Ignorer les erreurs de logout
-      console.warn('Logout error:', error)
+      // console.warn('Logout error:', error)
     } finally {
       localStorage.removeItem('token')
       localStorage.removeItem('auth_token')
@@ -969,7 +969,7 @@ export const javaBackendAuthProvider: IAuthService = {
       
       return mappedUser
     } catch (error) {
-      console.error('Error getting current user:', error)
+      // console.error('Error getting current user:', error)
       return null
     }
   },

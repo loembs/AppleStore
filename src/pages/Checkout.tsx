@@ -148,7 +148,7 @@ const Checkout = () => {
       // Aller à la page paiement
       navigate('/payment');
     } catch (error) {
-      console.error('Erreur lors de la commande:', error);
+      // console.error('Erreur lors de la commande:', error);
       toast.error('Une erreur est survenue lors de la commande');
     } finally {
       setLoading(false);

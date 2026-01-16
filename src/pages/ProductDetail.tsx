@@ -69,15 +69,15 @@ const ProductDetail = () => {
     if (!product) return;
 
     try {
-      console.log('🛒 handleAddToCart appelé:', {
-        productId: product.id,
-        quantity,
-        selectedColor,
-        selectedStorage,
-        product,
-        colorData: selectedColor ? colors.find(c => c.id === selectedColor) : null,
-        storageData: selectedStorage ? storage.find(s => s.id === selectedStorage) : null
-      });
+      // console.log('🛒 handleAddToCart appelé:', {
+      //   productId: product.id,
+      //   quantity,
+      //   selectedColor,
+      //   selectedStorage,
+      //   product,
+      //   colorData: selectedColor ? colors.find(c => c.id === selectedColor) : null,
+      //   storageData: selectedStorage ? storage.find(s => s.id === selectedStorage) : null
+      // });
 
       await addToCart(
         product.id,
@@ -92,7 +92,7 @@ const ProductDetail = () => {
       // Optionnel : afficher une notification de succès
       alert(`${product.name} ajouté au panier !`);
     } catch (error) {
-      console.error('Erreur lors de l\'ajout au panier:', error);
+      // console.error('Erreur lors de l\'ajout au panier:', error);
       alert('Erreur lors de l\'ajout au panier');
     }
   };

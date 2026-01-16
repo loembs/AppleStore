@@ -172,7 +172,7 @@ export const authService = {
 
     // Si le profil n'existe pas encore, le créer
     if (!data && !error) {
-      console.log('Profil non trouvé, création en cours...')
+      // console.log('Profil non trouvé, création en cours...')
       
       const { data: newProfile, error: createError } = await supabase
         .from('users')
@@ -188,7 +188,7 @@ export const authService = {
         .single()
       
       if (createError) {
-        console.error('Erreur création profil:', createError)
+        // console.error('Erreur création profil:', createError)
         return null
       }
       
@@ -199,7 +199,7 @@ export const authService = {
     }
 
     if (error) {
-      console.error('Erreur récupération profil:', error)
+      // console.error('Erreur récupération profil:', error)
       return null
     }
     
@@ -234,7 +234,7 @@ export const authService = {
         phone: profile.phone,
       }
     } catch (error) {
-      console.error('Erreur getUser:', error)
+      // console.error('Erreur getUser:', error)
       return null
     }
   },
@@ -252,7 +252,7 @@ export const authService = {
       const profile = await this.getUserProfile()
       return profile?.role === 'ADMIN'
     } catch (error) {
-      console.error('Erreur vérification admin:', error)
+      // console.error('Erreur vérification admin:', error)
       return false
     }
   },
@@ -263,7 +263,7 @@ export const authService = {
       const profile = await this.getUserProfile()
       return profile?.role === role
     } catch (error) {
-      console.error('Erreur vérification rôle:', error)
+      // console.error('Erreur vérification rôle:', error)
       return false
     }
   },
