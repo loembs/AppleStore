@@ -1,5 +1,5 @@
 // =============================================
-// SERVICE COMMANDES
+// SERVICE COMMANDES - SUPABASE
 // =============================================
 import { supabase } from '@/config/supabase'
 
@@ -7,7 +7,7 @@ export const ordersService = {
   // Créer une commande
   async createOrder(orderData: {
     items: Array<{
-      product_id: number
+      product_id: string
       quantity: number
       unit_price: number
     }>
@@ -27,11 +27,11 @@ export const ordersService = {
   }) {
     // 1. Récupérer l'utilisateur connecté
     const { data: authData, error: authError } = await supabase.auth.getUser()
-    
+
     if (authError) {
       throw new Error('Authentification requise')
     }
-    
+
     const user = authData?.user
     if (!user) {
       throw new Error('Non authentifié')
@@ -50,7 +50,7 @@ export const ordersService = {
     if (!userData) throw new Error('Profil utilisateur introuvable')
 
     // 3. Générer un numéro de commande unique
-    const orderNumber = `GZ-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
+    const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substring(2, 11).toUpperCase()}`
 
     // 4. Préparer la commande avec les champs d'adresse séparés
     const orderPayload = {
@@ -60,19 +60,13 @@ export const ordersService = {
       payment_method: orderData.payment_method,
       payment_status: 'PENDING',
       status: 'PENDING',
-      shipping_first_name: orderData.shipping_address.first_name,
-      shipping_last_name: orderData.shipping_address.last_name,
-      shipping_address: orderData.shipping_address.street,
-      shipping_city: orderData.shipping_address.city,
-      shipping_postal_code: orderData.shipping_address.postal_code,
-      shipping_country: orderData.shipping_address.country,
-      shipping_phone: orderData.shipping_address.phone,
+      shipping_address: orderData.shipping_address,
       notes: orderData.notes
     }
-    
+
     // 4. Créer la commande
     const { data: order, error: orderError } = await supabase
-      .from('ethio_orders')
+      .from('orders')
       .insert(orderPayload)
       .select()
       .single()
@@ -139,12 +133,12 @@ export const ordersService = {
 
     // 3. Récupérer les commandes
     const { data, error } = await supabase
-      .from('ethio_orders')
+      .from('orders')
       .select(`
         *,
         order_items(
           *,
-          product:ethio_products(id, name, image_url, price)
+          product:product(id, name, image, price)
         )
       `)
       .eq('user_id', userData.id)
@@ -165,12 +159,12 @@ export const ordersService = {
   // Récupérer une commande par numéro
   async getOrderByNumber(orderNumber: string) {
     const { data, error } = await supabase
-      .from('ethio_orders')
+      .from('orders')
       .select(`
         *,
         order_items(
           *,
-          product:ethio_products(id, name, image_url, price)
+          product:product(id, name, image, price)
         )
       `)
       .eq('order_number', orderNumber)
@@ -180,4 +174,3 @@ export const ordersService = {
     return data
   }
 }
-

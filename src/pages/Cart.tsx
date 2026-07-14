@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { SimpleCart } from '@/components/SimpleCart';
 import { useCartWithAuth } from '@/hooks/useCartWithAuth';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, ArrowLeft } from 'lucide-react';
+import { ShoppingCart, ArrowLeft, AlertCircle } from 'lucide-react';
 import { formatPrice } from '@/utils/currency'
 import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
   const navigate = useNavigate();
+  const [showMaintenanceModal, setShowMaintenanceModal] = useState(false);
   const {
     localItems,
     items,
@@ -160,18 +161,14 @@ const Cart = () => {
                       </div>
                     </div>
                   </div>
-                  <Button 
+                  <Button
                     type="button"
-                    className="w-full bg-blue-600 hover:bg-blue-700 h-12 text-lg" 
+                    className="w-full bg-blue-600 hover:bg-blue-700 h-12 text-lg"
                     disabled={displayItemCount === 0 || loading}
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      if (isAuthenticated) {
-                        navigate('/checkout');
-                      } else {
-                        navigate('/login', { state: { returnUrl: '/checkout' } });
-                      }
+                      setShowMaintenanceModal(true);
                     }}
                   >
                     Passer la commande
@@ -186,6 +183,38 @@ const Cart = () => {
         </div>
       </main>
       <Footer />
+
+      {/* Modal de maintenance pour les commandes */}
+      {showMaintenanceModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-lg shadow-xl max-w-md mx-4 p-6 animate-in fade-in zoom-in duration-200">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <AlertCircle className="h-8 w-8 text-amber-500" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Commandes en maintenance
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Nos services de commande sont actuellement en maintenance pour améliorer votre expérience.
+                </p>
+                <p className="text-sm text-gray-500 mb-4">
+                  Nous serons bientôt de disponibles ! Merci de votre patience.
+                </p>
+                <div className="flex gap-3">
+                  <Button
+                    onClick={() => setShowMaintenanceModal(false)}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700"
+                  >
+                    Compris
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

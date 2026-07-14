@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useCartWithAuth } from '@/hooks/useCartWithAuth';
 import { useAuth } from '@/hooks/useSupabase';
-import { ShoppingCart, Truck, Lock, ArrowLeft, Package, Mail, Phone, MapPin, User, CheckCircle } from 'lucide-react';
+import { ShoppingCart, Truck, Lock, ArrowLeft, Package, Mail, Phone, MapPin, User, CheckCircle, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatPrice } from '@/utils/currency';
 
@@ -37,6 +37,7 @@ const Checkout = () => {
 
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showMaintenanceModal, setShowMaintenanceModal] = useState(false);
 
   // Charger formulaire depuis localStorage
   useEffect(() => {
@@ -67,6 +68,17 @@ const Checkout = () => {
       navigate('/login', { state: { returnUrl: '/checkout' } });
     }
   }, [cartLoading, isAuthenticated, navigate]);
+
+  // Afficher le modal de maintenance au chargement de la page
+  useEffect(() => {
+    if (!cartLoading && isAuthenticated && displayItemCount > 0) {
+      // Délai court pour permettre au composant de monter
+      const timer = setTimeout(() => {
+        setShowMaintenanceModal(true);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [cartLoading, isAuthenticated, displayItemCount]);
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -443,6 +455,41 @@ const Checkout = () => {
         </div>
       </main>
       <Footer />
+
+      {/* Modal de maintenance pour les commandes */}
+      {showMaintenanceModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-lg shadow-xl max-w-md mx-4 p-6 animate-in fade-in zoom-in duration-200">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <AlertCircle className="h-8 w-8 text-amber-500" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Commandes en maintenance
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Nos services de commande sont actuellement en maintenance pour améliorer votre expérience.
+                </p>
+                <p className="text-sm text-gray-500 mb-4">
+                  Nous serons bientôt de disponibles ! Merci de votre patience.
+                </p>
+                <div className="flex gap-3">
+                  <Button
+                    onClick={() => {
+                      setShowMaintenanceModal(false);
+                      navigate('/cart');
+                    }}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700"
+                  >
+                    Retour au panier
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
