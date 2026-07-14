@@ -146,5 +146,8 @@ export { productServiceSupabase as productService } from '@/services/product.ser
 // Service du panier (Supabase direct)
 export { cartService } from '@/services/cart.service'
 
+// Service des commandes - Utilise le service Supabase direct
+export { orderServiceSupabase as orderService } from '@/services/order.service.supabase'
+
 // Service d'authentification (Supabase Auth)
 export { authService } from '@/services/auth.service'
