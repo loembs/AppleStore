@@ -1,10 +1,3 @@
-import { 
-  productService as providerProductService,
-  cartService as providerCartService,
-  orderService as providerOrderService,
-  authService as providerAuthService
-} from '@/services/providers'
-
 // Importer le client Supabase depuis la configuration centrale (évite les instances multiples)
 export { supabase } from '@/config/supabase'
 
@@ -13,15 +6,13 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-k
 
 // Fonction pour vérifier si Supabase est configuré
 export const isSupabaseConfigured = () => {
-  // console.log('🔍 Debug Supabase:', {
-  //   supabaseUrl,
-  //   supabaseAnonKey: supabaseAnonKey.substring(0, 20) + '...',
-  //   isConfigured: supabaseUrl !== 'https://placeholder.supabase.co' && supabaseAnonKey !== 'placeholder-key'
-  // })
   return supabaseUrl !== 'https://placeholder.supabase.co' && supabaseAnonKey !== 'placeholder-key'
 }
 
-// Types pour les données Apple Store
+// =============================================
+// TYPES
+// =============================================
+
 export interface Category {
   id: number
   libelle: string
@@ -145,15 +136,15 @@ export interface OrderItem {
   storage?: ProductStorage
 }
 
-// Services pour les produits (DEPRECATED - utilisez les services depuis @/services/providers)
-// Gardés pour compatibilité, mais redirigent vers les nouveaux providers
-export const productService = providerProductService
+// =============================================
+// SERVICES - UTILISE SUPABASE DIRECTEMENT
+// =============================================
 
-// Services pour le panier (DEPRECATED - utilisez depuis @/services/providers)
-export const cartService = providerCartService
+// Service des produits - Utilise le service Supabase direct
+export { productServiceSupabase as productService } from '@/services/product.service.supabase'
 
-// Services pour les commandes (DEPRECATED - utilisez depuis @/services/providers)
-export const orderService = providerOrderService
+// Service du panier (Supabase direct)
+export { cartService } from '@/services/cart.service'
 
-// Services d'authentification (DEPRECATED - utilisez depuis @/services/providers)
-export const authService = providerAuthService
+// Service d'authentification (Supabase Auth)
+export { authService } from '@/services/auth.service'

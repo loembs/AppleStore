@@ -94,7 +94,7 @@ export const cartService = {
       .from('cart_items')
       .select(`
         *,
-        product:ethio_products(id, name, description, price, image_url, stock, available, category_id)
+        product:product(id, name, tagline, price, image, stock, available, categoryid)
       `)
       .eq('cart_id', cart.id)
 
@@ -103,20 +103,26 @@ export const cartService = {
     // Mapper pour correspondre au format attendu par le frontend
     return (data || []).map((item: any) => ({
       id: item.id,
-      productId: item.product_id,
+      cart_id: item.cart_id,
+      product_id: String(item.product_id),
       quantity: item.quantity,
-      price: item.product?.price || 0,
-      product: {
-        id: item.product?.id,
-        name: item.product?.name,
-        description: item.product?.description,
-        price: item.product?.price,
-        image: item.product?.image_url, // ⭐ Mapping image_url vers image
-        stock: item.product?.stock,
-        available: item.product?.available,
-        category: item.product?.category_id === 1 ? 'food' : 'art'
-      },
-      addedAt: item.created_at
+      unit_price: item.unit_price || item.product?.price || 0,
+      total_price: item.total_price || (item.unit_price || item.product?.price || 0) * item.quantity,
+      color_id: item.color_id || null,
+      storage_id: item.storage_id || null,
+      added_at: item.created_at || item.added_at,
+      updated_at: item.updated_at,
+      // Données du produit pour l'affichage
+      product: item.product ? {
+        id: String(item.product.id),
+        name: item.product.name,
+        tagline: item.product.tagline,
+        price: item.product.price,
+        image: item.product.image,
+        stock: item.product.stock,
+        available: item.product.available,
+        categoryid: item.product.categoryid
+      } : undefined
     }))
   },
 
@@ -158,7 +164,7 @@ export const cartService = {
     } else {
       // Récupérer le prix du produit
       const { data: product } = await supabase
-        .from('ethio_products')
+        .from('product')
         .select('price')
         .eq('id', productId)
         .single()

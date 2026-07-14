@@ -2,11 +2,9 @@
 // IMPLÉMENTATION SUPABASE
 // =============================================
 
-import { 
-  productService as supabaseProductService,
-  cartService as supabaseCartService,
-  orderService as supabaseOrderService
-} from '@/lib/supabase'
+import { productServiceSupabase } from '@/services/product.service.supabase'
+import { orderServiceSupabase } from '@/services/order.service.supabase'
+import { cartService as supabaseCartService } from '@/lib/supabase'
 
 import { authService as supabaseAuthService } from '@/services/auth.service'
 
@@ -18,22 +16,22 @@ import type {
 } from './types'
 
 export const supabaseProductProvider: IProductService = {
-  getCategories: () => supabaseProductService.getCategories(),
-  getProducts: (categoryId?: number) => supabaseProductService.getProducts(categoryId),
-  getProduct: (id: string) => supabaseProductService.getProduct(id),
-  getFeaturedProducts: () => supabaseProductService.getFeaturedProducts(),
-  getNewProducts: () => supabaseProductService.getNewProducts(),
-  getBestsellers: () => supabaseProductService.getBestsellers(),
-  searchProducts: (query: string) => supabaseProductService.searchProducts(query),
-  getProductColors: (productId: string) => supabaseProductService.getProductColors(productId),
-  getProductStorage: (productId: string) => supabaseProductService.getProductStorage(productId),
-  getProductFeatures: (productId: string) => supabaseProductService.getProductFeatures(productId),
-  getProductSpecs: (productId: string) => supabaseProductService.getProductSpecs(productId),
-  getProductImages: (productId: string) => supabaseProductService.getProductImages(productId),
-  calculateProductPrice: (productId: string, colorId?: number, storageId?: number) => 
-    supabaseProductService.calculateProductPrice(productId, colorId, storageId),
-  trackProductView: (productId: string, sessionId?: string) => 
-    supabaseProductService.trackProductView(productId, sessionId)
+  getCategories: () => productServiceSupabase.getCategories(),
+  getProducts: (categoryId?: number) => productServiceSupabase.getProducts(categoryId),
+  getProduct: (id: string) => productServiceSupabase.getProduct(id),
+  getFeaturedProducts: () => productServiceSupabase.getFeaturedProducts(),
+  getNewProducts: () => productServiceSupabase.getNewProducts(),
+  getBestsellers: () => productServiceSupabase.getBestsellers(),
+  searchProducts: (query: string) => productServiceSupabase.searchProducts(query),
+  getProductColors: (productId: string) => productServiceSupabase.getProductColors(productId),
+  getProductStorage: (productId: string) => productServiceSupabase.getProductStorage(productId),
+  getProductFeatures: (productId: string) => productServiceSupabase.getProductFeatures(productId),
+  getProductSpecs: (productId: string) => productServiceSupabase.getProductSpecs(productId),
+  getProductImages: (productId: string) => productServiceSupabase.getProductImages(productId),
+  calculateProductPrice: (productId: string, colorId?: number, storageId?: number) =>
+    productServiceSupabase.calculateProductPrice(productId, colorId, storageId),
+  trackProductView: (productId: string, sessionId?: string) =>
+    productServiceSupabase.trackProductView(productId, sessionId)
 }
 
 export const supabaseCartProvider: ICartService = {
@@ -47,10 +45,10 @@ export const supabaseCartProvider: ICartService = {
 }
 
 export const supabaseOrderProvider: IOrderService = {
-  createOrder: (items, shippingAddress, paymentMethod, notes) => 
-    supabaseOrderService.createOrder(items, shippingAddress, paymentMethod, notes),
-  getUserOrders: () => supabaseOrderService.getUserOrders(),
-  getOrder: (orderId: number) => supabaseOrderService.getOrder(orderId)
+  createOrder: (items, shippingAddress, paymentMethod, notes) =>
+    orderServiceSupabase.createOrder(items, shippingAddress, paymentMethod, notes),
+  getUserOrders: () => orderServiceSupabase.getUserOrders(),
+  getOrder: (orderId: number) => orderServiceSupabase.getOrder(orderId)
 }
 
 export const supabaseAuthProvider: IAuthService = {
