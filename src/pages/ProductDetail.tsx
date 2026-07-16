@@ -360,20 +360,33 @@ const ProductDetail = () => {
                 </div>
               </div>
 
+              {/* Indicateur de stock */}
+              {product && (
+                <div className="text-sm mb-4">
+                  {product.stock > 0 ? (
+                    <span className="text-green-600 font-medium">
+                      {product.stock > 10 ? 'En stock' : `${product.stock} unités restantes`}
+                    </span>
+                  ) : (
+                    <span className="text-red-600 font-medium">Rupture de stock</span>
+                  )}
+                </div>
+              )}
+
               {/* Actions */}
               <div className="space-y-4">
                 <Button
                   onClick={handleAddToCart}
-                  disabled={isAddingToCart}
+                  disabled={isAddingToCart || !product || product.stock === 0}
                   className="w-full h-12 text-lg bg-blue-600 hover:bg-blue-700 text-white"
                 >
                   <ShoppingCart className="w-5 h-5 mr-2" />
                   {isAddingToCart ? 'Ajout en cours...' : 'AJOUTER AU PANIER'}
                 </Button>
-                
+
                 <Button
                   onClick={handleBuyNow}
-                  disabled={isAddingToCart}
+                  disabled={isAddingToCart || !product || product.stock === 0}
                   className="w-full h-12 text-lg bg-green-600 hover:bg-green-700 text-white"
                 >
                   ACHETER MAINTENANT

@@ -21,7 +21,7 @@ const IPhone = () => {
       name: 'iPhone 17 Pro',
       tagline: 'All out Pro.',
       price: 'From $999',
-      image: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800&q=80',
+      image: 'https://res.cloudinary.com/dlna2kuo1/image/upload/v1767132487/iphone-17pro-all_ejwbcy.jpg',
       colors: [
         { name: 'Natural Titanium', hex: '#8E8E93', code: 'natural' },
         { name: 'Blue Titanium', hex: '#007AFF', code: 'blue' },
