@@ -123,13 +123,7 @@ export const ProductListView: React.FC<ProductListViewProps> = ({
                 </span>
                 
                 <div className="text-xs md:text-sm text-muted-foreground flex-shrink-0">
-                  {product.stock > 0 ? (
-                    <span className="text-green-600 whitespace-nowrap">
-                      {product.stock > 10 ? 'En stock' : `${product.stock} restants`}
-                    </span>
-                  ) : (
-                    <span className="text-red-600 whitespace-nowrap">Rupture</span>
-                  )}
+                  <span className="text-green-600 whitespace-nowrap">En stock</span>
                 </div>
               </div>
             </div>
@@ -147,7 +141,6 @@ export const ProductListView: React.FC<ProductListViewProps> = ({
               <Button
                 className="w-full md:flex-1 text-sm md:text-base"
                 onClick={handleAddToCart}
-                disabled={product.stock === 0}
               >
                 <ShoppingCart className="h-4 w-4 mr-2" />
                 Ajouter

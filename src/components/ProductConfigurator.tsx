@@ -365,24 +365,15 @@ const ProductConfigurator = ({ product }: ProductConfiguratorProps) => {
         {/* Actions */}
         <div className="sticky bottom-0 bg-background/95 backdrop-blur py-6 -mx-6 px-6 border-t">
           {/* Indicateur de stock */}
-          {product.stock !== undefined && (
-            <div className="text-sm mb-3">
-              {product.stock > 0 ? (
-                <span className="text-green-600 font-medium">
-                  {product.stock > 10 ? 'En stock' : `${product.stock} unités restantes`}
-                </span>
-              ) : (
-                <span className="text-red-600 font-medium">Rupture de stock</span>
-              )}
-            </div>
-          )}
+          <div className="text-sm mb-3">
+            <span className="text-green-600 font-medium">En stock</span>
+          </div>
 
           <div className="flex gap-4">
             <Button
               size="lg"
               className="flex-1"
               onClick={handleAddToCart}
-              disabled={product.stock === 0}
             >
               <ShoppingCart className="w-5 h-5 mr-2" />
               Ajouter au panier

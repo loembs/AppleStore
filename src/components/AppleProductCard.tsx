@@ -120,13 +120,7 @@ export const AppleProductCard: React.FC<AppleProductCardProps> = ({
             
             {/* Stock */}
             <div className="text-sm text-muted-foreground">
-              {product.stock > 0 ? (
-                <span className="text-green-600">
-                  {product.stock > 10 ? 'En stock' : `${product.stock} restants`}
-                </span>
-              ) : (
-                <span className="text-red-600">Rupture de stock</span>
-              )}
+              <span className="text-green-600">En stock</span>
             </div>
           </div>
         </div>
@@ -145,7 +139,6 @@ export const AppleProductCard: React.FC<AppleProductCardProps> = ({
           <Button
             className="flex-1"
             onClick={handleAddToCart}
-            disabled={product.stock === 0}
           >
             <ShoppingCart className="h-4 w-4 mr-2" />
             Ajouter

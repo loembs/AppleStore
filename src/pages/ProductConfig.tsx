@@ -218,24 +218,15 @@ const ProductConfig = () => {
                   </div>
                   
                   {/* Indicateur de stock */}
-                  {product.stock !== undefined && (
-                    <div className="text-sm mb-3">
-                      {product.stock > 0 ? (
-                        <span className="text-green-600 font-medium">
-                          {product.stock > 10 ? 'En stock' : `${product.stock} unités restantes`}
-                        </span>
-                      ) : (
-                        <span className="text-red-600 font-medium">Rupture de stock</span>
-                      )}
-                    </div>
-                  )}
+                  <div className="text-sm mb-3">
+                    <span className="text-green-600 font-medium">En stock</span>
+                  </div>
 
                   <div className="space-y-3">
                     <Button
                       size="lg"
                       className="w-full bg-blue-600 text-white hover:bg-blue-700 py-4 text-lg font-medium"
                       onClick={handleAddToCart}
-                      disabled={product.stock === 0}
                     >
                       <ShoppingCart className="w-5 h-5 mr-2" />
                       Ajouter au panier
