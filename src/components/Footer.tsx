@@ -77,7 +77,7 @@ const Footer = () => {
             <div className="text-sm text-gray-600">
               <p className="font-semibold text-gray-900 mb-1">Apple Store iStar SN</p>
               <p>Dakar, Sénégal</p>
-              <p className="mt-2">Téléphone: +221 XX XXX XX XX</p>
+              <p className="mt-2">Téléphone: +221785858585</p>
               <p>Email: contact@applestore-istar.sn</p>
             </div>
             <div className="flex flex-col md:flex-row items-start md:items-center gap-4 text-sm text-gray-600">
