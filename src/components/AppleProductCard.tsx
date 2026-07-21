@@ -20,7 +20,8 @@ export const AppleProductCard: React.FC<AppleProductCardProps> = ({
 }) => {
   const { addToCart } = useCartWithAuth()
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (e: React.MouseEvent) => {
+    e.stopPropagation()
     try {
       await addToCart(product.id, 1, undefined, undefined, product)
       // Optionnel: afficher une notification de succès
@@ -34,12 +35,16 @@ export const AppleProductCard: React.FC<AppleProductCardProps> = ({
     onViewDetails?.(product)
   }
 
-  const handleAddToWishlist = () => {
+  const handleAddToWishlist = (e: React.MouseEvent) => {
+    e.stopPropagation()
     onAddToWishlist?.(product)
   }
 
   return (
-    <Card className="group hover:shadow-lg transition-shadow duration-300">
+    <Card
+      className="group hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+      onClick={handleViewDetails}
+    >
       <CardHeader className="p-4">
         <div className="relative">
           <img
@@ -121,14 +126,17 @@ export const AppleProductCard: React.FC<AppleProductCardProps> = ({
           <Button
             variant="outline"
             className="flex-1"
-            onClick={handleViewDetails}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleViewDetails()
+            }}
           >
             Voir détails
           </Button>
-          
+
           <Button
             className="flex-1"
-            onClick={handleAddToCart}
+            onClick={(e) => handleAddToCart(e)}
           >
             <ShoppingCart className="h-4 w-4 mr-2" />
             Ajouter

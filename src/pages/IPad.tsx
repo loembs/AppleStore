@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -11,7 +11,12 @@ import { useProducts } from '@/hooks/useSupabase';
 
 const IPad = () => {
   const navigate = useNavigate();
-  
+
+  // Scroll en haut de la page au chargement
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Charger les produits iPad depuis le backend (catégorie 2 = iPad)
   const { products: ipadProducts, loading, error } = useProducts(2);
 
@@ -134,16 +139,9 @@ const IPad = () => {
             <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">iPad</h1>
             <p className="text-2xl md:text-3xl mb-12 font-light">The future of iPad.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
+              <Button
                 className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
-                onClick={() => navigate('/ipad')}
-              >
-                En savoir plus
-              </Button>
-              <Button 
-                variant="outline"
-                className="border-white text-black hover:bg-white hover:text-black px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg"
-                onClick={() => navigate('/ipad')}
+                onClick={() => document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 Acheter
               </Button>
@@ -152,7 +150,7 @@ const IPad = () => {
         </section>
 
         {/* iPad Models Grid */}
-        <section className="py-24 bg-gray-50">
+        <section id="products-section" className="py-24 bg-gray-50">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Quel iPad vous convient ?</h2>

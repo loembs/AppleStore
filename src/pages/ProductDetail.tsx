@@ -33,6 +33,11 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [currentImage, setCurrentImage] = useState<string>('');
 
+  // Scroll en haut de la page au chargement
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Initialiser les sélections par défaut
   useEffect(() => {
     if (colors.length > 0 && selectedColor === null) {

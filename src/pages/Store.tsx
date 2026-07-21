@@ -121,98 +121,67 @@ const Store = () => {
     <div className="min-h-screen bg-white">
       <Header />
       <main>
-        {/* Store Hero avec Carrousel */}
+        {/* Store Hero avec 3 Cards Catégories */}
         <section className="relative bg-white text-black py-12 md:py-16">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-8">
               <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">Boutique</h1>
               <p className="text-xl md:text-2xl font-light">La meilleure façon d'acheter les produits que vous aimez.</p>
             </div>
-            
-            {/* Carrousel de produits mis en avant */}
-            {featuredProducts.length > 0 && (
-              <div className="mt-8">
-                {/* Version mobile : Slides plein écran avec auto-changement */}
-                <div className="md:hidden relative h-[70vh] w-full overflow-hidden">
-                  {featuredProducts.slice(0, 8).map((product, index) => (
-                    <div
-                      key={product.id}
-                      className={`absolute inset-0 transition-opacity duration-700 ${
-                        index === currentMobileSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
-                      }`}
-                      onClick={() => handleProductClick(product)}
-                    >
-                      <div className="w-full h-full flex flex-col items-center justify-center bg-white px-6 py-8 cursor-pointer">
-                        <div className="flex-1 flex items-center justify-center w-full mb-6">
-                          <img
-                            src={product.image || '/placeholder-product.jpg'}
-                            alt={product.name}
-                            className="max-w-full max-h-full object-contain"
-                          />
-                        </div>
-                        <div className="text-center">
-                          <h3 className="text-2xl font-semibold mb-3 text-black">{product.name}</h3>
-                          <p className="text-3xl font-bold text-black">
-                            {formatPrice(product.price, 'XOF')}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  {/* Indicateurs de slide */}
-                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 flex gap-2">
-                    {featuredProducts.slice(0, 8).map((_, index) => (
-                      <div
-                        key={index}
-                        className={`h-2 rounded-full transition-all duration-300 ${
-                          index === currentMobileSlide ? 'w-8 bg-black' : 'w-2 bg-gray-400'
-                        }`}
-                        onClick={() => setCurrentMobileSlide(index)}
-                      />
-                    ))}
-                  </div>
-                </div>
 
-                {/* Version desktop : Carrousel */}
-                <div className="hidden md:block px-8">
-                  <Carousel
-                    opts={{
-                      align: "start",
-                      loop: false,
-                      slidesToScroll: 1,
-                      containScroll: "keepSnaps",
-                      watchDrag: false,
-                    }}
-                    className="w-full"
-                  >
-                    <CarouselContent className="-ml-4">
-                      {featuredProducts.slice(0, 8).map((product) => (
-                        <CarouselItem key={product.id} className="pl-4 basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                          <div 
-                            className="bg-gray-50 border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-100 transition-all"
-                            onClick={() => handleProductClick(product)}
-                          >
-                            <div className="aspect-square mb-4 flex items-center justify-center">
-                              <img
-                                src={product.image || '/placeholder-product.jpg'}
-                                alt={product.name}
-                                className="max-w-full max-h-full object-contain"
-                              />
-                            </div>
-                            <h3 className="text-lg font-semibold mb-2 line-clamp-2 text-black">{product.name}</h3>
-                            <p className="text-2xl font-bold text-black">
-                              {formatPrice(product.price, 'XOF')}
-                            </p>
-                          </div>
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="left-0 md:-left-12 text-black border-gray-300 hover:bg-gray-100" />
-                    <CarouselNext className="right-0 md:-right-12 text-black border-gray-300 hover:bg-gray-100" />
-                  </Carousel>
+            {/* 3 Cards Catégories */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+              {/* iPhone Card */}
+              <div
+                className="relative aspect-[4/5] rounded-2xl overflow-hidden cursor-pointer group hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                onClick={() => navigate('/iphone')}
+              >
+                <img
+                  src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1784149521/iphone-17-pro-17-pro-max-hero_tmk0l4.png"
+                  alt="iPhone"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                  <h2 className="text-3xl md:text-4xl font-bold mb-2">iPhone</h2>
+                  <p className="text-lg opacity-90">Découvrez la gamme</p>
                 </div>
               </div>
-            )}
+
+              {/* Mac Card */}
+              <div
+                className="relative aspect-[4/5] rounded-2xl overflow-hidden cursor-pointer group hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                onClick={() => navigate('/mac')}
+              >
+                <img
+                  src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1784648017/IMG_3927_wtoc2w.jpg"
+                  alt="Mac"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                  <h2 className="text-3xl md:text-4xl font-bold mb-2">Mac</h2>
+                  <p className="text-lg opacity-90">Performance et puissance</p>
+                </div>
+              </div>
+
+              {/* iPad Card */}
+              <div
+                className="relative aspect-[4/5] rounded-2xl overflow-hidden cursor-pointer group hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                onClick={() => navigate('/ipad')}
+              >
+                <img
+                  src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1784648675/hero__ecv967jz1y82_large_2x_eih05a.jpg"
+                  alt="iPad"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                  <h2 className="text-3xl md:text-4xl font-bold mb-2">iPad</h2>
+                  <p className="text-lg opacity-90">Créativité sans limites</p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
