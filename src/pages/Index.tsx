@@ -220,7 +220,7 @@ const Index = () => {
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Nos Boutiques</h2>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Notre Boutique</h2>
               <p className="text-lg md:text-xl text-gray-600">Sea Plaza - Découvrez nos espaces Apple</p>
             </div>
 
