@@ -1,14 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { CarouselApi } from '@/components/ui/carousel';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 const Index = () => {
   const navigate = useNavigate();
-  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const storeImages = [
@@ -20,16 +17,17 @@ const Index = () => {
     'https://res.cloudinary.com/dlna2kuo1/image/upload/v1784656168/56b215ff-dab0-49e3-a2ee-6b6a9800da71_fj5cxi.jpg'
   ];
 
+  // Calculer le nombre de pages (3 images par page sur desktop)
+  const totalPages = Math.ceil(storeImages.length / 3);
+
   // Auto-scroll du carrousel
   useEffect(() => {
-    if (!carouselApi) return;
-
     const interval = setInterval(() => {
-      carouselApi.scrollNext();
+      setCurrentSlide((prev) => (prev + 1) % totalPages);
     }, 3000); // Change toutes les 3 secondes
 
     return () => clearInterval(interval);
-  }, [carouselApi]);
+  }, [totalPages]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -224,18 +222,14 @@ const Index = () => {
               <p className="text-lg md:text-xl text-gray-600">Sea Plaza - Découvrez nos espaces Apple</p>
             </div>
 
-            <Carousel
-              setApi={setCarouselApi}
-              opts={{
-                align: "start",
-                loop: true,
-              }}
-              className="w-full"
-            >
-              <CarouselContent>
-                {storeImages.map((image, index) => (
-                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                    <div className="p-2">
+            <div className="relative">
+              <div className="overflow-hidden">
+                <div
+                  className="flex transition-transform duration-500 ease-in-out"
+                  style={{ transform: `translateX(-${currentSlide * (100 / 3)}%)` }}
+                >
+                  {storeImages.map((image, index) => (
+                    <div key={index} className="w-1/3 flex-shrink-0 px-2">
                       <div className="aspect-[4/3] rounded-xl overflow-hidden shadow-lg">
                         <img
                           src={image}
@@ -244,12 +238,23 @@ const Index = () => {
                         />
                       </div>
                     </div>
-                  </CarouselItem>
+                  ))}
+                </div>
+              </div>
+
+              {/* Indicateurs */}
+              <div className="flex justify-center gap-2 mt-6">
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <button
+                    key={`page-${index}`}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      index === currentSlide ? 'w-8 bg-black' : 'w-2 bg-gray-400'
+                    }`}
+                  />
                 ))}
-              </CarouselContent>
-              <CarouselPrevious className="left-0 md:-left-12" />
-              <CarouselNext className="right-0 md:-right-12" />
-            </Carousel>
+              </div>
+            </div>
           </div>
         </section>
       </main>
