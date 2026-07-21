@@ -11,7 +11,7 @@ const Index = () => {
       <Header />
       <main>
         {/* iPhone Hero */}
-        <section className="relative h-screen flex items-center justify-center bg-white md:bg-white overflow-hidden">
+        <section className="relative h-screen flex items-center justify-center md:items-start md:justify-start bg-white md:bg-white overflow-hidden">
           {/* Mobile: Image de background */}
           <div className="md:hidden absolute inset-0 w-full h-full">
             <img
@@ -30,7 +30,7 @@ const Index = () => {
             />
           </div>
           {/* Contenu au-dessus du background */}
-          <div className="relative z-10 text-center px-6 max-w-7xl mx-auto">
+          <div className="relative z-10 text-center md:text-left px-6 max-w-7xl mx-auto md:pt-20">
             <h1 className="text-white md:text-black text-5xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight">iPhone</h1>
             <p className="text-white md:text-black text-xl md:text-2xl lg:text-3xl mb-12 font-light">Découvrez tous les iPhone 17.</p>
             <div className="flex justify-center">
@@ -59,7 +59,6 @@ const Index = () => {
               {/* Texte à droite */}
               <div className="text-center md:text-left">
                 <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">MacBook Neo</h1>
-                <p className="text-2xl md:text-3xl mb-3 font-light">Finition bleu ciel.</p>
                 <p className="text-2xl md:text-3xl mb-12 font-light">Performances de haut vol avec la M4.</p>
                 <div className="flex justify-center md:justify-start">
                   <Button 
