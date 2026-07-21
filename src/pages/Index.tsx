@@ -1,10 +1,35 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import type { CarouselApi } from '@/components/ui/carousel';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 const Index = () => {
   const navigate = useNavigate();
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const storeImages = [
+    'https://res.cloudinary.com/dlna2kuo1/image/upload/v1784656170/fb579b02-0303-4906-afc3-2a4383c5873d_rqzst7.jpg',
+    'https://res.cloudinary.com/dlna2kuo1/image/upload/v1784656169/e4208acf-e980-408a-b1e5-8777ecf7455d_rbg3kn.jpg',
+    'https://res.cloudinary.com/dlna2kuo1/image/upload/v1784656169/5d34b500-98f2-4343-9061-fbf1300c1587_xeph4s.jpg',
+    'https://res.cloudinary.com/dlna2kuo1/image/upload/v1784656169/ed3705f6-b6c3-478e-9ca2-7d04cff71667_jbbpft.jpg',
+    'https://res.cloudinary.com/dlna2kuo1/image/upload/v1784656169/6f9abd73-0d41-452d-800d-9b18d21a3cac_vymxkg.jpg',
+    'https://res.cloudinary.com/dlna2kuo1/image/upload/v1784656168/56b215ff-dab0-49e3-a2ee-6b6a9800da71_fj5cxi.jpg'
+  ];
+
+  // Auto-scroll du carrousel
+  useEffect(() => {
+    if (!carouselApi) return;
+
+    const interval = setInterval(() => {
+      carouselApi.scrollNext();
+    }, 3000); // Change toutes les 3 secondes
+
+    return () => clearInterval(interval);
+  }, [carouselApi]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -188,6 +213,43 @@ const Index = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Boutique - Carrousel des lieux */}
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Nos Boutiques</h2>
+              <p className="text-lg md:text-xl text-gray-600">Sea Plaza - Découvrez nos espaces Apple</p>
+            </div>
+
+            <Carousel
+              setApi={setCarouselApi}
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              className="w-full"
+            >
+              <CarouselContent>
+                {storeImages.map((image, index) => (
+                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                    <div className="p-2">
+                      <div className="aspect-[4/3] rounded-xl overflow-hidden shadow-lg">
+                        <img
+                          src={image}
+                          alt={`Boutique ${index + 1}`}
+                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-0 md:-left-12" />
+              <CarouselNext className="right-0 md:-right-12" />
+            </Carousel>
           </div>
         </section>
       </main>
