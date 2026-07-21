@@ -11,7 +11,7 @@ const Index = () => {
       <Header />
       <main>
         {/* iPhone Hero */}
-        <section className="relative h-screen flex items-center justify-center bg-black text-white overflow-hidden">
+        <section className="relative h-screen flex items-center justify-center bg-white text-black overflow-hidden">
           {/* Mobile: Image de background */}
           <div className="md:hidden absolute inset-0 w-full h-full">
             <img
@@ -21,21 +21,13 @@ const Index = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
           </div>
-          {/* Desktop: Vidéo de background */}
+          {/* Desktop: Image de background */}
           <div className="hidden md:block absolute inset-0 w-full h-full">
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
+            <img
+              src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1784650967/imgi_4_hero_iphone_family__be5jkzxszb1e_large_wg9qgc.jpg"
               className="w-full h-full object-cover"
-              style={{ transform: 'scale(0.85)' }}
-            >
-              <source
-                src="https://res.cloudinary.com/dlna2kuo1/video/upload/v1784646369/From_Klickpin.com-_Try_these_simple_ways_to_style_your_bathroom_shelf_everyone_will_ask_you_about_with_practical_inspiration_you_can_use_right_awa_hrfixy.mp4"
-                type="video/mp4"
-              />
-            </video>
+              alt="iPhone 17 Family"
+            />
           </div>
           {/* Contenu au-dessus du background */}
           <div className="relative z-10 text-center px-6 max-w-7xl mx-auto">
