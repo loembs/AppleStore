@@ -55,16 +55,6 @@ export const AppleProductCard: React.FC<AppleProductCardProps> = ({
                 Nouveau
               </Badge>
             )}
-            {product.is_featured && (
-              <Badge variant="secondary" className="bg-blue-500">
-                Vedette
-              </Badge>
-            )}
-            {product.is_bestseller && (
-              <Badge variant="destructive" className="bg-red-500">
-                Best-seller
-              </Badge>
-            )}
           </div>
 
           {/* Bouton wishlist */}

@@ -215,7 +215,7 @@ const ProductDetail = () => {
                     <button
                       key={color.id}
                       onClick={() => setSelectedColor(color.id)}
-                      className={`w-12 h-12 rounded-full border-2 ${
+                      className={`w-10 h-10 rounded-full border-2 ${
                         selectedColor === color.id
                           ? 'border-gray-900'
                           : 'border-gray-300'
@@ -244,34 +244,6 @@ const ProductDetail = () => {
                   {formatPrice(calculatePrice(), 'XOF')}
                 </div>
               </div>
-
-              {/* Sélection de couleur */}
-              {colors.length > 0 && (
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                    Couleur
-                  </h3>
-                  <div className="flex flex-wrap gap-3">
-                    {colors.map((color) => (
-                      <button
-                        key={color.id}
-                        onClick={() => setSelectedColor(color.id)}
-                        className={`flex items-center space-x-2 px-4 py-2 rounded-lg border-2 transition-all ${
-                          selectedColor === color.id
-                            ? 'border-gray-900 bg-gray-50'
-                            : 'border-gray-300 hover:border-gray-400'
-                        }`}
-                      >
-                        <div
-                          className="w-4 h-4 rounded-full"
-                          style={{ backgroundColor: color.hex }}
-                        />
-                        <span className="text-sm font-medium">{color.name}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* Sélection de stockage */}
               {storage.length > 0 && (
