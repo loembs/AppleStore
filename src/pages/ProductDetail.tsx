@@ -23,7 +23,7 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 const ProductDetail = () => {
   const { productId } = useParams<{ productId: string }>();
   const navigate = useNavigate();
-  const { product, colors, storage, features, loading, error } = useProduct(productId || '');
+  const { product, colors, storage, features, specs, images, loading, error } = useProduct(productId || '');
   const { addToCart, isAddingToCart } = useCartWithAuth();
 
   // États pour la configuration du produit
@@ -381,20 +381,73 @@ const ProductDetail = () => {
                 </div>
               </div>
 
-              {/* Caractéristiques */}
-              {features.length > 0 && (
+              {/* Caractéristiques (afficher uniquement certaines specs choisies) */}
+              {(features.length > 0 || Object.keys(specs).length > 0) && (
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">
                     Caractéristiques
                   </h3>
-                  <ul className="space-y-2">
-                    {features.map((feature, index) => (
-                      <li key={index} className="flex items-center space-x-2">
-                        <div className="w-1.5 h-1.5 bg-gray-400 rounded-full" />
-                        <span className="text-gray-700">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
+
+                  {/* Construire une liste filtrée et ordonnée de specs à afficher */}
+                  {(() => {
+                    // Définir les patterns et labels souhaités dans l'ordre voulu
+                    const specPatterns: { label: string; re: RegExp }[] = [
+                      { label: 'Écran', re: /(?:screen|display|pouce|inch|taille|écran)/i },
+                      { label: 'Stockage', re: /(?:storage|stockage|mémoire|capacité|ssd|hdd)/i },
+                      { label: 'Nanotexture', re: /(?:nanotexture|nano ?texture|nanotex)/i },
+                    ];
+
+                    const matched: { label: string; value: string }[] = [];
+                    const remainingSpecs = { ...specs } as Record<string, string>;
+
+                    // Chercher les correspondances selon les patterns
+                    for (const p of specPatterns) {
+                      const entry = Object.entries(remainingSpecs).find(([k]) => p.re.test(k));
+                      if (entry) {
+                        const [k, v] = entry;
+                        matched.push({ label: p.label, value: String(v) });
+                        delete remainingSpecs[k];
+                      }
+                    }
+
+                    // Optionnel: si on veut afficher d'autres specs pertinentes (limité), on peut en ajouter ici
+                    // Par exemple afficher la résolution d'écran si présente
+                    const extraPatterns: { label: string; re: RegExp }[] = [
+                      { label: 'Résolution', re: /(?:résolution|resolution|px|p x)/i },
+                    ];
+
+                    for (const p of extraPatterns) {
+                      const entry = Object.entries(remainingSpecs).find(([k]) => p.re.test(k));
+                      if (entry) {
+                        const [k, v] = entry;
+                        matched.push({ label: p.label, value: String(v) });
+                        delete remainingSpecs[k];
+                      }
+                    }
+
+                    return (
+                      <ul className="space-y-2">
+                        {features.map((feature, index) => (
+                          <li key={`f-${index}`} className="flex items-center space-x-2">
+                            <div className="w-1.5 h-1.5 bg-gray-400 rounded-full" />
+                            <span className="text-gray-700">{feature}</span>
+                          </li>
+                        ))}
+
+                        {matched.length > 0 ? (
+                          matched.map((s, i) => (
+                            <li key={`s-${i}`} className="flex items-center space-x-2">
+                              <div className="w-1.5 h-1.5 bg-gray-400 rounded-full" />
+                              <span className="text-gray-700"><strong>{s.label}:</strong> {s.value}</span>
+                            </li>
+                          ))
+                        ) : (
+                          // Si aucune spec filtrée trouvée, afficher un petit message ou rien. Ici on n'affiche rien.
+                          null
+                        )}
+                      </ul>
+                    );
+                  })()}
                 </div>
               )}
             </div>

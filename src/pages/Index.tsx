@@ -29,12 +29,36 @@ const Index = () => {
     return () => clearInterval(interval);
   }, [totalPages]);
 
+  useEffect(() => {
+    const elements = document.querySelectorAll<HTMLElement>('[data-animate]');
+
+    if (!elements.length) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    elements.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
       <main>
         {/* iPhone Hero */}
-        <section className="relative h-screen flex items-center justify-center md:items-start md:justify-start bg-white md:bg-white overflow-hidden">
+        <section className="relative h-screen flex items-center justify-center md:items-start md:justify-start bg-white md:bg-white overflow-hidden animate-on-scroll" data-animate>
           {/* Mobile: Image de background */}
           <div className="md:hidden absolute inset-0 w-full h-full">
             <img
@@ -47,13 +71,13 @@ const Index = () => {
           {/* Desktop: Image de background */}
           <div className="hidden md:block absolute inset-0 w-full h-full">
             <img
-              src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1784650967/imgi_4_hero_iphone_family__be5jkzxszb1e_large_wg9qgc.jpg"
+              src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1784916432/imgi_9_hero_iphone_family__be5jkzxszb1e_medium_2x_tyls8v.jpg"
               className="w-full h-full object-cover"
               alt="iPhone 17 Family"
             />
           </div>
           {/* Contenu au-dessus du background */}
-          <div className="relative z-10 text-center md:text-left px-6 max-w-7xl mx-auto md:pt-20">
+          <div className="relative z-10 text-center md:text-left px-6 max-w-7xl mx-auto md:pt-20 hero-float">
             <h1 className="text-white md:text-black text-5xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight">iPhone</h1>
             <p className="text-white md:text-black text-xl md:text-2xl lg:text-3xl mb-12 font-light">Découvrez tous les iPhone 17.</p>
             <div className="flex justify-center">
@@ -68,14 +92,14 @@ const Index = () => {
         </section>
 
         {/* MacBook Air */}
-        <section className="relative min-h-screen flex items-center bg-white text-black">
+        <section className="relative min-h-screen flex items-center bg-white text-black animate-on-scroll" data-animate>
           <div className="max-w-7xl mx-auto w-full px-6 py-12 md:py-0">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
               {/* Image à gauche */}
               <div className="flex items-center justify-center">
                 <img 
                   src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1784648258/hero_large_pubk7p.png" 
-                  className="object-contain h-[400px] md:h-[600px] lg:h-[700px] w-auto"
+                  className="object-contain h-[400px] md:h-[600px] lg:h-[700px] w-auto transition-transform duration-700 hover:scale-105"
                   alt="MacBook Air"
                 />
               </div>
@@ -97,14 +121,14 @@ const Index = () => {
         </section>
 
         {/* iPad Air */}
-        <section className="relative min-h-screen flex items-center bg-white text-black">
+        <section className="relative min-h-screen flex items-center bg-white text-black animate-on-scroll" data-animate>
           <div className="max-w-7xl mx-auto w-full px-6 py-12 md:py-0">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
               {/* Image à gauche */}
               <div className="order-2 md:order-1 flex items-center justify-center">
                 <img 
                   src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1784648675/hero__ecv967jz1y82_large_2x_eih05a.jpg" 
-                  className="object-contain h-[400px] md:h-[600px] lg:h-[700px] w-auto opacity-80"
+                  className="object-contain h-[400px] md:h-[600px] lg:h-[700px] w-auto opacity-80 transition-transform duration-700 hover:scale-105"
                   alt="iPad Air"
                 />
               </div>
@@ -126,14 +150,14 @@ const Index = () => {
         </section>
 
         {/* MacBook Pro */}
-        <section className="relative min-h-screen flex items-center bg-black text-white">
+        <section className="relative min-h-screen flex items-center bg-black text-white animate-on-scroll" data-animate>
           <div className="max-w-7xl mx-auto w-full px-6 py-12 md:py-0">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
               {/* Image à gauche */}
               <div className="order-2 md:order-1 flex items-center justify-center">
                 <img 
                   src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1784648898/imgi_105_hero_static__c9sislzzicq6_medium_2x_ev1ujg.png" 
-                  className="object-contain h-[400px] md:h-[600px] lg:h-[700px] w-auto opacity-80"
+                  className="object-contain h-[400px] md:h-[600px] lg:h-[700px] w-auto opacity-80 transition-transform duration-700 hover:scale-105"
                   alt="MacBook Pro 14"
                 />
               </div>
@@ -155,14 +179,14 @@ const Index = () => {
         </section>
 
         {/* iPad Pro */}
-        <section className="relative min-h-screen flex items-center bg-white text-black">
+        <section className="relative min-h-screen flex items-center bg-white text-black animate-on-scroll" data-animate>
           <div className="max-w-7xl mx-auto w-full px-6 py-12 md:py-0">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
               {/* Image à gauche */}
               <div className="flex items-center justify-center">
                 <img 
                   src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1784649008/imgi_54_ipad_og_fc131c68c_hulphr.png" 
-                  className="object-contain h-[400px] md:h-[600px] lg:h-[700px] w-auto"
+                  className="object-contain h-[400px] md:h-[600px] lg:h-[700px] w-auto transition-transform duration-700 hover:scale-105"
                   alt="iPad Pro"
                 />
               </div>
@@ -185,14 +209,14 @@ const Index = () => {
         </section>
 
         {/* Mac Studio */}
-        <section className="relative min-h-screen flex items-center bg-black text-white">
+        <section className="relative min-h-screen flex items-center bg-black text-white animate-on-scroll" data-animate>
           <div className="max-w-7xl mx-auto w-full px-6 py-12 md:py-0">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
               {/* Image à gauche */}
               <div className="order-2 md:order-1 flex items-center justify-center">
                 <img 
                   src="https://res.cloudinary.com/dlna2kuo1/image/upload/v1784649291/imgi_10_hw_elements_case__cf1pppj511jm_large-removebg-preview_k6xp9f.png" 
-                  className="object-contain h-[400px] md:h-[600px] lg:h-[700px] w-auto"
+                  className="object-contain h-[400px] md:h-[600px] lg:h-[700px] w-auto transition-transform duration-700 hover:scale-105"
                   alt="Mac Studio"
                 />
               </div>
@@ -215,7 +239,7 @@ const Index = () => {
         </section>
 
         {/* Boutique - Carrousel des lieux */}
-        <section className="py-16 bg-white">
+        <section className="py-16 bg-white animate-on-scroll" data-animate>
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-12">
               <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Notre Boutique</h2>

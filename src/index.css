@@ -145,6 +145,30 @@
   .animate-scale-in {
     animation: scale-in 0.6s ease-out forwards;
   }
+
+  @keyframes float-slow {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .animate-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hero-float {
+    animation: float-slow 6s ease-in-out infinite;
+  }
   
   /* Apple-style image rendering */
   img {
